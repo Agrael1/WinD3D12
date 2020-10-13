@@ -18,9 +18,10 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="WinD3D12.App">
-      <uap:VisualElements DisplayName="WinD3D12" Description="A project for a C++/WinRT Universal Windows Platform (UWP) app directly implementing CoreApplication"
-        Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" BackgroundColor="transparent">
+      <uap:VisualElements DisplayName="WinD3D12" 
+        Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" BackgroundColor="transparent" Description="A simple WinRT/WGPU Engine">
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:DefaultTile/>
       </uap:VisualElements>
     </Application>
   </Applications>

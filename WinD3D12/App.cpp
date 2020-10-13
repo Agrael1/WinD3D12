@@ -1,151 +1,97 @@
 #include "pch.h"
+#include "App.h"
 
-using namespace winrt;
-
-using namespace Windows;
-using namespace Windows::ApplicationModel::Core;
-using namespace Windows::Foundation::Numerics;
-using namespace Windows::UI;
-using namespace Windows::UI::Core;
-using namespace Windows::UI::Composition;
-
-struct App : implements<App, IFrameworkViewSource, IFrameworkView>
+IFrameworkView App::CreateView()
 {
-    CompositionTarget m_target{ nullptr };
-    VisualCollection m_visuals{ nullptr };
-    Visual m_selected{ nullptr };
-    float2 m_offset{};
-
-    IFrameworkView CreateView()
-    {
-        return *this;
-    }
-
-    void Initialize(CoreApplicationView const &)
-    {
-    }
-
-    void Load(hstring const&)
-    {
-    }
-
-    void Uninitialize()
-    {
-    }
-
-    void Run()
-    {
-        CoreWindow window = CoreWindow::GetForCurrentThread();
-        window.Activate();
-
-        CoreDispatcher dispatcher = window.Dispatcher();
-        dispatcher.ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
-    }
-
-    void SetWindow(CoreWindow const & window)
-    {
-        Compositor compositor;
-        ContainerVisual root = compositor.CreateContainerVisual();
-        m_target = compositor.CreateTargetForCurrentView();
-        m_target.Root(root);
-        m_visuals = root.Children();
-
-        window.PointerPressed({ this, &App::OnPointerPressed });
-        window.PointerMoved({ this, &App::OnPointerMoved });
-
-        window.PointerReleased([&](auto && ...)
-        {
-            m_selected = nullptr;
-        });
-    }
-
-    void OnPointerPressed(IInspectable const &, PointerEventArgs const & args)
-    {
-        float2 const point = args.CurrentPoint().Position();
-
-        for (Visual visual : m_visuals)
-        {
-            float3 const offset = visual.Offset();
-            float2 const size = visual.Size();
-
-            if (point.x >= offset.x &&
-                point.x < offset.x + size.x &&
-                point.y >= offset.y &&
-                point.y < offset.y + size.y)
-            {
-                m_selected = visual;
-                m_offset.x = offset.x - point.x;
-                m_offset.y = offset.y - point.y;
-            }
-        }
-
-        if (m_selected)
-        {
-            m_visuals.Remove(m_selected);
-            m_visuals.InsertAtTop(m_selected);
-        }
-        else
-        {
-            AddVisual(point);
-        }
-    }
-
-    void OnPointerMoved(IInspectable const &, PointerEventArgs const & args)
-    {
-        if (m_selected)
-        {
-            float2 const point = args.CurrentPoint().Position();
-
-            m_selected.Offset(
-            {
-                point.x + m_offset.x,
-                point.y + m_offset.y,
-                0.0f
-            });
-        }
-    }
-
-    void AddVisual(float2 const point)
-    {
-        Compositor compositor = m_visuals.Compositor();
-        SpriteVisual visual = compositor.CreateSpriteVisual();
-
-        static Color colors[] =
-        {
-            { 0xDC, 0x5B, 0x9B, 0xD5 },
-            { 0xDC, 0xED, 0x7D, 0x31 },
-            { 0xDC, 0x70, 0xAD, 0x47 },
-            { 0xDC, 0xFF, 0xC0, 0x00 }
-        };
-
-        static unsigned last = 0;
-        unsigned const next = ++last % _countof(colors);
-        visual.Brush(compositor.CreateColorBrush(colors[next]));
-
-        float const BlockSize = 100.0f;
-
-        visual.Size(
-        {
-            BlockSize,
-            BlockSize
-        });
-
-        visual.Offset(
-        {
-            point.x - BlockSize / 2.0f,
-            point.y - BlockSize / 2.0f,
-            0.0f,
-        });
-
-        m_visuals.InsertAtTop(visual);
-
-        m_selected = visual;
-        m_offset.x = -BlockSize / 2.0f;
-        m_offset.y = -BlockSize / 2.0f;
-    }
-};
-
-int __stdcall wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
+    return *this;
+}
+void App::Initialize(const CoreApplicationView& appView)
 {
-    CoreApplication::Run(make<App>());
+    appView.Activated({ this, &App::OnActivated });
+    CoreApplication::Suspending({ this, &App::OnSuspending });
+    CoreApplication::Resuming({ this, &App::OnResuming });
+}
+void App::SetWindow(const CoreWindow& window)
+{
+    window.Activate();
+
+    window.PointerCursor(CoreCursor(CoreCursorType::Arrow, 0));
+
+    UI::Input::PointerVisualizationSettings visualizationSettings
+    { 
+        UI::Input::PointerVisualizationSettings::GetForCurrentView() 
+    };
+    visualizationSettings.IsContactFeedbackEnabled(false);
+    visualizationSettings.IsBarrelButtonFeedbackEnabled(false);
+    
+    //m_deviceResources->SetWindow(window);
+
+    window.Activated({ this, &App::OnWindowActivationChanged });
+    window.SizeChanged({ this, &App::OnWindowSizeChanged });
+    window.Closed({ this, &App::OnWindowClosed });
+    window.VisibilityChanged({ this, &App::OnVisibilityChanged });
+
+    DisplayInformation currentDisplayInformation{ DisplayInformation::GetForCurrentView() };
+    currentDisplayInformation.DpiChanged({ this, &App::OnDpiChanged });
+    currentDisplayInformation.OrientationChanged({ this, &App::OnOrientationChanged });
+    currentDisplayInformation.StereoEnabledChanged({ this, &App::OnStereoEnabledChanged });
+
+    DisplayInformation::DisplayContentsInvalidated({ this, &App::OnDisplayContentsInvalidated });
+}
+void App::Load(hstring const&)
+{
+}
+void App::Uninitialize()
+{
+
+}
+void App::Run()
+{
+}
+
+
+
+void App::OnActivated(const CoreApplicationView&, const IActivatedEventArgs&)
+{
+    CoreWindow::GetForCurrentThread().Activate();
+}
+winrt::fire_and_forget App::OnSuspending(const IInspectable&, const SuspendingEventArgs& args)
+{
+    return winrt::fire_and_forget();
+}
+
+void App::OnResuming(const IInspectable&, const IInspectable&)
+{
+}
+
+void App::OnWindowActivationChanged(const CoreWindow&, const WindowActivatedEventArgs& args)
+{
+}
+
+void App::OnWindowSizeChanged(const CoreWindow& wnd, const WindowSizeChangedEventArgs& args)
+{
+}
+
+void App::OnWindowClosed(const CoreWindow& wnd, const CoreWindowEventArgs& args)
+{
+}
+
+void App::OnVisibilityChanged(const CoreWindow& wnd, const VisibilityChangedEventArgs& args)
+{
+}
+
+void App::OnDpiChanged(const DisplayInformation& sender, const IInspectable& args)
+{
+}
+
+void App::OnOrientationChanged(const DisplayInformation& sender, const IInspectable& args)
+{
+}
+
+void App::OnStereoEnabledChanged(const DisplayInformation& sender, const IInspectable& args)
+{
+}
+
+void App::OnDisplayContentsInvalidated(const DisplayInformation& sender, const IInspectable& args)
+{
 }
