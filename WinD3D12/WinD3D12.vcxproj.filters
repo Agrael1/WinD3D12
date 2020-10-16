@@ -10,6 +10,12 @@
     <ClCompile Include="App.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="D3D12WRT.cpp">
+      <Filter>Source Code\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="DawnAdapter.cpp">
+      <Filter>Source Code\Engine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -53,6 +59,21 @@
     <Filter Include="Header Modules\Engine">
       <UniqueIdentifier>{2f856941-65cd-4bad-bc20-b8ceb263a89d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{8abe55ab-aeaa-4248-85bb-6b44aad8a4dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\Dawn">
+      <UniqueIdentifier>{6ee9207f-a116-4c9e-894d-79ff52accd05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\Dawn_native">
+      <UniqueIdentifier>{499eaa26-c723-49d6-96d2-dedeffa877d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Engine\Graphics">
+      <UniqueIdentifier>{015de57a-3908-4962-bee0-17b7ef16c405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Modules\Engine\Graphics">
+      <UniqueIdentifier>{eda634b4-dac6-4fc0-8610-5db609a07abb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -81,6 +102,54 @@
     </ClInclude>
     <ClInclude Include="VeritasEngine.h">
       <Filter>Header Modules\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn_native\D3D12Backend.h">
+      <Filter>Shared\Dawn_native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn_native\dawn_native_export.h">
+      <Filter>Shared\Dawn_native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn_native\DawnNative.h">
+      <Filter>Shared\Dawn_native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn_native\MetalBackend.h">
+      <Filter>Shared\Dawn_native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn_native\NullBackend.h">
+      <Filter>Shared\Dawn_native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn_native\OpenGLBackend.h">
+      <Filter>Shared\Dawn_native</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn_native\VulkanBackend.h">
+      <Filter>Shared\Dawn_native</Filter>
+    </ClInclude>
+    <ClInclude Include="WinSetup.h">
+      <Filter>Header Modules\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D12WRT.h">
+      <Filter>Header Modules\Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn\dawn_proc.h">
+      <Filter>Shared\Dawn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn\dawn_proc_table.h">
+      <Filter>Shared\Dawn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn\dawn_wsi.h">
+      <Filter>Shared\Dawn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn\EnumClassBitmasks.h">
+      <Filter>Shared\Dawn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn\webgpu.h">
+      <Filter>Shared\Dawn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Dawn\include\dawn\webgpu_cpp.h">
+      <Filter>Shared\Dawn</Filter>
+    </ClInclude>
+    <ClInclude Include="DawnAdapter.h">
+      <Filter>Header Modules\Engine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

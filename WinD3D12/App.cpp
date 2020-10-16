@@ -59,9 +59,9 @@ winrt::fire_and_forget App::OnSuspending(const IInspectable&, const SuspendingEv
 {
     return winrt::fire_and_forget();
 }
-
 void App::OnResuming(const IInspectable&, const IInspectable&)
 {
+    
 }
 
 void App::OnWindowActivationChanged(const CoreWindow&, const WindowActivatedEventArgs& args)
