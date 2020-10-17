@@ -10,10 +10,10 @@
     <ClCompile Include="App.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="D3D12WRT.cpp">
+    <ClCompile Include="DawnAdapter.cpp">
       <Filter>Source Code\Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="DawnAdapter.cpp">
+    <ClCompile Include="Graphics.cpp">
       <Filter>Source Code\Engine\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -124,12 +124,6 @@
     <ClInclude Include="..\Shared\Dawn\include\dawn_native\VulkanBackend.h">
       <Filter>Shared\Dawn_native</Filter>
     </ClInclude>
-    <ClInclude Include="WinSetup.h">
-      <Filter>Header Modules\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="D3D12WRT.h">
-      <Filter>Header Modules\Engine\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\Shared\Dawn\include\dawn\dawn_proc.h">
       <Filter>Shared\Dawn</Filter>
     </ClInclude>
@@ -149,6 +143,12 @@
       <Filter>Shared\Dawn</Filter>
     </ClInclude>
     <ClInclude Include="DawnAdapter.h">
+      <Filter>Header Modules\Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\WinSetup.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
       <Filter>Header Modules\Engine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,14 +12,12 @@
 #include <dawn/webgpu_cpp.h>
 #include <dawn_native/NullBackend.h>
 #ifdef DAWN_ENABLE_BACKEND_D3D12
-#include <dawn_native/D3D12Backend.h>
+#include <dawn_native/WebGPUWinRT.h>
 #elif DAWN_ENABLE_BACKEND_VULKAN
 #include <dawn_native/VulkanBackend.h>
 #include <vulkan/vulkan_win32.h>
 #endif
 
-#pragma comment(lib, "dawn_native.lib")
-#pragma comment(lib, "dawn_proc.lib")
 #ifdef DAWN_ENABLE_BACKEND_VULKAN
 #pragma comment(lib, "vulkan-1.lib")
 #endif
@@ -27,8 +25,6 @@
 
 class VAdapter
 {
-	friend HRESULT VFactory::CreateSwapChainForHWND(wgpu::SwapChain* _out_ppSwap, wgpu::SwapChainDescriptor* swapDesc, wgpu::Device device, HWND hWnd);
-
 	class Once
 	{
 	public:
@@ -39,8 +35,12 @@ class VAdapter
 	};
 private:
 	VAdapter() = default;
+	~VAdapter()
+	{
+		swapImpl.Destroy(swapImpl.userData);
+	}
 public:
-	dawn_native::Adapter QueryAdapter(wgpu::BackendType type1st, wgpu::BackendType type2nd = wgpu::BackendType::Null)
+	[[nodiscard]]dawn_native::Adapter QueryAdapter(wgpu::BackendType type1st, wgpu::BackendType type2nd = wgpu::BackendType::Null)
 	{
 		if (!once) return adapter;
 		Once on{ once };
@@ -68,7 +68,7 @@ public:
 		}
 		return adapter = dawn_native::Adapter();
 	}
-	void InitSwapChain(WGPUDevice device, HWND window)
+	uint64_t InitSwapChain(WGPUDevice device, XWindow window)
 	{
 		switch (wgpu::BackendType(adapter.GetBackendType()))
 		{
@@ -76,7 +76,7 @@ public:
 		case wgpu::BackendType::D3D12:
 			if (swapImpl.userData == nullptr)
 			{
-				swapImpl = dawn_native::d3d12::CreateNativeSwapChainImpl(
+				swapImpl = dawn_native::d3d12::win_rt::CreateNativeSwapChainImpl(
 					device, window);
 				swapFormat = wgpu::TextureFormat(dawn_native::d3d12::GetNativeSwapChainPreferredFormat(&swapImpl));
 			}
@@ -100,6 +100,11 @@ public:
 			}
 			break;
 		}
+		return reinterpret_cast<uint64_t>(&swapImpl);
+	}
+	wgpu::TextureFormat GetSwapFormat()const
+	{
+		return swapFormat;
 	}
 public:
 	static VAdapter& Get()
@@ -113,7 +118,26 @@ public:
 private:
 	bool once = true;
 	dawn_native::Adapter adapter;
-	DawnSwapChainImplementation swapImpl;
-	wgpu::TextureFormat swapFormat;
+	DawnSwapChainImplementation swapImpl{}; //unsafe shit
+	wgpu::TextureFormat swapFormat = wgpu::TextureFormat::Undefined;
 	static VAdapter xadapt;
 };
+VAdapter VAdapter::xadapt;
+
+HRESULT VFactory::CreateDevice(wgpu::Device* _out_ppDevice, wgpu::BackendType type)
+{
+	auto adapter = VAdapter::Get().QueryAdapter(type);
+	*_out_ppDevice = wgpu::Device::Acquire(adapter.CreateDevice());
+	return S_OK;
+}
+HRESULT VFactory::CreateSwapChain(wgpu::SwapChain* _out_ppSwap, wgpu::Device device, XWindow hWnd)
+{
+	wgpu::SwapChainDescriptor swapChainDesc;
+	swapChainDesc.implementation = VAdapter::Get().InitSwapChain(device.Get(), hWnd);
+	*_out_ppSwap = device.CreateSwapChain(nullptr, &swapChainDesc);
+	return E_NOTIMPL;
+}
+wgpu::TextureFormat VFactory::GetSwapChainFormat()
+{
+	return VAdapter::Get().GetSwapFormat();
+}

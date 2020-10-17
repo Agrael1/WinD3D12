@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "WinSetup.h"
+#include <WinSetup.h>
 
 #include <winrt/Windows.ApplicationModel.Core.h>
 #include <winrt/Windows.Devices.Input.h>
