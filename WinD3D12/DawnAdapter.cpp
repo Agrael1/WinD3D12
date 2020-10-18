@@ -51,6 +51,9 @@ public:
 
 		dawn_native::Adapter Fallback;
 		std::vector<dawn_native::Adapter> adapters = instance.GetAdapters();
+		DawnProcTable backendProcs = dawn_native::GetProcs();
+		dawnProcSetProcs(&backendProcs);
+
 		for (auto it : adapters)
 		{
 			it.GetProperties(&properties);
@@ -70,10 +73,10 @@ public:
 	}
 	uint64_t InitSwapChain(WGPUDevice device, XWindow window)
 	{
-		switch (wgpu::BackendType(adapter.GetBackendType()))
+		switch (adapter.GetBackendType())
 		{
 #ifdef DAWN_ENABLE_BACKEND_D3D12
-		case wgpu::BackendType::D3D12:
+		case dawn_native::BackendType::D3D12:
 			if (swapImpl.userData == nullptr)
 			{
 				swapImpl = dawn_native::d3d12::win_rt::CreateNativeSwapChainImpl(
@@ -83,7 +86,7 @@ public:
 			break;
 #endif
 #ifdef DAWN_ENABLE_BACKEND_VULKAN
-		case wgpu::BackendType::Vulkan:
+		case dawn_native::BackendType::Vulkan:
 			if (swapImpl.userData == nullptr)
 			{
 				swapImpl = dawn_native::vulkan::CreateNativeSwapChainImpl(
@@ -135,7 +138,7 @@ HRESULT VFactory::CreateSwapChain(wgpu::SwapChain* _out_ppSwap, wgpu::Device dev
 	wgpu::SwapChainDescriptor swapChainDesc;
 	swapChainDesc.implementation = VAdapter::Get().InitSwapChain(device.Get(), hWnd);
 	*_out_ppSwap = device.CreateSwapChain(nullptr, &swapChainDesc);
-	return E_NOTIMPL;
+	return S_OK;
 }
 wgpu::TextureFormat VFactory::GetSwapChainFormat()
 {

@@ -1,3 +1,6 @@
+#include "VeritasEngine.h"
+#include <optional>
+
 class App : public implements<App, IFrameworkViewSource, IFrameworkView>
 {
 public:
@@ -22,4 +25,7 @@ public: //events
     void OnOrientationChanged(const DisplayInformation& sender, const IInspectable& args);
     void OnStereoEnabledChanged(const DisplayInformation& sender, const IInspectable& args);
     void OnDisplayContentsInvalidated(const DisplayInformation& sender, const IInspectable& args);
+private:
+    std::optional<ver::VeritasEngine> engine;
+    winrt::agile_ref<CoreWindow> rWindow;
 };

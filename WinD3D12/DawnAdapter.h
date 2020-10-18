@@ -3,7 +3,6 @@
 #include <webgpu/webgpu.h>
 #else
 #include <dawn/webgpu_cpp.h>
-#include "App.h"
 using XWindow = const CoreWindow&;
 #endif
 

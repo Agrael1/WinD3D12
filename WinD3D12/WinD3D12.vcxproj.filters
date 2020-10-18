@@ -74,14 +74,15 @@
     <Filter Include="Header Modules\Engine\Graphics">
       <UniqueIdentifier>{eda634b4-dac6-4fc0-8610-5db609a07abb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Modules\Engine\Bindable">
+      <UniqueIdentifier>{3ba6a69b-3f73-49e3-8bf1-07e26fe45919}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <Filter>Resources</Filter>
-    </None>
     <None Include="PropertySheet.props">
       <Filter>Resources</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -99,9 +100,6 @@
     </ClInclude>
     <ClInclude Include="App.h">
       <Filter>Header Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="VeritasEngine.h">
-      <Filter>Header Modules\Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\Dawn\include\dawn_native\D3D12Backend.h">
       <Filter>Shared\Dawn_native</Filter>
@@ -150,6 +148,15 @@
     </ClInclude>
     <ClInclude Include="Graphics.h">
       <Filter>Header Modules\Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="VeritasEngine.h">
+      <Filter>Header Modules\Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

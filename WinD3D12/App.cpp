@@ -24,7 +24,8 @@ void App::SetWindow(const CoreWindow& window)
     visualizationSettings.IsContactFeedbackEnabled(false);
     visualizationSettings.IsBarrelButtonFeedbackEnabled(false);
     
-    //m_deviceResources->SetWindow(window);
+    auto rect = window.Bounds();
+    engine.emplace(rect.Width, rect.Height, window); //workflow independent values
 
     window.Activated({ this, &App::OnWindowActivationChanged });
     window.SizeChanged({ this, &App::OnWindowSizeChanged });
@@ -37,6 +38,7 @@ void App::SetWindow(const CoreWindow& window)
     currentDisplayInformation.StereoEnabledChanged({ this, &App::OnStereoEnabledChanged });
 
     DisplayInformation::DisplayContentsInvalidated({ this, &App::OnDisplayContentsInvalidated });
+    rWindow = window;
 }
 void App::Load(hstring const&)
 {
@@ -47,17 +49,30 @@ void App::Uninitialize()
 }
 void App::Run()
 {
+    CoreDispatcher dispatcher = rWindow.get().Dispatcher();
+    dispatcher.ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
+    engine->Run();
 }
-
 
 
 void App::OnActivated(const CoreApplicationView&, const IActivatedEventArgs&)
 {
-    CoreWindow::GetForCurrentThread().Activate();
+    rWindow.get().Activate();
 }
 winrt::fire_and_forget App::OnSuspending(const IInspectable&, const SuspendingEventArgs& args)
 {
-    return winrt::fire_and_forget();
+    auto lifetime = get_strong();
+
+    // Save app state asynchronously after requesting a deferral. Holding a deferral
+    // indicates that the application is busy performing suspending operations. Be
+    // aware that a deferral may not be held indefinitely. After about five seconds,
+    // the app will be forced to exit.
+    SuspendingDeferral deferral = args.SuspendingOperation().GetDeferral();
+
+    co_await winrt::resume_background();
+    engine->Suspend();
+
+    deferral.Complete();
 }
 void App::OnResuming(const IInspectable&, const IInspectable&)
 {
@@ -66,32 +81,30 @@ void App::OnResuming(const IInspectable&, const IInspectable&)
 
 void App::OnWindowActivationChanged(const CoreWindow&, const WindowActivatedEventArgs& args)
 {
+    engine->WindowActivationChanged(args.WindowActivationState());
 }
-
 void App::OnWindowSizeChanged(const CoreWindow& wnd, const WindowSizeChangedEventArgs& args)
 {
 }
-
 void App::OnWindowClosed(const CoreWindow& wnd, const CoreWindowEventArgs& args)
 {
+    engine->Close(); //does not work :(
 }
-
 void App::OnVisibilityChanged(const CoreWindow& wnd, const VisibilityChangedEventArgs& args)
 {
+    engine->Visibility(args.Visible());
 }
 
+//Maybe in future :D
 void App::OnDpiChanged(const DisplayInformation& sender, const IInspectable& args)
 {
 }
-
 void App::OnOrientationChanged(const DisplayInformation& sender, const IInspectable& args)
 {
 }
-
 void App::OnStereoEnabledChanged(const DisplayInformation& sender, const IInspectable& args)
 {
 }
-
 void App::OnDisplayContentsInvalidated(const DisplayInformation& sender, const IInspectable& args)
 {
 }
