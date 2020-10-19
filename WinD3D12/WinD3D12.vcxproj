@@ -166,6 +166,7 @@
     <ClInclude Include="..\Shared\Dawn\include\dawn_native\VulkanBackend.h" />
     <ClInclude Include="..\Shared\WinSetup.h" />
     <ClInclude Include="Bindable.h" />
+    <ClInclude Include="Buffers.h" />
     <ClInclude Include="DawnAdapter.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="pch.h">

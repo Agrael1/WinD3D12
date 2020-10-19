@@ -158,5 +158,8 @@
     <ClInclude Include="Shader.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
+    <ClInclude Include="Buffers.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
