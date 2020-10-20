@@ -50,8 +50,11 @@ void App::Uninitialize()
 void App::Run()
 {
     CoreDispatcher dispatcher = rWindow.get().Dispatcher();
-    dispatcher.ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
-    engine->Run();
+    while (1)
+    {
+        dispatcher.ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
+        engine->Run();
+    }
 }
 
 

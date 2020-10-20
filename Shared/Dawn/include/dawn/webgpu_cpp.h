@@ -1031,7 +1031,7 @@ namespace wgpu {
 
     struct ProgrammableStageDescriptor {
         ChainedStruct const * nextInChain = nullptr;
-        ShaderModule module;
+        ShaderModule Module;
         char const * entryPoint;
     };
 

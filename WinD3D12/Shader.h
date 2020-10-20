@@ -19,7 +19,7 @@ namespace ver
 			shader = GetDevice(gfx).CreateShaderModule(&descriptor);
 		}
 	public:
-		wgpu::ShaderModule Get()
+		operator wgpu::ShaderModule()
 		{
 			return shader;
 		}

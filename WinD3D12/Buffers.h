@@ -15,6 +15,11 @@ namespace ver
 
 			GetQueue(gfx).WriteBuffer(buffer, 0, data, size);
 		}
+	public:
+		operator wgpu::Buffer()
+		{
+			return buffer;
+		}
 	private:
 		wgpu::Buffer buffer;
 	};

@@ -69,6 +69,8 @@ static const uint16_t indxData[] = {
 	0 // padding (better way of doing this?)
 };
 
+
+
 namespace ver
 {
 
@@ -78,10 +80,96 @@ public:
 	VeritasEngine(uint32_t width, uint32_t height, XWindow wnd)
 		:gfx(width, height, wnd),
 		v(gfx, vertData,sizeof(vertData)),
-		idx(gfx, indxData, sizeof(v))
+		idx(gfx, indxData, sizeof(v)),
+		uRotBuf(gfx,&rotDeg,sizeof(float),wgpu::BufferUsage::Uniform)
 	{
 		ver::Shader rvs(gfx, triangle_vs);
 		ver::Shader rps(gfx, triangle_ps);
+
+		// bind group layout (used by both the pipeline layout and uniform bind group, released at the end of this function)
+		wgpu::BindGroupLayoutEntry bglEntry = {};
+		bglEntry.binding = 0;
+		bglEntry.visibility = wgpu::ShaderStage::Vertex;
+		bglEntry.type = wgpu::BindingType::UniformBuffer;
+
+		wgpu::BindGroupLayoutDescriptor bglDesc = {};
+		bglDesc.entryCount = 1;
+		bglDesc.entries = &bglEntry;
+		wgpu::BindGroupLayout bindGroupLayout = gfx.device.CreateBindGroupLayout(&bglDesc);
+
+		// pipeline layout (used by the render pipeline, released after its creation)
+		wgpu::PipelineLayoutDescriptor layoutDesc = {};
+		layoutDesc.bindGroupLayoutCount = 1;
+		layoutDesc.bindGroupLayouts = &bindGroupLayout;
+		wgpu::PipelineLayout pipelineLayout = gfx.device.CreatePipelineLayout(&layoutDesc);
+
+		// begin pipeline set-up
+		wgpu::RenderPipelineDescriptor desc = {};
+
+		desc.layout = pipelineLayout;
+
+		desc.vertexStage.Module = rvs;
+		desc.vertexStage.entryPoint = "main";
+
+		wgpu::ProgrammableStageDescriptor fragStage = {};
+		fragStage.Module = rps;
+		fragStage.entryPoint = "main";
+		desc.fragmentStage = &fragStage;
+
+		// describe buffer layouts
+		wgpu::VertexAttributeDescriptor vertAttrs[2] = {};
+		vertAttrs[0].format = wgpu::VertexFormat::Float2;
+		vertAttrs[0].offset = 0;
+		vertAttrs[0].shaderLocation = 0;
+		vertAttrs[1].format = wgpu::VertexFormat::Float3;
+		vertAttrs[1].offset = 2 * sizeof(float);
+		vertAttrs[1].shaderLocation = 1;
+		wgpu::VertexBufferLayoutDescriptor vertDesc = {};
+		vertDesc.arrayStride = 5 * sizeof(float);
+		vertDesc.attributeCount = 2;
+		vertDesc.attributes = vertAttrs;
+		wgpu::VertexStateDescriptor vertState = {};
+#ifdef __EMSCRIPTEN__ // Emscripten hasn't yet caught up with the API changes
+		vertState.indexFormat = WGPUIndexFormat_Uint16;
+#endif
+		vertState.vertexBufferCount = 1;
+		vertState.vertexBuffers = &vertDesc;
+
+		desc.vertexState = &vertState;
+		desc.primitiveTopology = wgpu::PrimitiveTopology::TriangleList;
+
+		desc.sampleCount = 1;
+
+		// describe blend
+		wgpu::BlendDescriptor blendDesc = {};
+		blendDesc.operation = wgpu::BlendOperation::Add;
+		blendDesc.srcFactor = wgpu::BlendFactor::SrcAlpha;
+		blendDesc.dstFactor = wgpu::BlendFactor::OneMinusSrcAlpha;
+		wgpu::ColorStateDescriptor colorDesc = {};
+		colorDesc.format = VFactory::GetSwapChainFormat();
+		colorDesc.alphaBlend = blendDesc;
+		colorDesc.colorBlend = blendDesc;
+		colorDesc.writeMask = wgpu::ColorWriteMask::All;
+
+		desc.colorStateCount = 1;
+		desc.colorStates = &colorDesc;
+
+		desc.sampleMask = 0xFFFFFFFF; // <-- Note: this currently causes Emscripten to fail (sampleMask ends up as -1, which trips an assert)
+
+		pipeline = gfx.device.CreateRenderPipeline(&desc);
+
+		wgpu::BindGroupEntry bgEntry = {};
+		bgEntry.binding = 0;
+		bgEntry.buffer = uRotBuf;
+		bgEntry.offset = 0;
+		bgEntry.size = sizeof(rotDeg);
+
+		wgpu::BindGroupDescriptor bgDesc = {};
+		bgDesc.layout = bindGroupLayout;
+		bgDesc.entryCount = 1;
+		bgDesc.entries = &bgEntry;
+
+		bindGroup = gfx.device.CreateBindGroup(&bgDesc);
 	}
 public:
 	void Close()
@@ -103,22 +191,57 @@ public:
 private:
 	void Test()
 	{
+		wgpu::TextureView backBufView = gfx.swap.GetCurrentTextureView();			// create textureView
 
+		wgpu::RenderPassColorAttachmentDescriptor colorDesc = {};
+		colorDesc.attachment = backBufView;
+		colorDesc.loadOp = wgpu::LoadOp::Clear;
+		colorDesc.storeOp = wgpu::StoreOp::Store;
+		colorDesc.clearColor.r = 0.3f;
+		colorDesc.clearColor.g = 0.3f;
+		colorDesc.clearColor.b = 0.3f;
+		colorDesc.clearColor.a = 1.0f;
+
+		wgpu::RenderPassDescriptor renderPass = {};
+		renderPass.colorAttachmentCount = 1;
+		renderPass.colorAttachments = &colorDesc;
+
+		wgpu::CommandEncoder encoder = gfx.device.CreateCommandEncoder(nullptr);			// create encoder
+		{
+			wgpu::RenderPassEncoder pass = encoder.BeginRenderPass(&renderPass);	// create pass
+
+			// update the rotation
+			rotDeg += 0.1f;
+			gfx.renderQueue.WriteBuffer(uRotBuf, 0, &rotDeg, sizeof(rotDeg));
+
+			// draw the triangle (comment these five lines to simply clear the screen)
+			pass.SetPipeline(pipeline);
+			pass.SetBindGroup(0, bindGroup, 0, 0);
+			pass.SetVertexBuffer(0, v, 0, 0);
+	#ifdef __EMSCRIPTEN__ // Emscripten hasn't yet caught up with the API changes
+			wgpuRenderPassEncoderSetIndexBuffer(pass, indxBuf, 0, 0);
+	#else
+			pass.SetIndexBufferWithFormat(idx, wgpu::IndexFormat::Uint16, 0, 0);
+	#endif
+			pass.DrawIndexed(3);
+
+			pass.EndPass();	
+		}
+													// release pass
+		wgpu::CommandBuffer commands = encoder.Finish(nullptr);				// create commands
+		gfx.renderQueue.Submit(1, &commands);
+#ifndef __EMSCRIPTEN__
+	/*
+	 * TODO: wgpuSwapChainPresent is unsupported in Emscripten, so what do we do?
+	 */
+		gfx.swap.Present();
+#endif
 	}
 public:
 	void Run()
 	{
-		while (!bWindowClosed)
-		{
-			if (bVisible)
-			{
-
-			}
-			else
-			{
-
-			}
-		}
+		if(bVisible)
+			Test();
 	}
 private:
 	Graphics gfx;
@@ -127,5 +250,9 @@ private:
 private:
 	VertexBuffer v;
 	IndexBuffer idx;
+	Buffer uRotBuf;
+	wgpu::RenderPipeline pipeline;
+	wgpu::BindGroup bindGroup;
+	float rotDeg = 0.0f;
 };
 }
