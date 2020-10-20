@@ -1,6 +1,6 @@
 #pragma once
 #include "Buffers.h"
-#include "Shader.h"
+#include "Shaders.h"
 
 static uint32_t triangle_vs[] = {
 	0x07230203, 0x00010000, 0x000d0008, 0x00000043, 0x00000000, 0x00020011, 0x00000001, 0x0006000b,
@@ -70,7 +70,6 @@ static const uint16_t indxData[] = {
 };
 
 
-
 namespace ver
 {
 
@@ -107,14 +106,8 @@ public:
 		wgpu::RenderPipelineDescriptor desc = {};
 
 		desc.layout = pipelineLayout;
-
-		desc.vertexStage.Module = rvs;
-		desc.vertexStage.entryPoint = "main";
-
-		wgpu::ProgrammableStageDescriptor fragStage = {};
-		fragStage.Module = rps;
-		fragStage.entryPoint = "main";
-		desc.fragmentStage = &fragStage;
+		desc.vertexStage = rvs.GetStageDescriptor();
+		desc.fragmentStage = &rps.GetStageDescriptor();
 
 		// describe buffer layouts
 		wgpu::VertexAttributeDescriptor vertAttrs[2] = {};
@@ -129,9 +122,6 @@ public:
 		vertDesc.attributeCount = 2;
 		vertDesc.attributes = vertAttrs;
 		wgpu::VertexStateDescriptor vertState = {};
-#ifdef __EMSCRIPTEN__ // Emscripten hasn't yet caught up with the API changes
-		vertState.indexFormat = WGPUIndexFormat_Uint16;
-#endif
 		vertState.vertexBufferCount = 1;
 		vertState.vertexBuffers = &vertDesc;
 
@@ -191,51 +181,30 @@ public:
 private:
 	void Test()
 	{
-		wgpu::TextureView backBufView = gfx.swap.GetCurrentTextureView();			// create textureView
-
-		wgpu::RenderPassColorAttachmentDescriptor colorDesc = {};
-		colorDesc.attachment = backBufView;
-		colorDesc.loadOp = wgpu::LoadOp::Clear;
-		colorDesc.storeOp = wgpu::StoreOp::Store;
-		colorDesc.clearColor.r = 0.3f;
-		colorDesc.clearColor.g = 0.3f;
-		colorDesc.clearColor.b = 0.3f;
-		colorDesc.clearColor.a = 1.0f;
+		rotDeg += 0.1f;
+		gfx.renderQueue.WriteBuffer(uRotBuf, 0, &rotDeg, sizeof(rotDeg));
 
 		wgpu::RenderPassDescriptor renderPass = {};
 		renderPass.colorAttachmentCount = 1;
-		renderPass.colorAttachments = &colorDesc;
+		renderPass.colorAttachments = &gfx.colorDesc;
 
 		wgpu::CommandEncoder encoder = gfx.device.CreateCommandEncoder(nullptr);			// create encoder
 		{
 			wgpu::RenderPassEncoder pass = encoder.BeginRenderPass(&renderPass);	// create pass
 
-			// update the rotation
-			rotDeg += 0.1f;
-			gfx.renderQueue.WriteBuffer(uRotBuf, 0, &rotDeg, sizeof(rotDeg));
-
 			// draw the triangle (comment these five lines to simply clear the screen)
 			pass.SetPipeline(pipeline);
 			pass.SetBindGroup(0, bindGroup, 0, 0);
 			pass.SetVertexBuffer(0, v, 0, 0);
-	#ifdef __EMSCRIPTEN__ // Emscripten hasn't yet caught up with the API changes
-			wgpuRenderPassEncoderSetIndexBuffer(pass, indxBuf, 0, 0);
-	#else
 			pass.SetIndexBufferWithFormat(idx, wgpu::IndexFormat::Uint16, 0, 0);
-	#endif
 			pass.DrawIndexed(3);
-
-			pass.EndPass();	
+			pass.EndPass();
 		}
-													// release pass
-		wgpu::CommandBuffer commands = encoder.Finish(nullptr);				// create commands
+
+		commands = encoder.Finish(nullptr);				// create commands
 		gfx.renderQueue.Submit(1, &commands);
-#ifndef __EMSCRIPTEN__
-	/*
-	 * TODO: wgpuSwapChainPresent is unsupported in Emscripten, so what do we do?
-	 */
-		gfx.swap.Present();
-#endif
+
+		gfx.Present();
 	}
 public:
 	void Run()
@@ -253,6 +222,7 @@ private:
 	Buffer uRotBuf;
 	wgpu::RenderPipeline pipeline;
 	wgpu::BindGroup bindGroup;
+	wgpu::CommandBuffer commands;
 	float rotDeg = 0.0f;
 };
 }

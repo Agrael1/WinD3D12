@@ -155,13 +155,13 @@
     <ClInclude Include="Bindable.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
-    </ClInclude>
     <ClInclude Include="Buffers.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="Pipeline.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
