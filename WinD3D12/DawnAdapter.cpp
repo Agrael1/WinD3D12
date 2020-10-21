@@ -12,7 +12,7 @@
 #include <dawn/webgpu_cpp.h>
 #include <dawn_native/NullBackend.h>
 #ifdef DAWN_ENABLE_BACKEND_D3D12
-#include <dawn_native/WebGPUWinRT.h>
+#include "../WebGPUWinRT/WebGPUWinRT.h"
 #elif DAWN_ENABLE_BACKEND_VULKAN
 #include <dawn_native/VulkanBackend.h>
 #include <vulkan/vulkan_win32.h>

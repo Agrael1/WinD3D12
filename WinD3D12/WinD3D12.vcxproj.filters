@@ -16,6 +16,10 @@
     <ClCompile Include="Graphics.cpp">
       <Filter>Source Code\Engine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="DynamicVertex.cpp">
+      <Filter>Source Code\Engine\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicVBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -77,12 +81,19 @@
     <Filter Include="Header Modules\Engine\Bindable">
       <UniqueIdentifier>{3ba6a69b-3f73-49e3-8bf1-07e26fe45919}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Modules\Engine\Dynamics">
+      <UniqueIdentifier>{440de72b-fbba-42d4-811f-66d992aff036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Engine\Dynamics">
+      <UniqueIdentifier>{952a4d5c-479f-48b7-b031-7285c0361599}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props">
       <Filter>Resources</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="$(MSBuildThisFileDirectory)../..//build/native/bin/x64\Assimp64.dll" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -163,6 +174,15 @@
     </ClInclude>
     <ClInclude Include="Shaders.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicVertex.h">
+      <Filter>Header Modules\Engine\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicVBuffer.h">
+      <Filter>Header Modules\Engine\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="AlignedAllocator.h">
+      <Filter>Header Modules\Engine\Dynamics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

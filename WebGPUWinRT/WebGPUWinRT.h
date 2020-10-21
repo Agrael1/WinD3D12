@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "pch.h"
 #include <dawn/dawn_wsi.h>
 #include <dawn_native/DawnNative.h>
 #include <dawn_native/D3D12Backend.h>

@@ -1,5 +1,7 @@
 ﻿#include "pch.h"
-#include <dawn_native/WebGPUWinRT.h>
+#include "WebGPUWinRT.h"
+
+
 
 struct
     __declspec(uuid("45D64A29-A63E-4CB6-B498-5781D298CB4F"))

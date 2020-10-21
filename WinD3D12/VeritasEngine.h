@@ -1,6 +1,7 @@
 #pragma once
 #include "Buffers.h"
 #include "Shaders.h"
+#include "DynamicVertex.h"
 
 static uint32_t triangle_vs[] = {
 	0x07230203, 0x00010000, 0x000d0008, 0x00000043, 0x00000000, 0x00020011, 0x00000001, 0x0006000b,
@@ -85,6 +86,16 @@ public:
 		ver::Shader rvs(gfx, triangle_vs);
 		ver::Shader rps(gfx, triangle_ps);
 
+		constexpr ver::dv::VertexLayout vl
+		{ {
+			ver::VType::Position2D,
+			ver::VType::Float3Color
+		} };
+		constexpr bool x = vl.Has(ver::dv::VertexLayout::ElementType::Float4Color);
+		constexpr size_t y = vl.Size();
+		constexpr auto z = vl.GetDescs();
+		constexpr auto w = vl.ResolveByIndex(1);
+
 		// bind group layout (used by both the pipeline layout and uniform bind group, released at the end of this function)
 		wgpu::BindGroupLayoutEntry bglEntry = {};
 		bglEntry.binding = 0;
@@ -109,18 +120,10 @@ public:
 		desc.vertexStage = rvs.GetStageDescriptor();
 		desc.fragmentStage = &rps.GetStageDescriptor();
 
-		// describe buffer layouts
-		wgpu::VertexAttributeDescriptor vertAttrs[2] = {};
-		vertAttrs[0].format = wgpu::VertexFormat::Float2;
-		vertAttrs[0].offset = 0;
-		vertAttrs[0].shaderLocation = 0;
-		vertAttrs[1].format = wgpu::VertexFormat::Float3;
-		vertAttrs[1].offset = 2 * sizeof(float);
-		vertAttrs[1].shaderLocation = 1;
 		wgpu::VertexBufferLayoutDescriptor vertDesc = {};
-		vertDesc.arrayStride = 5 * sizeof(float);
+		vertDesc.arrayStride = y;
 		vertDesc.attributeCount = 2;
-		vertDesc.attributes = vertAttrs;
+		vertDesc.attributes = z.data();
 		wgpu::VertexStateDescriptor vertState = {};
 		vertState.vertexBufferCount = 1;
 		vertState.vertexBuffers = &vertDesc;

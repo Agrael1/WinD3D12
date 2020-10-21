@@ -24,14 +24,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Shared\WinSetup.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="WebGPUWinRT.h">
       <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Shared\WinSetup.h">
-      <Filter>Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
