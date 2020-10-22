@@ -87,6 +87,9 @@
     <Filter Include="Source Code\Engine\Dynamics">
       <UniqueIdentifier>{952a4d5c-479f-48b7-b031-7285c0361599}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Modules\Engine\Meshes">
+      <UniqueIdentifier>{113b474c-62f2-4cfb-8bfc-0fbf798e1a67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props">
@@ -183,6 +186,9 @@
     </ClInclude>
     <ClInclude Include="AlignedAllocator.h">
       <Filter>Header Modules\Engine\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>Header Modules\Engine\Meshes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -177,6 +177,7 @@
     </ClInclude>
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="Shaders.h" />
+    <ClInclude Include="Triangle.h" />
     <ClInclude Include="VeritasEngine.h" />
   </ItemGroup>
   <ItemGroup>

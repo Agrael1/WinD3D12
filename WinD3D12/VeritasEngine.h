@@ -1,7 +1,7 @@
 #pragma once
 #include "Buffers.h"
 #include "Shaders.h"
-#include "DynamicVBuffer.h"
+#include "Triangle.h"
 
 static uint32_t triangle_vs[] = {
 	0x07230203, 0x00010000, 0x000d0008, 0x00000043, 0x00000000, 0x00020011, 0x00000001, 0x0006000b,
@@ -79,7 +79,6 @@ class VeritasEngine
 public:
 	VeritasEngine(uint32_t width, uint32_t height, XWindow wnd)
 		:gfx(width, height, wnd),
-		//v(gfx, vertData,sizeof(vertData)),
 		idx(gfx, indxData, sizeof(v)),
 		uRotBuf(gfx,&rotDeg,sizeof(float),wgpu::BufferUsage::Uniform)
 	{
@@ -91,27 +90,10 @@ public:
 			ver::VType::Position2D,
 			ver::VType::Float3Color
 		} };
-		constexpr bool x = vl.Has(ver::dv::VertexLayout::ElementType::Float4Color);
-		constexpr size_t y = vl.Size();
-		constexpr auto z = vl.GetDescs();
-		constexpr auto w = vl.ResolveByIndex(1);
 
-		constexpr ver::dv::VertexBuffer<y * 3> a{ vl };
-		constexpr auto b = a[0];
-		b.Attr<ver::VType::Position2D>() = { -0.8f, -0.8f };
-		b.Attr<ver::VType::Float3Color>() = { 0.0f, 0.0f, 1.0f };
 
-		constexpr auto c = a[1];
-		c.Attr<ver::VType::Position2D>() = { 0.8f, -0.8f };
-		c.Attr<ver::VType::Float3Color>() = { 0.0f, 1.0f, 1.0f };
-
-		constexpr auto d = a[2];
-		d.Attr<ver::VType::Position2D>() = { -0.0f,  0.8f };
-		d.Attr<ver::VType::Float3Color>() = { 1.0f, 1.0f, 1.0f };
-
-		//*f = 5;
-
-		v.emplace(gfx, a.data(), 20 * 3);
+		auto a = Triangle::MakeVertices(vl);
+		v.emplace(gfx, a.data(), "Triangle");
 
 		// bind group layout (used by both the pipeline layout and uniform bind group, released at the end of this function)
 		wgpu::BindGroupLayoutEntry bglEntry = {};
@@ -138,9 +120,9 @@ public:
 		desc.fragmentStage = &rps.GetStageDescriptor();
 
 		wgpu::VertexBufferLayoutDescriptor vertDesc = {};
-		vertDesc.arrayStride = y;
+		vertDesc.arrayStride = vl.Size();
 		vertDesc.attributeCount = 2;
-		vertDesc.attributes = z.data();
+		vertDesc.attributes = vl.GetDescs().data();
 		wgpu::VertexStateDescriptor vertState = {};
 		vertState.vertexBufferCount = 1;
 		vertState.vertexBuffers = &vertDesc;
@@ -215,7 +197,7 @@ private:
 			// draw the triangle (comment these five lines to simply clear the screen)
 			pass.SetPipeline(pipeline);
 			pass.SetBindGroup(0, bindGroup, 0, 0);
-			pass.SetVertexBuffer(0, v.value(), 0, 0);
+			pass.SetVertexBuffer(0, v->Get(), 0, 0);
 			pass.SetIndexBufferWithFormat(idx, wgpu::IndexFormat::Uint16, 0, 0);
 			pass.DrawIndexed(3);
 			pass.EndPass();
