@@ -10,12 +10,13 @@ enum class Alignment : size_t
 };
 
 
-namespace detail {
-    void* allocate_aligned_memory(size_t align, size_t size)
+namespace detail 
+{
+    inline void* allocate_aligned_memory(size_t align, size_t size)
     {
         return _aligned_malloc(size, align);
     }
-    void deallocate_aligned_memory(void* ptr) noexcept
+    inline void deallocate_aligned_memory(void* ptr) noexcept
     {
         _aligned_free(ptr);
     }

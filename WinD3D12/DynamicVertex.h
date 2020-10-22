@@ -162,7 +162,6 @@ namespace ver::dv
 	public:
 		class Element
 		{
-			friend class VertexLayout;
 		public:
 			constexpr Element() = default;
 			constexpr Element(ElementType type, size_t offset)
@@ -173,6 +172,10 @@ namespace ver::dv
 			constexpr bool operator==(const Element& other)const //for equality check
 			{
 				return other.type == type;
+			}
+			constexpr operator bool()
+			{
+				return IsValid();
 			}
 		public:
 			constexpr size_t GetOffsetAfter()const noexcept
@@ -194,6 +197,10 @@ namespace ver::dv
 			constexpr const char* GetCode() const noexcept
 			{
 				return Bridge<CodeLookup>(type);
+			}
+			constexpr bool IsValid()const noexcept
+			{
+				return type != ElementType::Invalid;
 			}
 		public:
 			static constexpr size_t SizeOf(ElementType type)noexcept
@@ -228,20 +235,18 @@ namespace ver::dv
 		{
 			size_t max = elements.size() > maxAttributes ? maxAttributes : elements.size();
 			auto* x = attributes.data();
-			auto* y = attrDescs.data();
+			
 			for (size_t i = 0; i < max; i++)
 			{
 				if (!Has(elements.begin()[i]))
 				{
 					Element el = { elements.begin()[i], Size() };
 					*x++ = el;
-					*y = el.GetIntermediateDesc();
-					y->shaderLocation = uint32_t(current);
-					y++;
 					current++;
 				}
 			}
 		}
+	public:
 		constexpr size_t Size()const noexcept
 		{
 			return current == 0 ? 0u : attributes[current - 1].GetOffsetAfter();
@@ -250,21 +255,30 @@ namespace ver::dv
 		{
 			for (size_t i = 0; i < maxAttributes; i++)
 			{
-				if (attributes[i].type == el)
+				if (attributes[i].GetType() == el)
 					return true;
 			}
 			return false;
 		}
 		constexpr auto GetDescs()const noexcept
 		{
+			std::array<VertexAttributeDesc, maxAttributes> attrDescs;
+			auto* y = attrDescs.data();
+			for (size_t i = 0; i < current; i++)
+			{
+				*y = attributes[i].GetIntermediateDesc();
+				y->shaderLocation = uint32_t(i);
+				y++;
+			}
 			return attrDescs;
 		}
 		constexpr void Add(ElementType el)
 		{
-			if (!Has(el))
-			{
-				attributes[current++] = { el, Size() };
-			}	
+			if(current != maxAttributes)
+				if (!Has(el))
+				{
+					attributes[current++] = { el, Size() };
+				}	
 		}
 		constexpr size_t GetElementCount() const noexcept
 		{
@@ -274,9 +288,17 @@ namespace ver::dv
 		{
 			return attributes[index];
 		}
+		constexpr Element Resolve(ElementType el)const noexcept
+		{
+			for (size_t i = 0; i < maxAttributes; i++)
+			{
+				if (attributes[i].GetType() == el)
+					return attributes[i];
+			}
+			return {};
+		}
 	private:
 		std::array<Element, maxAttributes> attributes;
-		std::array<VertexAttributeDesc, maxAttributes> attrDescs;
 		size_t current = 0;
 	};
 }

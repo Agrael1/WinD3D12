@@ -14,19 +14,19 @@ namespace ver::dv
 	//	}
 	//};
 
-	VertexBuffer::VertexBuffer(VertexLayout&& layout, size_t size)
-		:layout(std::move(layout))
-	{
-		if (size) Resize(size);
-	}
-	VertexBuffer::VertexBuffer(VertexLayout&& layout, const aiMesh& mesh)
-		: layout(std::move(layout))
-	{
-		Resize(mesh.mNumVertices);
-		for (size_t i = 0, end = layout.GetElementCount(); i < end; i++)
-		{
-			//VertexLayout::Bridge<AttributeAiMeshFill>(layout.ResolveByIndex(i).GetType(), this, mesh);
-		}
-	}
+	//VertexBuffer::VertexBuffer(VertexLayout&& layout, size_t size)
+	//	:layout(std::move(layout))
+	//{
+	//	if (size) Resize(size);
+	//}
+	//VertexBuffer::VertexBuffer(VertexLayout&& layout, const aiMesh& mesh)
+	//	: layout(std::move(layout))
+	//{
+	//	Resize(mesh.mNumVertices);
+	//	for (size_t i = 0, end = layout.GetElementCount(); i < end; i++)
+	//	{
+	//		//VertexLayout::Bridge<AttributeAiMeshFill>(layout.ResolveByIndex(i).GetType(), this, mesh);
+	//	}
+	//}
 }
 
