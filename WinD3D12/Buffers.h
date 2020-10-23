@@ -17,11 +17,11 @@ namespace ver
 			GetQueue(gfx).WriteBuffer(buffer, 0, data, size);
 		}
 	public:
-		operator wgpu::Buffer()
+		operator wgpu::Buffer&()
 		{
 			return buffer;
 		}
-		operator const wgpu::Buffer()const
+		operator const wgpu::Buffer&()const
 		{
 			return buffer;
 		}
@@ -51,26 +51,12 @@ namespace ver
 		size_t count;
 		wgpu::IndexFormat format;
 	};
-	class VertexBuffer : public Bindable
+	class VertexBuffer : public Buffer
 	{
 	public:
-		VertexBuffer(const Graphics& gfx, std::span<const uint8_t> xbuffer, std::string_view tag)
+		VertexBuffer(const Graphics& gfx, std::span<const uint8_t> xbuffer)
+			:Buffer(gfx, xbuffer.data(), xbuffer.size(), wgpu::BufferUsage::Vertex)
 		{
-			auto size = xbuffer.size();
-			wgpu::BufferDescriptor descriptor;
-			descriptor.size = size;
-			descriptor.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
-			descriptor.label = tag.data(); //TODO: get real purpose
-			buffer = GetDevice(gfx).CreateBuffer(&descriptor);
-
-			GetQueue(gfx).WriteBuffer(buffer, 0, xbuffer.data(), size);
 		}
-	public:
-		wgpu::Buffer Get()const noexcept
-		{
-			return buffer;
-		}
-	private:
-		wgpu::Buffer buffer;
 	};
 }

@@ -193,5 +193,8 @@
     <ClInclude Include="Drawable.h">
       <Filter>Header Modules\Engine\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="ConstantBuffers.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

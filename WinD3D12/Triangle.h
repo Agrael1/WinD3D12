@@ -1,5 +1,6 @@
 #pragma once
 #include "Drawable.h"
+#include "ConstantBuffers.h"
 #include "Shaders.h"
 #include <optional>
 
@@ -86,7 +87,7 @@ namespace ver
 		};
 	public:
 		Triangle(const Graphics& gfx)
-			:uRotBuf(gfx, &rotDeg, sizeof(float), wgpu::BufferUsage::Uniform)
+			:uRotBuf(gfx, { wgpu::ShaderStage::Vertex, &rotDeg, sizeof(float) })
 		{
 			{
 				ver::Shader rvs(gfx, triangle_vs);
@@ -100,15 +101,11 @@ namespace ver
 
 
 				auto a = Triangle::MakeVertices(vl);
-				vBuffer.emplace(gfx, a.data(), "Triangle");
+				vBuffer.emplace(gfx, a.data());
 				iBuffer.emplace(gfx, indxData, 4, wgpu::IndexFormat::Uint16);
 
 				// bind group layout (used by both the pipeline layout and uniform bind group, released at the end of this function)
-				wgpu::BindGroupLayoutEntry bglEntry = {};
-				bglEntry.binding = 0;
-				bglEntry.visibility = wgpu::ShaderStage::Vertex;
-				bglEntry.type = wgpu::BindingType::UniformBuffer;
-
+				wgpu::BindGroupLayoutEntry bglEntry = uRotBuf.GetDesc();
 				wgpu::BindGroupLayoutDescriptor bglDesc = {};
 				bglDesc.entryCount = 1;
 				bglDesc.entries = &bglEntry;
@@ -142,7 +139,7 @@ namespace ver
 
 				wgpu::VertexBufferLayoutDescriptor vertDesc = {};
 				vertDesc.arrayStride = vl.Size();
-				vertDesc.attributeCount = 2;
+				vertDesc.attributeCount = vl.GetElementCount();
 				vertDesc.attributes = vl.GetDescs().data();
 				wgpu::VertexStateDescriptor vertState = {};
 				vertState.vertexBufferCount = 1;
@@ -176,10 +173,10 @@ namespace ver
 		void Step(const Graphics& gfx)override
 		{
 			rotDeg += 0.1f;
-			gfx.renderQueue.WriteBuffer(uRotBuf, 0, &rotDeg, sizeof(rotDeg));
+			uRotBuf.Update(gfx, &rotDeg, sizeof(rotDeg));
 		}
 	private:
-		Buffer uRotBuf;
+		ConstantBuffer uRotBuf;
 		float rotDeg = 0.0f;
 	};
 

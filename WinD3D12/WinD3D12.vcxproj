@@ -169,6 +169,7 @@
     <ClInclude Include="AlignedAllocator.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="Buffers.h" />
+    <ClInclude Include="ConstantBuffers.h" />
     <ClInclude Include="DawnAdapter.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="DynamicVBuffer.h">
