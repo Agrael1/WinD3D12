@@ -1,3 +1,3 @@
-#include "DynamicVertex.h"
+import DynamicVertex;
 
 

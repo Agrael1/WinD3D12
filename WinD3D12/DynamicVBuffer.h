@@ -1,7 +1,8 @@
 #pragma once
-#include "DynamicVertex.h"
-#include "AlignedAllocator.h"
+#include "DynamicVertex.h";
+#include "AlignedAllocator.h";
 #include <vector>
+
 
 namespace ver::dv
 {
@@ -55,12 +56,35 @@ namespace ver::dv
 		uint8_t* pData = nullptr;
 		const VertexLayout& layout;
 	};
+	template<VertexLayout::ElementType type>
+	struct AttributeAiMeshFill
+	{
+		static constexpr void Exec(VertexBuffer* pBuf, const aiMesh& mesh) noexcept
+		{
+			for (auto end = mesh.mNumVertices, i = 0u; i < end; i++)
+			{
+				(*pBuf)[i].Attr<type>() = VertexLayout::Map<type>::Extract(mesh, i);
+			}
+		}
+	};
 
 	class VertexBuffer
 	{
 	public:
-		VertexBuffer(VertexLayout&& layout, size_t size = 0);
-		VertexBuffer(VertexLayout&& layout, const aiMesh& mesh);
+		VertexBuffer(VertexLayout&& layout, size_t size = 0)
+			:layout(std::move(layout))
+		{
+			if (size) Resize(size);
+		}
+		VertexBuffer(VertexLayout&& layout, const aiMesh& mesh)
+			: layout(std::move(layout))
+		{
+			Resize(mesh.mNumVertices);
+			for (size_t i = 0, end = layout.GetElementCount(); i < end; i++)
+			{
+				VertexLayout::Bridge<AttributeAiMeshFill>(layout.ResolveByIndex(i).GetType(), this, mesh);
+			}
+		}
 	public:
 		constexpr const VertexLayout& GetLayout() const noexcept
 		{

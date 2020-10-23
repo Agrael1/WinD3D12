@@ -170,8 +170,14 @@
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="DawnAdapter.h" />
-    <ClInclude Include="DynamicVBuffer.h" />
-    <ClInclude Include="DynamicVertex.h" />
+    <ClInclude Include="Drawable.h" />
+    <ClInclude Include="DynamicVBuffer.h">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsHeaderUnit</CompileAs>
+    </ClInclude>
+    <ClInclude Include="DynamicVertex.h">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsHeaderUnit</CompileAs>
+      <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ConformanceMode>
+    </ClInclude>
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="pch.h">
     </ClInclude>
@@ -226,7 +232,6 @@
     </ClInclude>
     <ClCompile Include="DawnAdapter.cpp" />
     <ClCompile Include="DynamicVBuffer.cpp" />
-    <ClCompile Include="DynamicVertex.cpp" />
     <ClCompile Include="EntryMain.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

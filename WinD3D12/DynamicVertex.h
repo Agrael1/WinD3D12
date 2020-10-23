@@ -19,10 +19,6 @@
 	X( Float4Color ) \
 	X( RGBAColor ) 
 
-#ifndef VERITAS_EXPORT
-#define VERITAS_EXPORT
-#endif
-
 namespace ver::dv
 {
 	constexpr const size_t maxAttributes = 16;
@@ -32,9 +28,9 @@ namespace ver::dv
 	public:
 		enum class ElementType : uint16_t
 		{
-#define X(el) el,
+		#define X(el) el,
 			LAYOUT_ELEMENT_TYPES
-#undef X
+		#undef X
 		};
 	public:
 		template<ElementType> struct Map;
@@ -137,7 +133,7 @@ namespace ver::dv
 		{
 			static constexpr auto Exec() noexcept
 			{
-				return sizeof(ver::dv::VertexLayout::Map<type>::SysType);
+				return sizeof(VertexLayout::Map<type>::SysType);
 			}
 		};
 		template<VertexLayout::ElementType type>
@@ -145,7 +141,7 @@ namespace ver::dv
 		{
 			static constexpr auto Exec() noexcept
 			{
-				return ver::dv::VertexLayout::Map<type>::code;
+				return VertexLayout::Map<type>::code;
 			}
 		};
 		template<VertexLayout::ElementType type>
@@ -154,7 +150,7 @@ namespace ver::dv
 			static constexpr wgpu::VertexAttributeDescriptor Exec(size_t offset) noexcept
 			{
 				return {
-					ver::dv::VertexLayout::Map<type>::dxgiFormat,
+					VertexLayout::Map<type>::dxgiFormat,
 					offset,0
 				};
 			}
@@ -230,8 +226,13 @@ namespace ver::dv
 			}
 		};
 	public:
-		constexpr VertexLayout() = default;
+		constexpr VertexLayout()
+			:attributes({})
+		{
+
+		}
 		constexpr VertexLayout(std::initializer_list<ElementType> elements)
+			:attributes({})
 		{
 			size_t max = elements.size() > maxAttributes ? maxAttributes : elements.size();
 			auto* x = attributes.data();
@@ -303,7 +304,7 @@ namespace ver::dv
 	};
 }
 
-namespace ver
+ namespace ver
 {
 	using VType = ver::dv::VertexLayout::ElementType;
 }

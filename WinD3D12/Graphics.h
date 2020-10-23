@@ -1,6 +1,5 @@
 #pragma once
 #include "DawnAdapter.h"
-#include <optional>
 
 namespace ver
 {

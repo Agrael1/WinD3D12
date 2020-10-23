@@ -8,7 +8,7 @@ namespace ver
 	class Shader : public Bindable
 	{
 	public:
-		Shader(Graphics& gfx, std::span<uint32_t> xshader, std::string_view entry = "main")
+		Shader(const Graphics& gfx, std::span<uint32_t> xshader, std::string_view entry = "main")
 		{
 			wgpu::ShaderModuleSPIRVDescriptor spirvDesc;
 			spirvDesc.codeSize = static_cast<uint32_t>(xshader.size());
