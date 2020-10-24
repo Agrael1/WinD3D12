@@ -16,7 +16,9 @@
     <ClCompile Include="Graphics.cpp">
       <Filter>Source Code\Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicVBuffer.cpp" />
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Code\Engine\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -89,6 +91,15 @@
     </Filter>
     <Filter Include="Header Modules\Engine\Drawable">
       <UniqueIdentifier>{9b413c4d-b77c-4133-a77f-b546c925e9b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Modules\Engine\Objects">
+      <UniqueIdentifier>{3bc8ab5c-7f3d-4330-97d1-9a38caade307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Engine\Objects">
+      <UniqueIdentifier>{54874a94-de32-459a-8b2a-53570cf6cccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Modules\Engine\Meshes\Primitives">
+      <UniqueIdentifier>{5137f5e7-55b7-4bed-b450-3ab65ce3cfab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +206,18 @@
     </ClInclude>
     <ClInclude Include="ConstantBuffers.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Modules\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header Modules\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSphere.h">
+      <Filter>Header Modules\Engine\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Header Modules\Engine\Meshes\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,5 @@
 #pragma once
 #include "Drawable.h"
-#include "ConstantBuffers.h"
 #include "Shaders.h"
 #include <optional>
 
@@ -87,7 +86,7 @@ namespace ver
 		};
 	public:
 		Triangle(const Graphics& gfx)
-			:uRotBuf(gfx, { wgpu::ShaderStage::Vertex, &rotDeg, sizeof(float) })
+			:uRotBuf(gfx, { wgpu::ShaderStage::Vertex, &rotDeg, sizeof(float) ,0})
 		{
 			{
 				ver::Shader rvs(gfx, triangle_vs);
@@ -104,23 +103,20 @@ namespace ver
 				vBuffer.emplace(gfx, a.data());
 				iBuffer.emplace(gfx, indxData, 4, wgpu::IndexFormat::Uint16);
 
+
 				// bind group layout (used by both the pipeline layout and uniform bind group, released at the end of this function)
-				wgpu::BindGroupLayoutEntry bglEntry = uRotBuf.GetDesc();
+				wgpu::BindGroupLayoutEntry bglEntry[1] = { uRotBuf.GetLayout() };
 				wgpu::BindGroupLayoutDescriptor bglDesc = {};
 				bglDesc.entryCount = 1;
-				bglDesc.entries = &bglEntry;
+				bglDesc.entries = bglEntry;
 				wgpu::BindGroupLayout bindGroupLayout = gfx.device.CreateBindGroupLayout(&bglDesc);
 
-				wgpu::BindGroupEntry bgEntry = {};
-				bgEntry.binding = 0;
-				bgEntry.buffer = uRotBuf;
-				bgEntry.offset = 0;
-				bgEntry.size = sizeof(rotDeg);
+				wgpu::BindGroupEntry bgEntry[1] = { uRotBuf.GetEntryDesc()};
 
 				wgpu::BindGroupDescriptor bgDesc = {};
 				bgDesc.layout = bindGroupLayout;
 				bgDesc.entryCount = 1;
-				bgDesc.entries = &bgEntry;
+				bgDesc.entries = bgEntry;
 
 				bindGroup = gfx.device.CreateBindGroup(&bgDesc);
 
@@ -172,7 +168,7 @@ namespace ver
 	public:
 		void Step(const Graphics& gfx)override
 		{
-			rotDeg += 0.1f;
+			rotDeg += 0.5f;
 			uRotBuf.Update(gfx, &rotDeg, sizeof(rotDeg));
 		}
 	private:

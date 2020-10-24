@@ -1,5 +1,6 @@
 #pragma once
 #include "Triangle.h"
+#include "Camera.h"
 
 namespace ver
 {
@@ -56,6 +57,8 @@ namespace ver
 		}
 	private:
 		Graphics gfx;
+		Camera cam;
+
 		wgpu::CommandBuffer commands;
 		bool bWindowClosed = false;
 		bool bVisible = true;

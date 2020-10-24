@@ -169,6 +169,7 @@
     <ClInclude Include="AlignedAllocator.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="Buffers.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffers.h" />
     <ClInclude Include="DawnAdapter.h" />
     <ClInclude Include="Drawable.h" />
@@ -183,7 +184,10 @@
     <ClInclude Include="pch.h">
     </ClInclude>
     <ClInclude Include="Pipeline.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Shaders.h" />
+    <ClInclude Include="SolidSphere.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="VeritasEngine.h" />
   </ItemGroup>
@@ -231,8 +235,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClInclude>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DawnAdapter.cpp" />
-    <ClCompile Include="DynamicVBuffer.cpp" />
     <ClCompile Include="EntryMain.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

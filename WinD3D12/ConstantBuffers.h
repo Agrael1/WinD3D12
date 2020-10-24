@@ -3,6 +3,17 @@
 
 namespace ver
 {
+	class ConstantBinding : public Buffer
+	{
+	public:
+		using Buffer::Buffer;
+		using Buffer::operator const wgpu::Buffer&;
+		using Buffer::operator wgpu::Buffer&;
+	public:
+		virtual wgpu::BindGroupLayoutEntry GetLayout()const noexcept = 0;
+		virtual wgpu::BindGroupEntry GetEntryDesc()const noexcept = 0;
+	};
+
 	class ConstantBuffer : public Buffer
 	{
 	public:
@@ -16,12 +27,12 @@ namespace ver
 	public:
 		ConstantBuffer(const Graphics& gfx, const Desc& desc)
 			:Buffer(gfx, desc.data, desc.size_bytes, wgpu::BufferUsage::Uniform),
-			slot(desc.slot), type(desc.type)
+			slot(desc.slot), type(desc.type), size(desc.size_bytes)
 		{
 
 		}
 	public:
-		constexpr wgpu::BindGroupLayoutEntry GetDesc()const noexcept
+		constexpr wgpu::BindGroupLayoutEntry GetLayout()const noexcept
 		{
 			return
 			{
@@ -30,11 +41,22 @@ namespace ver
 				.type = wgpu::BindingType::UniformBuffer
 			};
 		}
-		void Update(const Graphics& gfx, const void* data, uint32_t size)
+		wgpu::BindGroupEntry GetEntryDesc()const noexcept 
 		{
-			GetQueue(gfx).WriteBuffer(*this, 0, data, size);
+			return
+			{
+				.binding = slot,
+				.buffer = *this,
+				.offset = 0,
+				.size = size
+			};
+		}
+		void Update(const Graphics& gfx, const void* data, uint32_t rsize)
+		{
+			GetQueue(gfx).WriteBuffer(*this, 0, data, rsize);
 		}
 	private:
+		uint32_t size;
 		uint32_t slot;
 		wgpu::ShaderStage type;
 	};

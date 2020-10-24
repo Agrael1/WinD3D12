@@ -1,6 +1,6 @@
 #pragma once
 #include <dawn/webgpu_cpp.h>
-#include "Buffers.h"
+#include "ConstantBuffers.h"
 #include <optional>
 
 namespace ver
@@ -23,6 +23,7 @@ namespace ver
 	protected:
 		std::optional<VertexBuffer> vBuffer;
 		std::optional<IndexBuffer> iBuffer;
+
 		wgpu::BindGroup bindGroup;
 		wgpu::RenderPipeline pipeline;
 	};
