@@ -168,6 +168,7 @@
     <ClInclude Include="..\Shared\WinSetup.h" />
     <ClInclude Include="AlignedAllocator.h" />
     <ClInclude Include="Bindable.h" />
+    <ClInclude Include="BindGroup.h" />
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffers.h" />

@@ -14,7 +14,7 @@ namespace ver
 		virtual wgpu::BindGroupEntry GetEntryDesc()const noexcept = 0;
 	};
 
-	class ConstantBuffer : public Buffer
+	class ConstantBuffer : public ConstantBinding
 	{
 	public:
 		struct Desc
@@ -26,13 +26,13 @@ namespace ver
 		};
 	public:
 		ConstantBuffer(const Graphics& gfx, const Desc& desc)
-			:Buffer(gfx, desc.data, desc.size_bytes, wgpu::BufferUsage::Uniform),
+			:ConstantBinding(gfx, desc.data, desc.size_bytes, wgpu::BufferUsage::Uniform),
 			slot(desc.slot), type(desc.type), size(desc.size_bytes)
 		{
 
 		}
 	public:
-		constexpr wgpu::BindGroupLayoutEntry GetLayout()const noexcept
+		wgpu::BindGroupLayoutEntry GetLayout()const noexcept override
 		{
 			return
 			{
@@ -41,7 +41,7 @@ namespace ver
 				.type = wgpu::BindingType::UniformBuffer
 			};
 		}
-		wgpu::BindGroupEntry GetEntryDesc()const noexcept 
+		wgpu::BindGroupEntry GetEntryDesc()const noexcept override
 		{
 			return
 			{

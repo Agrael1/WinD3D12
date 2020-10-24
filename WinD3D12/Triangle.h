@@ -1,6 +1,7 @@
 #pragma once
 #include "Drawable.h"
 #include "Shaders.h"
+#include "BindGroup.h"
 #include <optional>
 
 static uint32_t triangle_vs[] = {
@@ -103,27 +104,14 @@ namespace ver
 				vBuffer.emplace(gfx, a.data());
 				iBuffer.emplace(gfx, indxData, 4, wgpu::IndexFormat::Uint16);
 
+				BindGroup bg{ gfx, bindGroup };
+				bg.BindResource(uRotBuf);
 
-				// bind group layout (used by both the pipeline layout and uniform bind group, released at the end of this function)
-				wgpu::BindGroupLayoutEntry bglEntry[1] = { uRotBuf.GetLayout() };
-				wgpu::BindGroupLayoutDescriptor bglDesc = {};
-				bglDesc.entryCount = 1;
-				bglDesc.entries = bglEntry;
-				wgpu::BindGroupLayout bindGroupLayout = gfx.device.CreateBindGroupLayout(&bglDesc);
-
-				wgpu::BindGroupEntry bgEntry[1] = { uRotBuf.GetEntryDesc()};
-
-				wgpu::BindGroupDescriptor bgDesc = {};
-				bgDesc.layout = bindGroupLayout;
-				bgDesc.entryCount = 1;
-				bgDesc.entries = bgEntry;
-
-				bindGroup = gfx.device.CreateBindGroup(&bgDesc);
 
 				// pipeline layout (used by the render pipeline, released after its creation)
 				wgpu::PipelineLayoutDescriptor layoutDesc = {};
 				layoutDesc.bindGroupLayoutCount = 1;
-				layoutDesc.bindGroupLayouts = &bindGroupLayout;
+				layoutDesc.bindGroupLayouts = &bg.CookLayout();
 				wgpu::PipelineLayout pipelineLayout = gfx.device.CreatePipelineLayout(&layoutDesc);
 
 				// begin pipeline set-up

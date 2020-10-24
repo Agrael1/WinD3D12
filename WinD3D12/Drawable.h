@@ -1,6 +1,6 @@
 #pragma once
 #include <dawn/webgpu_cpp.h>
-#include "ConstantBuffers.h"
+#include "Buffers.h"
 #include <optional>
 
 namespace ver

@@ -219,5 +219,8 @@
     <ClInclude Include="Sphere.h">
       <Filter>Header Modules\Engine\Meshes\Primitives</Filter>
     </ClInclude>
+    <ClInclude Include="BindGroup.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
