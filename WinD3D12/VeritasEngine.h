@@ -25,7 +25,7 @@ namespace ver
 		{
 			bVisible = Visible;
 		}
-		void WindowActivationChanged(CoreWindowActivationState activationState)
+		void WindowActivationChanged(CoreWindowActivationState)
 		{
 
 		}

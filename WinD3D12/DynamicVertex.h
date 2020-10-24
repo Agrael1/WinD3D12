@@ -161,7 +161,7 @@ namespace ver::dv
 		public:
 			constexpr Element() = default;
 			constexpr Element(ElementType type, size_t offset)
-				: type(type), offset(offset)
+				: type(type), offset(uint16_t(offset))
 			{
 			}
 		public:

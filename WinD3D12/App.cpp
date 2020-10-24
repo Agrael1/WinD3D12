@@ -25,7 +25,7 @@ void App::SetWindow(const CoreWindow& window)
     visualizationSettings.IsBarrelButtonFeedbackEnabled(false);
     
     auto rect = window.Bounds();
-    engine.emplace(rect.Width, rect.Height, window); //workflow independent values
+    engine.emplace(uint32_t(rect.Width), uint32_t(rect.Height), window); //workflow independent values
 
     window.Activated({ this, &App::OnWindowActivationChanged });
     window.SizeChanged({ this, &App::OnWindowSizeChanged });
@@ -86,28 +86,28 @@ void App::OnWindowActivationChanged(const CoreWindow&, const WindowActivatedEven
 {
     engine->WindowActivationChanged(args.WindowActivationState());
 }
-void App::OnWindowSizeChanged(const CoreWindow& wnd, const WindowSizeChangedEventArgs& args)
+void App::OnWindowSizeChanged(const CoreWindow&, const WindowSizeChangedEventArgs&)
 {
 }
-void App::OnWindowClosed(const CoreWindow& wnd, const CoreWindowEventArgs& args)
+void App::OnWindowClosed(const CoreWindow&, const CoreWindowEventArgs&)
 {
     engine->Close(); //does not work :(
 }
-void App::OnVisibilityChanged(const CoreWindow& wnd, const VisibilityChangedEventArgs& args)
+void App::OnVisibilityChanged(const CoreWindow&, const VisibilityChangedEventArgs& args)
 {
     engine->Visibility(args.Visible());
 }
 
 //Maybe in future :D
-void App::OnDpiChanged(const DisplayInformation& sender, const IInspectable& args)
+void App::OnDpiChanged(const DisplayInformation&, const IInspectable&)
 {
 }
-void App::OnOrientationChanged(const DisplayInformation& sender, const IInspectable& args)
+void App::OnOrientationChanged(const DisplayInformation&, const IInspectable&)
 {
 }
-void App::OnStereoEnabledChanged(const DisplayInformation& sender, const IInspectable& args)
+void App::OnStereoEnabledChanged(const DisplayInformation&, const IInspectable&)
 {
 }
-void App::OnDisplayContentsInvalidated(const DisplayInformation& sender, const IInspectable& args)
+void App::OnDisplayContentsInvalidated(const DisplayInformation&, const IInspectable&)
 {
 }

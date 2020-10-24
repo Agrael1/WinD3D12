@@ -29,7 +29,7 @@ namespace ver
 			if (!bgl) CookLayout();
 			wgpu::BindGroupDescriptor bgDesc = {};
 			bgDesc.layout = bgl;
-			bgDesc.entryCount = next;
+			bgDesc.entryCount = static_cast<uint32_t>(next);
 			bgDesc.entries = bindings.data();
 
 			return gfx.device.CreateBindGroup(&bgDesc);
@@ -39,7 +39,7 @@ namespace ver
 			if (!bgl)
 			{
 				wgpu::BindGroupLayoutDescriptor bglDesc = {};
-				bglDesc.entryCount = next;
+				bglDesc.entryCount = static_cast<uint32_t>(next);
 				bglDesc.entries = bindingLayouts.data();
 				return bgl = GetDevice(gfx).CreateBindGroupLayout(&bglDesc);
 			}
@@ -47,10 +47,10 @@ namespace ver
 		}
 	private:
 		const Graphics& gfx;
+		wgpu::BindGroup& group;
 		size_t next = 0;
 		std::array<wgpu::BindGroupLayoutEntry, 8> bindingLayouts;
 		std::array<wgpu::BindGroupEntry, 8> bindings;
 		mutable wgpu::BindGroupLayout bgl;
-		wgpu::BindGroup& group;
 	};
 }

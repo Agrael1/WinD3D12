@@ -87,71 +87,71 @@ namespace ver
 		};
 	public:
 		Triangle(const Graphics& gfx)
-			:uRotBuf(gfx, { wgpu::ShaderStage::Vertex, &rotDeg, sizeof(float) ,0})
+			:uRotBuf(gfx, { wgpu::ShaderStage::Vertex, &rotDeg, sizeof(float) ,0 })
 		{
-			{
-				ver::Shader rvs(gfx, triangle_vs);
-				ver::Shader rps(gfx, triangle_ps);
 
-				constexpr ver::dv::VertexLayout vl
-				{ {
-					ver::VType::Position2D,
-					ver::VType::Float3Color
-				} };
+			ver::Shader rvs(gfx, triangle_vs);
+			ver::Shader rps(gfx, triangle_ps);
 
-
-				auto a = Triangle::MakeVertices(vl);
-				vBuffer.emplace(gfx, a.data());
-				iBuffer.emplace(gfx, indxData, 4, wgpu::IndexFormat::Uint16);
-
-				BindGroup bg{ gfx, bindGroup };
-				bg.BindResource(uRotBuf);
+			constexpr ver::dv::VertexLayout vl
+			{ {
+				ver::VType::Position2D,
+				ver::VType::Float3Color
+			} };
 
 
-				// pipeline layout (used by the render pipeline, released after its creation)
-				wgpu::PipelineLayoutDescriptor layoutDesc = {};
-				layoutDesc.bindGroupLayoutCount = 1;
-				layoutDesc.bindGroupLayouts = &bg.CookLayout();
-				wgpu::PipelineLayout pipelineLayout = gfx.device.CreatePipelineLayout(&layoutDesc);
+			auto a = Triangle::MakeVertices(vl);
+			vBuffer.emplace(gfx, a.data());
+			iBuffer.emplace(gfx, indxData, 4, wgpu::IndexFormat::Uint16);
 
-				// begin pipeline set-up
-				wgpu::RenderPipelineDescriptor desc = {};
+			BindGroup bg{ gfx, bindGroup };
+			bg.BindResource(uRotBuf);
 
-				desc.layout = pipelineLayout;
-				desc.vertexStage = rvs.GetStageDescriptor();
-				desc.fragmentStage = &rps.GetStageDescriptor();
 
-				wgpu::VertexBufferLayoutDescriptor vertDesc = {};
-				vertDesc.arrayStride = vl.Size();
-				vertDesc.attributeCount = vl.GetElementCount();
-				vertDesc.attributes = vl.GetDescs().data();
-				wgpu::VertexStateDescriptor vertState = {};
-				vertState.vertexBufferCount = 1;
-				vertState.vertexBuffers = &vertDesc;
+			// pipeline layout (used by the render pipeline, released after its creation)
+			wgpu::PipelineLayoutDescriptor layoutDesc = {};
+			layoutDesc.bindGroupLayoutCount = 1;
+			layoutDesc.bindGroupLayouts = &bg.CookLayout();
+			wgpu::PipelineLayout pipelineLayout = gfx.device.CreatePipelineLayout(&layoutDesc);
 
-				desc.vertexState = &vertState;
-				desc.primitiveTopology = wgpu::PrimitiveTopology::TriangleList;
+			// begin pipeline set-up
+			wgpu::RenderPipelineDescriptor desc = {};
 
-				desc.sampleCount = 1;
+			desc.layout = pipelineLayout;
+			desc.vertexStage = rvs.GetStageDescriptor();
+			desc.fragmentStage = &rps.GetStageDescriptor();
 
-				// describe blend
-				wgpu::BlendDescriptor blendDesc = {};
-				blendDesc.operation = wgpu::BlendOperation::Add;
-				blendDesc.srcFactor = wgpu::BlendFactor::SrcAlpha;
-				blendDesc.dstFactor = wgpu::BlendFactor::OneMinusSrcAlpha;
-				wgpu::ColorStateDescriptor colorDesc = {};
-				colorDesc.format = VFactory::GetSwapChainFormat();
-				colorDesc.alphaBlend = blendDesc;
-				colorDesc.colorBlend = blendDesc;
-				colorDesc.writeMask = wgpu::ColorWriteMask::All;
+			wgpu::VertexBufferLayoutDescriptor vertDesc = {};
+			vertDesc.arrayStride = vl.Size();
+			vertDesc.attributeCount = vl.GetElementCount();
+			vertDesc.attributes = vl.GetDescs().data();
+			wgpu::VertexStateDescriptor vertState = {};
+			vertState.vertexBufferCount = 1;
+			vertState.vertexBuffers = &vertDesc;
 
-				desc.colorStateCount = 1;
-				desc.colorStates = &colorDesc;
+			desc.vertexState = &vertState;
+			desc.primitiveTopology = wgpu::PrimitiveTopology::TriangleList;
 
-				desc.sampleMask = 0xFFFFFFFF; // <-- Note: this currently causes Emscripten to fail (sampleMask ends up as -1, which trips an assert)
+			desc.sampleCount = 1;
 
-				pipeline = gfx.device.CreateRenderPipeline(&desc);
-			}
+			// describe blend
+			wgpu::BlendDescriptor blendDesc = {};
+			blendDesc.operation = wgpu::BlendOperation::Add;
+			blendDesc.srcFactor = wgpu::BlendFactor::SrcAlpha;
+			blendDesc.dstFactor = wgpu::BlendFactor::OneMinusSrcAlpha;
+			wgpu::ColorStateDescriptor colorDesc = {};
+			colorDesc.format = VFactory::GetSwapChainFormat();
+			colorDesc.alphaBlend = blendDesc;
+			colorDesc.colorBlend = blendDesc;
+			colorDesc.writeMask = wgpu::ColorWriteMask::All;
+
+			desc.colorStateCount = 1;
+			desc.colorStates = &colorDesc;
+
+			desc.sampleMask = 0xFFFFFFFF; // <-- Note: this currently causes Emscripten to fail (sampleMask ends up as -1, which trips an assert)
+
+			pipeline = gfx.device.CreateRenderPipeline(&desc);
+
 		}
 	public:
 		void Step(const Graphics& gfx)override

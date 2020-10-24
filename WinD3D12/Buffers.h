@@ -32,7 +32,7 @@ namespace ver
 	class IndexBuffer : public Buffer
 	{
 	public:
-		IndexBuffer(const Graphics& gfx, const void* data, size_t count, wgpu::IndexFormat format)
+		IndexBuffer(const Graphics& gfx, const void* data, uint32_t count, wgpu::IndexFormat format)
 			:Buffer(gfx, data, count*size_t(format)*2, wgpu::BufferUsage::Index), 
 			format(format), count(count)
 		{
@@ -48,7 +48,7 @@ namespace ver
 			return count;
 		}
 	private:
-		size_t count;
+		uint32_t count;
 		wgpu::IndexFormat format;
 	};
 	class VertexBuffer : public Buffer

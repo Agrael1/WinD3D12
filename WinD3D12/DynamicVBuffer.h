@@ -1,6 +1,6 @@
 #pragma once
-#include "DynamicVertex.h";
-#include "AlignedAllocator.h";
+#include "DynamicVertex.h"
+#include "AlignedAllocator.h"
 #include <vector>
 
 
