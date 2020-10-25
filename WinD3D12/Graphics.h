@@ -9,8 +9,8 @@ namespace ver
 	public:
 		struct RenderPass : public wgpu::RenderPassEncoder
 		{
-			RenderPass(wgpu::RenderPassEncoder in)
-				:wgpu::RenderPassEncoder(in)
+			RenderPass(wgpu::RenderPassEncoder&& in)
+				:wgpu::RenderPassEncoder(std::forward<wgpu::RenderPassEncoder&&>(in))
 			{}
 			~RenderPass()
 			{
