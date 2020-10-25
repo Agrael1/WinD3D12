@@ -1,8 +1,6 @@
 #pragma once
 #include "Drawable.h"
-#include "Shaders.h"
-#include "BindGroup.h"
-#include <optional>
+#include "Pipeline.h"
 
 static uint32_t triangle_vs[] = {
 	0x07230203, 0x00010000, 0x000d0008, 0x00000043, 0x00000000, 0x00020011, 0x00000001, 0x0006000b,
@@ -71,7 +69,7 @@ namespace ver
 	class Triangle : public Drawable
 	{
 	public:
-		static ver::dv::VertexBuffer MakeVertices(ver::dv::VertexLayout layout)
+		static dv::VertexBuffer MakeVertices(dv::VertexLayout layout)
 		{
 			ver::dv::VertexBuffer x{ std::move(layout),3 };
 			x[0].SetAttributeByIndex(0, DirectX::XMFLOAT2{ -0.8f, -0.8f });
@@ -89,14 +87,13 @@ namespace ver
 		Triangle(const Graphics& gfx)
 			:uRotBuf(gfx, { wgpu::ShaderStage::Vertex, &rotDeg, sizeof(float) ,0 })
 		{
+			Shader rvs(gfx, triangle_vs);
+			Shader rps(gfx, triangle_ps);
 
-			ver::Shader rvs(gfx, triangle_vs);
-			ver::Shader rps(gfx, triangle_ps);
-
-			constexpr ver::dv::VertexLayout vl
+			constexpr dv::VertexLayout vl
 			{ {
-				ver::VType::Position2D,
-				ver::VType::Float3Color
+				VType::Position2D,
+				VType::Float3Color
 			} };
 
 
@@ -107,51 +104,11 @@ namespace ver
 			BindGroup bg{ gfx, bindGroup };
 			bg.BindResource(uRotBuf);
 
-
-			// pipeline layout (used by the render pipeline, released after its creation)
-			wgpu::PipelineLayoutDescriptor layoutDesc = {};
-			layoutDesc.bindGroupLayoutCount = 1;
-			layoutDesc.bindGroupLayouts = &bg.CookLayout();
-			wgpu::PipelineLayout pipelineLayout = gfx.device.CreatePipelineLayout(&layoutDesc);
-
-			// begin pipeline set-up
-			wgpu::RenderPipelineDescriptor desc = {};
-
-			desc.layout = pipelineLayout;
-			desc.vertexStage = rvs.GetStageDescriptor();
-			desc.fragmentStage = &rps.GetStageDescriptor();
-
-			wgpu::VertexBufferLayoutDescriptor vertDesc = {};
-			vertDesc.arrayStride = vl.Size();
-			vertDesc.attributeCount = vl.GetElementCount();
-			vertDesc.attributes = vl.GetDescs().data();
-			wgpu::VertexStateDescriptor vertState = {};
-			vertState.vertexBufferCount = 1;
-			vertState.vertexBuffers = &vertDesc;
-
-			desc.vertexState = &vertState;
-			desc.primitiveTopology = wgpu::PrimitiveTopology::TriangleList;
-
-			desc.sampleCount = 1;
-
-			// describe blend
-			wgpu::BlendDescriptor blendDesc = {};
-			blendDesc.operation = wgpu::BlendOperation::Add;
-			blendDesc.srcFactor = wgpu::BlendFactor::SrcAlpha;
-			blendDesc.dstFactor = wgpu::BlendFactor::OneMinusSrcAlpha;
-			wgpu::ColorStateDescriptor colorDesc = {};
-			colorDesc.format = VFactory::GetSwapChainFormat();
-			colorDesc.alphaBlend = blendDesc;
-			colorDesc.colorBlend = blendDesc;
-			colorDesc.writeMask = wgpu::ColorWriteMask::All;
-
-			desc.colorStateCount = 1;
-			desc.colorStates = &colorDesc;
-
-			desc.sampleMask = 0xFFFFFFFF; // <-- Note: this currently causes Emscripten to fail (sampleMask ends up as -1, which trips an assert)
-
-			pipeline = gfx.device.CreateRenderPipeline(&desc);
-
+			Pipeline pipe{ gfx };
+			pipe.BindPixelShader(rps);
+			pipe.BindVertexShader(rvs);
+			pipe.BindVertexLayout(vl);
+			pipeline = pipe.CookPipeline(bg);
 		}
 	public:
 		void Step(const Graphics& gfx)override
