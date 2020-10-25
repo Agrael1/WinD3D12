@@ -30,36 +30,26 @@ namespace ver
 
 		}
 	private:
-		void Test()
+		void Render()
 		{
-			tri.Step(gfx);
-			wgpu::RenderPassDescriptor renderPass = {};
-			renderPass.colorAttachmentCount = 1;
-			renderPass.colorAttachments = &gfx.colorDesc;
-
-			wgpu::CommandEncoder encoder = gfx.device.CreateCommandEncoder(nullptr);			// create encoder
+			gfx.StartFrame();
 			{
-				wgpu::RenderPassEncoder pass = encoder.BeginRenderPass(&renderPass);	// create pass
+				auto pass = gfx.StartPass();
 				tri.Submit(pass);
-				pass.EndPass();
 			}
-
-			commands = encoder.Finish(nullptr);				// create commands
-			gfx.renderQueue.Submit(1, &commands);
-
 			gfx.Present();
+			tri.Step(gfx);
 		}
 	public:
 		void Run()
 		{
 			if (bVisible)
-				Test();
+				Render();
 		}
 	private:
 		Graphics gfx;
 		Camera cam;
 
-		wgpu::CommandBuffer commands;
 		bool bWindowClosed = false;
 		bool bVisible = true;
 		Triangle tri;

@@ -32,7 +32,7 @@ namespace ver
 			bgDesc.entryCount = static_cast<uint32_t>(next);
 			bgDesc.entries = bindings.data();
 
-			return gfx.device.CreateBindGroup(&bgDesc);
+			return GetDevice(gfx).CreateBindGroup(&bgDesc);
 		}
 		wgpu::BindGroupLayout& CookLayout()const noexcept
 		{

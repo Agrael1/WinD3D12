@@ -33,7 +33,7 @@ namespace ver
 			layoutDesc.bindGroupLayouts = &bg.CookLayout();
 
 			// begin pipeline set-up
-			desc.layout = gfx.device.CreatePipelineLayout(&layoutDesc);
+			desc.layout = GetDevice(gfx).CreatePipelineLayout(&layoutDesc);
 
 			if (PSDesc)
 				desc.fragmentStage = &PSDesc.value();
@@ -67,7 +67,7 @@ namespace ver
 
 			desc.sampleMask = 0xFFFFFFFF; // <-- Note: this currently causes Emscripten to fail (sampleMask ends up as -1, which trips an assert)
 
-			return gfx.device.CreateRenderPipeline(&desc);
+			return GetDevice(gfx).CreateRenderPipeline(&desc);
 		}
 	private:
 		const ver::dv::VertexLayout* pVL;

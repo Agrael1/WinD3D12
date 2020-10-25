@@ -21,6 +21,8 @@ ver::Graphics::Graphics(uint32_t width, uint32_t height, XWindow wnd)
 
 void ver::Graphics::Present()
 {
+	commands = encoder.Finish();				// create commands
+	renderQueue.Submit(1, &commands);
 	swap.Present();
 	colorDesc.attachment = swap.GetCurrentTextureView();
 }
