@@ -32,13 +32,14 @@ namespace ver
 	private:
 		void Render()
 		{
+			float dt = 0.05;
 			gfx.StartFrame();
 			{
 				auto pass = gfx.StartPass();
 				tri.Submit(pass);
 			}
 			gfx.Present();
-			tri.Step(gfx);
+			tri.Step(gfx, dt);
 		}
 	public:
 		void Run()

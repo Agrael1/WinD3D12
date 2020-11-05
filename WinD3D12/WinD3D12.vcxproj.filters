@@ -19,6 +19,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Code\Engine\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="FileReadWrite.cpp">
+      <Filter>Source Code\Engine\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -100,6 +103,15 @@
     </Filter>
     <Filter Include="Header Modules\Engine\Meshes\Primitives">
       <UniqueIdentifier>{5137f5e7-55b7-4bed-b450-3ab65ce3cfab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{b3c2ae4a-a948-4278-bfc2-7930716151d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Modules\Engine\Utils">
+      <UniqueIdentifier>{a10a31d8-c459-43d4-ae36-da5f575bc910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Engine\Utils">
+      <UniqueIdentifier>{3267bc65-fde7-46c3-8acb-e8f90c1db4bb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -221,6 +233,18 @@
     </ClInclude>
     <ClInclude Include="BindGroup.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Codex.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorBlend.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="FileReadWrite.h">
+      <Filter>Header Modules\Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderPair.h">
+      <Filter>Shaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

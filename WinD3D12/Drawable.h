@@ -8,7 +8,7 @@ namespace ver
 	class Drawable
 	{
 	public:
-		virtual void Step(const Graphics&){}
+		virtual void Step(const Graphics&, float){}
 		virtual void Submit(wgpu::RenderPassEncoder& pass)const noexcept
 		{
 			pass.SetPipeline(pipeline);
