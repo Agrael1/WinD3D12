@@ -38,10 +38,13 @@ namespace ver::dv
 		constexpr void SetAttributeByIndex(size_t i, T&& val) noexcept //strengthened already
 		{
 			const auto element = layout.ResolveByIndex(i);
-			auto pAttribute = pData + element.GetOffset();
-			VertexLayout::Bridge<AttributeSetting>(
-				element.GetType(), pAttribute, std::forward<T>(val)
-				);
+			if (element.IsValid())
+			{
+				auto pAttribute = pData + element.GetOffset();
+				VertexLayout::Bridge<AttributeSetting>(
+					element.GetType(), pAttribute, std::forward<T>(val)
+					);
+			}
 		}
 	private:
 		constexpr Vertex(uint8_t* pData, const VertexLayout& layout) : pData(pData), layout(layout) {};
