@@ -113,6 +113,9 @@
     <Filter Include="Source Code\Engine\Utils">
       <UniqueIdentifier>{3267bc65-fde7-46c3-8acb-e8f90c1db4bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Code\Engine\Meshes">
+      <UniqueIdentifier>{8d3c449c-f14e-4636-8f75-096b8d426f34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props">
@@ -245,6 +248,15 @@
     </ClInclude>
     <ClInclude Include="ShaderPair.h">
       <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexedTriangleList.h">
+      <Filter>Header Modules\Engine\Meshes\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidColor.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformCBuf.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -31,3 +31,23 @@ void ver::Graphics::ClearRenderTarget(wgpu::Color c)
 	colorDesc.clearColor = c;
 }
 
+DirectX::XMMATRIX ver::Graphics::GetCamera() const noexcept
+{
+	return camera;
+}
+
+void ver::Graphics::SetCamera(DirectX::XMMATRIX Camera) noexcept
+{
+	camera = Camera;
+}
+
+void ver::Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept
+{
+	projection = proj;
+}
+
+DirectX::XMMATRIX ver::Graphics::GetProjection() const noexcept
+{
+	return projection;
+}
+

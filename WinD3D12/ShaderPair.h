@@ -20,6 +20,7 @@ public:
 		case Type::Vertex:
 			return VSShaderBytecode;
 		}
+		return{};
 	}
 	constexpr std::string_view GetTag(Type t)
 	{
@@ -30,6 +31,7 @@ public:
 		case Type::Vertex:
 			return VSShaderTag;
 		}
+		return{};
 	}
 	constexpr std::string_view GetEntry(Type t)
 	{
@@ -40,6 +42,7 @@ public:
 		case Type::Vertex:
 			return VSShaderEntry;
 		}
+		return{};
 	}
 public:
 	std::string_view VSShaderTag;

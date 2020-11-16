@@ -1,4 +1,5 @@
 #pragma once
+#include "SolidSphere.h"
 #include "Triangle.h"
 #include "Camera.h"
 
@@ -8,9 +9,9 @@ namespace ver
 	{
 	public:
 		VeritasEngine(uint32_t width, uint32_t height, XWindow wnd)
-			:gfx(width, height, wnd), tri(gfx)
+			:gfx(width, height, wnd), sphere(gfx, 0.5f), tri(gfx)
 		{
-
+			gfx.SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, float(720.0f / 1280.0f), 0.5f, 100.0f));
 		}
 	public:
 		void Close()
@@ -32,14 +33,18 @@ namespace ver
 	private:
 		void Render()
 		{
-			float dt = 0.05;
+			gfx.SetCamera(cam.GetViewMatrix());
+			float dt = 0.05f;
+			tri.Step(gfx, dt);
+			sphere.Step(gfx, dt);
+
 			gfx.StartFrame();
 			{
 				auto pass = gfx.StartPass();
 				tri.Submit(pass);
+				sphere.Submit(pass);
 			}
 			gfx.Present();
-			tri.Step(gfx, dt);
 		}
 	public:
 		void Run()
@@ -53,6 +58,7 @@ namespace ver
 
 		bool bWindowClosed = false;
 		bool bVisible = true;
+		SolidSphere sphere;
 		Triangle tri;
 	};
 }

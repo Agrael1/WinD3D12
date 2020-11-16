@@ -185,14 +185,17 @@
     </ClInclude>
     <ClInclude Include="FileReadWrite.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="pch.h">
     </ClInclude>
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="ShaderPair.h" />
     <ClInclude Include="Shaders.h" />
+    <ClInclude Include="SolidColor.h" />
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="TransformCBuf.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="VeritasEngine.h" />
   </ItemGroup>

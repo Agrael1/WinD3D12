@@ -37,6 +37,13 @@ namespace ver
 			return encoder.BeginRenderPass(&renderPass);
 		}
 		void ClearRenderTarget(wgpu::Color c);
+		DirectX::XMMATRIX GetCamera() const noexcept;
+		void SetCamera(DirectX::XMMATRIX Camera)noexcept;
+		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
+		DirectX::XMMATRIX GetProjection() const noexcept;
+	private:
+		DirectX::XMMATRIX projection;
+		DirectX::XMMATRIX camera;
 	private:
 		wgpu::Device device;
 		wgpu::SwapChain swap;
