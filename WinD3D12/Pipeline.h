@@ -38,15 +38,18 @@ namespace ver
 			if (PSDesc)
 				desc.fragmentStage = &PSDesc.value();
 
-			wgpu::VertexBufferLayoutDescriptor vertDesc = {};
-			vertDesc.arrayStride = pVL->Size();
-			vertDesc.attributeCount = uint32_t(pVL->GetElementCount());
-			vertDesc.attributes = pVL->GetDescs().data();
-			wgpu::VertexStateDescriptor vertState = {};
-			vertState.vertexBufferCount = 1;
-			vertState.vertexBuffers = &vertDesc;
+			if (pVL)
+			{
+				wgpu::VertexBufferLayoutDescriptor vertDesc = {};
+				vertDesc.arrayStride = pVL->Size();
+				vertDesc.attributeCount = uint32_t(pVL->GetElementCount());
+				vertDesc.attributes = pVL->GetDescs().data();
+				wgpu::VertexStateDescriptor vertState = {};
+				vertState.vertexBufferCount = 1;
+				vertState.vertexBuffers = &vertDesc;
+				desc.vertexState = &vertState;
+			}
 
-			desc.vertexState = &vertState;
 			desc.primitiveTopology = wgpu::PrimitiveTopology::TriangleList;
 
 			desc.sampleCount = 1;

@@ -10,7 +10,7 @@ namespace ver
 	class SolidSphere : public Drawable
 	{
 	public:
-		SolidSphere(Graphics& gfx, float radius, DirectX::XMFLOAT4 xcolor = { 1.0f,1.0f,0.0f,1.0f })
+		SolidSphere(const Graphics& gfx, float radius, DirectX::XMFLOAT4 xcolor = { 1.0f,1.0f,0.0f,1.0f })
 			:color(gfx, { wgpu::ShaderStage::Fragment, &colorConst, sizeof(colorConst), 1 }),
 			transforms(gfx),
 			colorConst{xcolor}

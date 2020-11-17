@@ -14,7 +14,14 @@ namespace ver
 			descriptor.usage = usage | wgpu::BufferUsage::CopyDst;
 			buffer = GetDevice(gfx).CreateBuffer(&descriptor);
 
-			GetQueue(gfx).WriteBuffer(buffer, 0, data, size);
+			Update(gfx, data, size);
+		}
+		Buffer(const Graphics& gfx, size_t size, wgpu::BufferUsage usage)
+		{
+			wgpu::BufferDescriptor descriptor;
+			descriptor.size = size;
+			descriptor.usage = usage | wgpu::BufferUsage::CopyDst;
+			buffer = GetDevice(gfx).CreateBuffer(&descriptor);
 		}
 	public:
 		operator wgpu::Buffer&()
@@ -24,6 +31,10 @@ namespace ver
 		operator const wgpu::Buffer&()const
 		{
 			return buffer;
+		}
+		void Update(const Graphics& gfx, const void* data, size_t size)
+		{
+			GetQueue(gfx).WriteBuffer(buffer, 0, data, size);
 		}
 	private:
 		wgpu::Buffer buffer;

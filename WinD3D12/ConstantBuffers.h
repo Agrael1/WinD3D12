@@ -51,13 +51,54 @@ namespace ver
 				.size = size
 			};
 		}
-		void Update(const Graphics& gfx, const void* data, uint32_t rsize)
-		{
-			GetQueue(gfx).WriteBuffer(*this, 0, data, rsize);
-		}
 	private:
 		uint32_t size;
 		uint32_t slot;
 		wgpu::ShaderStage type;
+	};
+
+
+	template<typename T>
+	class PixelConstantBuffer : public ConstantBinding
+	{
+	public:
+		PixelConstantBuffer(const Graphics& gfx, const T& constants, uint32_t slot = 0)
+			:ConstantBinding(gfx, &constants, sizeof(T), wgpu::BufferUsage::Uniform),
+			slot(slot)
+		{
+
+		}
+		PixelConstantBuffer(const Graphics& gfx, uint32_t slot = 0)
+			:ConstantBinding(gfx, sizeof(T), wgpu::BufferUsage::Uniform),
+			slot(slot)
+		{
+
+		}
+	public:
+		wgpu::BindGroupLayoutEntry GetLayout()const noexcept override
+		{
+			return
+			{
+				.binding = slot,
+				.visibility = wgpu::ShaderStage::Fragment,
+				.type = wgpu::BindingType::UniformBuffer
+			};
+		}
+		wgpu::BindGroupEntry GetEntryDesc()const noexcept override
+		{
+			return
+			{
+				.binding = slot,
+				.buffer = *this,
+				.offset = 0,
+				.size = sizeof(T)
+			};
+		}
+		void Update(const Graphics& gfx, const T& data)
+		{
+			GetQueue(gfx).WriteBuffer(*this, 0, &data, sizeof(T));
+		}
+	private:
+		uint32_t slot;
 	};
 }

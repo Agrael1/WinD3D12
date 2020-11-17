@@ -2,6 +2,7 @@
 #include "SolidSphere.h"
 #include "Triangle.h"
 #include "Camera.h"
+#include "PointLight.h"
 
 namespace ver
 {
@@ -9,7 +10,7 @@ namespace ver
 	{
 	public:
 		VeritasEngine(uint32_t width, uint32_t height, XWindow wnd)
-			:gfx(width, height, wnd), sphere(gfx, 0.5f), tri(gfx)
+			:gfx(width, height, wnd), light(gfx, 0.5f), tri(gfx)
 		{
 			gfx.SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, float(720.0f / 1280.0f), 0.5f, 100.0f));
 		}
@@ -34,15 +35,16 @@ namespace ver
 		void Render()
 		{
 			gfx.SetCamera(cam.GetViewMatrix());
+			light.Bind(gfx, cam.GetViewMatrix());
 			float dt = 0.05f;
 			tri.Step(gfx, dt);
-			sphere.Step(gfx, dt);
+
 
 			gfx.StartFrame();
 			{
 				auto pass = gfx.StartPass();
 				tri.Submit(pass);
-				sphere.Submit(pass);
+				light.Submit(pass);
 			}
 			gfx.Present();
 		}
@@ -58,7 +60,7 @@ namespace ver
 
 		bool bWindowClosed = false;
 		bool bVisible = true;
-		SolidSphere sphere;
+		PointLight light;
 		Triangle tri;
 	};
 }
