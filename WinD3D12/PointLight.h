@@ -11,9 +11,6 @@ namespace ver
 		{
 			BindGroup bg{ gfx, bindGroup };
 			bg.BindResource(cbuf);
-
-			Pipeline pipe{ gfx };
-			pipeline = pipe.CookPipeline(bg);
 			Reset();
 		}
 		void SpawnControlWindow()noexcept
@@ -23,7 +20,7 @@ namespace ver
 		void Reset()noexcept
 		{
 			cbData = {
-				{ 0.0f,0.0f,2.5f },
+				{ 0.0f,0.0f,0.5f },
 				{ 0.05f,0.05f,0.05f },
 				{ 1.0f,1.0f,1.0f },
 				1.0f,
@@ -34,9 +31,7 @@ namespace ver
 		}
 		void Submit(wgpu::RenderPassEncoder& pass) const noexcept
 		{
-			//pass.SetPipeline(pipeline);
-			//pass.SetBindGroup(0, bindGroup, 0, 0);
-			//pass.DrawIndexed(0);
+			pass.SetBindGroup(0, bindGroup, 0, 0);
 			mesh.Submit(pass);
 		}
 		void Bind(Graphics& gfx, DirectX::FXMMATRIX view)const noexcept
@@ -65,7 +60,6 @@ namespace ver
 		mutable SolidSphere mesh;
 		mutable PixelConstantBuffer<PointLightCBuf> cbuf;
 		wgpu::BindGroup bindGroup;
-		wgpu::RenderPipeline pipeline;
 	};
 }
 

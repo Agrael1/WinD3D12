@@ -66,6 +66,7 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.obj
+!WinD3D12/Assets/*.obj
 *.iobj
 *.pch
 *.pdb

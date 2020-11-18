@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30524.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinD3D12", "WinD3D12\WinD3D12.vcxproj", "{95F30E29-C1DC-459F-8115-8BE6D05940E6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F4791FAC-7ACA-4D87-985A-070FCC077D5E} = {F4791FAC-7ACA-4D87-985A-070FCC077D5E}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebGPUWinRT", "WebGPUWinRT\WebGPUWinRT.vcxproj", "{F4791FAC-7ACA-4D87-985A-070FCC077D5E}"
 EndProject

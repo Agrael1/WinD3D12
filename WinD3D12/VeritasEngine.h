@@ -3,6 +3,7 @@
 #include "Triangle.h"
 #include "Camera.h"
 #include "PointLight.h"
+#include "Model.h"
 
 namespace ver
 {
@@ -10,9 +11,10 @@ namespace ver
 	{
 	public:
 		VeritasEngine(uint32_t width, uint32_t height, XWindow wnd)
-			:gfx(width, height, wnd), light(gfx, 0.5f), tri(gfx)
+			:gfx(width, height, wnd), light(gfx, 0.5f), tri(gfx), 
+			x(gfx, "Assets\\GoblinX.obj")
 		{
-			gfx.SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, float(720.0f / 1280.0f), 0.5f, 100.0f));
+			gfx.SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, float(height) / float(width), 0.5f, 100.0f));
 		}
 	public:
 		void Close()
@@ -43,8 +45,8 @@ namespace ver
 			gfx.StartFrame();
 			{
 				auto pass = gfx.StartPass();
-				tri.Submit(pass);
 				light.Submit(pass);
+				tri.Submit(pass);
 			}
 			gfx.Present();
 		}
@@ -57,6 +59,7 @@ namespace ver
 	private:
 		Graphics gfx;
 		Camera cam;
+		Model x;
 
 		bool bWindowClosed = false;
 		bool bVisible = true;
