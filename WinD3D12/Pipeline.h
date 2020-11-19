@@ -60,7 +60,7 @@ namespace ver
 			blendDesc.srcFactor = wgpu::BlendFactor::SrcAlpha;
 			blendDesc.dstFactor = wgpu::BlendFactor::OneMinusSrcAlpha;
 			wgpu::ColorStateDescriptor colorDesc = {};
-			colorDesc.format = VFactory::GetSwapChainFormat();
+			colorDesc.format = gfx.GetSwapChainFormat();
 			colorDesc.alphaBlend = blendDesc;
 			colorDesc.colorBlend = blendDesc;
 			colorDesc.writeMask = wgpu::ColorWriteMask::All;

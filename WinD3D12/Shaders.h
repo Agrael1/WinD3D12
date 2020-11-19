@@ -21,7 +21,7 @@ namespace ver
 			Create(gfx, xshader, tag, entry);
 		}
 	private:
-		void Create(const Graphics& gfx, std::span<const uint32_t> xshader, std::string_view tag, std::string_view entry)
+		void Create(const Graphics& gfx, std::span<const uint32_t> xshader, std::string_view, std::string_view entry)
 		{
 			wgpu::ShaderModuleSPIRVDescriptor spirvDesc;
 			spirvDesc.codeSize = static_cast<uint32_t>(xshader.size());
@@ -51,6 +51,7 @@ namespace ver
 		}
 		static std::string GenerateUID(std::span<const uint32_t> xshader, std::string_view tag, std::string_view entry = "main")noexcept
 		{
+			(void)xshader;
 			return fmt::sprintf("%s-%s", tag, entry);
 		}
 		[[nodiscard]] static auto Resolve(const Graphics& gfx, ShaderPair pair, ShaderPair::Type t)noexcept

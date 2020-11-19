@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "DawnAdapter.h"
 
 #if __has_include("d3d12.h") || (_MSC_VER >= 1900)
@@ -9,7 +8,6 @@
 #endif
 
 #include <dawn/dawn_proc.h>
-#include <dawn/webgpu_cpp.h>
 #include <dawn_native/NullBackend.h>
 #ifdef DAWN_ENABLE_BACKEND_D3D12
 #include "../WebGPUWinRT/WebGPUWinRT.h"
@@ -71,7 +69,7 @@ public:
 		}
 		return adapter = dawn_native::Adapter();
 	}
-	uint64_t InitSwapChain(WGPUDevice device, XWindow window)
+	uint64_t InitSwapChain(WGPUDevice device, const XWindow& window)
 	{
 		switch (adapter.GetBackendType())
 		{
@@ -127,13 +125,13 @@ private:
 };
 VAdapter VAdapter::xadapt;
 
-HRESULT VFactory::CreateDevice(wgpu::Device* _out_ppDevice, wgpu::BackendType type)
+VRESULT VFactory::CreateDevice(wgpu::Device* _out_ppDevice, wgpu::BackendType type)
 {
 	auto adapter = VAdapter::Get().QueryAdapter(type);
 	*_out_ppDevice = wgpu::Device::Acquire(adapter.CreateDevice());
 	return S_OK;
 }
-HRESULT VFactory::CreateSwapChain(wgpu::SwapChain* _out_ppSwap, wgpu::Device device, XWindow hWnd)
+VRESULT VFactory::CreateSwapChain(wgpu::SwapChain* _out_ppSwap, wgpu::Device device, const XWindow& hWnd)
 {
 	wgpu::SwapChainDescriptor swapChainDesc;
 	swapChainDesc.implementation = VAdapter::Get().InitSwapChain(device.Get(), hWnd);

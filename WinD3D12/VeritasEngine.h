@@ -10,7 +10,7 @@ namespace ver
 	class VeritasEngine
 	{
 	public:
-		VeritasEngine(uint32_t width, uint32_t height, XWindow wnd)
+		VeritasEngine(uint32_t width, uint32_t height, const XWindow& wnd)
 			:gfx(width, height, wnd), light(gfx, 0.5f), tri(gfx), 
 			x(gfx, "Assets\\GoblinX.obj")
 		{

@@ -55,8 +55,8 @@ public:
 			vb[index++].Attr<ver::VType::Position3D>() = southPos;
 		}
 
-		const auto calcIdx = [latDiv, longDiv](unsigned short iLat, unsigned short iLong)
-		{ return iLat * longDiv + iLong; };
+		const auto calcIdx = [latDiv, longDiv](unsigned iLat, unsigned iLong)->uint16_t
+		{ return uint16_t(iLat * longDiv + iLong); };
 		std::vector<unsigned short> indices;
 		for (unsigned short iLat = 0; iLat < latDiv - 2; iLat++)
 		{

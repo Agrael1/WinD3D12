@@ -1,5 +1,8 @@
 #pragma once
-#include "DawnAdapter.h"
+#include <DirectXMath.h>
+#include <Dawn/webgpu_cpp.h>
+#include <DawnAdapter.h>
+
 
 namespace ver
 {
@@ -18,7 +21,7 @@ namespace ver
 			}
 		};
 	public:
-		Graphics(uint32_t width, uint32_t height, XWindow wnd);
+		Graphics(uint32_t width, uint32_t height, const XWindow& wnd);
 		Graphics(const Graphics&) = delete;
 		Graphics& operator=(const Graphics&) = delete;
 	public:
@@ -41,6 +44,8 @@ namespace ver
 		void SetCamera(DirectX::XMMATRIX Camera)noexcept;
 		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 		DirectX::XMMATRIX GetProjection() const noexcept;
+
+		static wgpu::TextureFormat GetSwapChainFormat() noexcept;
 	private:
 		DirectX::XMMATRIX projection;
 		DirectX::XMMATRIX camera;

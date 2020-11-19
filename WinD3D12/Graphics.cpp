@@ -1,7 +1,9 @@
 #include "pch.h"
+#include "DawnAdapter.h"
 #include "Graphics.h"
 
-ver::Graphics::Graphics(uint32_t width, uint32_t height, XWindow wnd)
+
+ver::Graphics::Graphics(uint32_t width, uint32_t height, const XWindow& wnd)
 	:width(width), height(height)
 {
 	winrt::check_hresult(VFactory::CreateDevice(&device));
@@ -50,4 +52,7 @@ DirectX::XMMATRIX ver::Graphics::GetProjection() const noexcept
 {
 	return projection;
 }
-
+wgpu::TextureFormat ver::Graphics::GetSwapChainFormat()noexcept
+{
+	return VFactory::GetSwapChainFormat();
+}
