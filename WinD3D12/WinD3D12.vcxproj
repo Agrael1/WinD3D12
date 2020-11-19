@@ -183,10 +183,12 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsHeaderUnit</CompileAs>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ConformanceMode>
     </ClInclude>
+    <ClInclude Include="Exception.h" />
     <ClInclude Include="FileReadWrite.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelException.h" />
     <ClInclude Include="pch.h">
     </ClInclude>
     <ClInclude Include="Pipeline.h" />
@@ -196,6 +198,7 @@
     <ClInclude Include="SolidColor.h" />
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformCBuf.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="VeritasEngine.h" />
@@ -259,11 +262,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Exception.cpp" />
     <ClCompile Include="FileReadWrite.cpp" />
     <ClCompile Include="Graphics.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="IndexedTriangleList.cpp" />
+    <ClCompile Include="ModelException.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCpp</CompileAs>

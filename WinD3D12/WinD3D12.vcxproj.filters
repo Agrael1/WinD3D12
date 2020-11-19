@@ -28,6 +28,10 @@
     <ClCompile Include="Buffers.cpp">
       <Filter>Source Code\Engine\Bindable</Filter>
     </ClCompile>
+    <ClCompile Include="Exception.cpp">
+      <Filter>Source Code\Engine\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelException.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -280,6 +284,15 @@
     </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Header Modules\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelException.h">
+      <Filter>Header Modules\Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception.h">
+      <Filter>Header Modules\Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
