@@ -30,6 +30,19 @@ ver::IndexBuffer::IndexBuffer(const Graphics& gfx, const void* data, uint32_t co
 
 }
 
+ver::IndexBuffer::IndexBuffer(const Graphics& gfx, std::span<const uint16_t> data)
+	:Buffer(gfx, data.data(), data.size_bytes(), wgpu::BufferUsage::Index),
+	format(wgpu::IndexFormat::Uint16), count(data.size())
+{
+
+}
+ver::IndexBuffer::IndexBuffer(const Graphics& gfx, std::span<const uint32_t> data)
+	: Buffer(gfx, data.data(), data.size_bytes(), wgpu::BufferUsage::Index),
+	format(wgpu::IndexFormat::Uint32), count(data.size())
+{
+
+}
+
 ver::VertexBuffer::VertexBuffer(const Graphics& gfx, std::span<const uint8_t> xbuffer)
 	:Buffer(gfx, xbuffer.data(), xbuffer.size(), wgpu::BufferUsage::Vertex)
 {

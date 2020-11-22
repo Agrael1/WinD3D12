@@ -2,7 +2,7 @@
 #include <exception>
 #include <string>
 
-class Exception :std::exception
+class Exception :public std::exception
 {
 public:
 	Exception(unsigned int line, const char* file)noexcept;

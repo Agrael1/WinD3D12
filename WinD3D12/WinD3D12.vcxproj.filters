@@ -32,6 +32,9 @@
       <Filter>Source Code\Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="ModelException.cpp" />
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Code\Engine\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -293,6 +296,15 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>Header Modules\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Modules\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicConstant.h">
+      <Filter>Header Modules\Engine\Dynamics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

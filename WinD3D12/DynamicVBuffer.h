@@ -74,13 +74,13 @@ namespace ver::dv
 	class VertexBuffer
 	{
 	public:
-		VertexBuffer(VertexLayout&& layout, size_t size = 0)
+		VertexBuffer(VertexLayout layout, size_t size = 0)
 			:layout(std::move(layout))
 		{
 			if (size) Resize(size);
 		}
-		VertexBuffer(VertexLayout&& layout, const aiMesh& mesh)
-			: layout(std::move(layout))
+		VertexBuffer(VertexLayout layout, const aiMesh& mesh)
+			: layout(layout)
 		{
 			Resize(mesh.mNumVertices);
 			for (size_t i = 0, end = layout.GetElementCount(); i < end; i++)

@@ -27,6 +27,8 @@ namespace ver
 	{
 	public:
 		IndexBuffer(const Graphics& gfx, const void* data, uint32_t count, wgpu::IndexFormat format);
+		IndexBuffer(const Graphics& gfx, std::span<const uint16_t> data);
+		IndexBuffer(const Graphics& gfx, std::span<const uint32_t> data);
 	public:
 		auto GetFormat()const noexcept
 		{

@@ -4,6 +4,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "ModelException.h"
+#include "Material.h"
 
 
 namespace ver
@@ -21,8 +22,16 @@ namespace ver
 				aiProcess_GenNormals |
 				aiProcess_CalcTangentSpace
 			);
-
+			
 			if(!pScene) throw ModelException(__LINE__, __FILE__, imp.GetErrorString());
+
+			// parse materials
+			std::vector<Material> materials;
+			materials.reserve(pScene->mNumMaterials);
+			for (size_t i = 0; i < pScene->mNumMaterials; i++)
+			{
+				materials.emplace_back(gfx, *pScene->mMaterials[i], pathString);
+			}
 		}
 	};
 }

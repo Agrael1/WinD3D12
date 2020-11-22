@@ -4,6 +4,7 @@
 #include "Pipeline.h"
 #include "SolidColor.h"
 #include "TransformCBuf.h"
+#include "DynamicConstant.h"
 
 namespace ver
 {

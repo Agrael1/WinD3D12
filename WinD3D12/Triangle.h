@@ -42,7 +42,7 @@ namespace ver
 
 			auto a = Triangle::MakeVertices(vl);
 			vBuffer.emplace(gfx, a.data());
-			iBuffer.emplace(gfx, indxData, 4, wgpu::IndexFormat::Uint16);
+			iBuffer.emplace(gfx, indxData);
 
 			BindGroup bg{ gfx, bindGroup };
 			bg.BindResource(cbuf);
