@@ -27,7 +27,7 @@ namespace ver
 			auto a = Sphere::Make(vl);
 			a.Deform(DirectX::XMMatrixScalingFromVector(DirectX::XMVectorReplicate(radius)));
 			vBuffer.emplace(gfx, a.vertices.data());
-			iBuffer.emplace(gfx, a.indices.data(), a.indices.size(), wgpu::IndexFormat::Uint16);
+			iBuffer.emplace(gfx, a.indices);
 
 			BindGroup bg{ gfx, bindGroup };
 			bg.BindResource(color);

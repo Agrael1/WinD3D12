@@ -1,7 +1,35 @@
+#include "pch.h"
 #include "Material.h"
+#include "Surface.h"
+#include "Future.h"
+
+
+Future<std::vector<ver::Texture>>
+ConstructTextures(const ver::Graphics& gfx, std::span<aiString> textures)noexcept
+{
+	std::vector<winrt::Windows::Foundation::IAsyncAction> tasks;
+	ver::SurfaceLoader surf;
+	std::vector<ver::Texture> ret;
+	ret.resize(textures.size());
+	tasks.resize(textures.size());
+
+	for (size_t i = 0; auto& x : ret)
+	{
+		if(textures[i].length)
+			tasks.push_back(surf.LoadTextureAsync(gfx, textures[i].C_Str(), &x));
+		i++;
+	}
+
+	for (auto & x : tasks)
+	{
+		co_await x;
+	}
+
+	co_return ret;
+}
 
 ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path) noexcept
-	:modelPath(path.string())
+	:modelPath(path.string()), vtxLayout({VType::Position3D, VType::Normal})
 {
 	const auto rootPath = path.parent_path().string() + "\\";
 	{
@@ -9,7 +37,78 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 		material.Get(AI_MATKEY_NAME, tempName);
 		name = tempName.C_Str();
 	}
+	std::string shaderCode = "Phong";
+	std::array<aiString, 3> texFileName;
+
+	dc::Layout pscLayout;
+	bool hasTexture = false;
+	bool hasGlossAlpha = false;
+
+	
+
+	// diffuse
+	{
+		bool hasAlpha = false;
+		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName[0]) == aiReturn_SUCCESS)
+		{
+			hasTexture = true;
+			shaderCode += "Dif";
+			vtxLayout.Add(VType::Texture2D);
+
+			//auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str());
+			//if (tex->UsesAlpha())
+			//{
+			//	hasAlpha = true;
+			//	shaderCode += "Msk";
+			//}
+		}
+		else
+		{
+			pscLayout.Add(dc::Type::Float3, "materialColor");
+		}
+	}
+	//step.AddBindable(RasterizerState::Resolve(gfx, hasAlpha));
+	// specular
+	{
+		if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName[1]) == aiReturn_SUCCESS)
+		{
+			hasTexture = true;
+			shaderCode += "Spc";
+			vtxLayout.Add(VType::Texture2D);
+			//auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 1);
+			//hasGlossAlpha = tex->UsesAlpha();
+			//step.AddBindable(std::move(tex));
+			pscLayout.Add({
+				{"useGlossAlpha", dc::Type::Bool, },
+				{"useSpecularMap", dc::Type::Bool} });
+		}
+		pscLayout.Add({
+			{"specularColor", dc::Type::Float3},
+			{"specularWeight", dc::Type::Float },
+			{"specularGloss", dc::Type::Float } });
+	}
+	// normal
+	{
+		if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName[2]) == aiReturn_SUCCESS)
+		{
+			hasTexture = true;
+			shaderCode += "Nrm";
+			vtxLayout.Add(VType::Texture2D);
+			vtxLayout.Add(VType::Tangent);
+			vtxLayout.Add(VType::Bitangent);
+
+			pscLayout.Add({
+				{"useNormalMap"   , dc::Type::Bool },
+				{"normalMapWeight", dc::Type::Float} });
+		}
+	}
+	std::vector<ver::Texture> x = ConstructTextures(gfx, texFileName)();
+
+
 }
+
+
+
 
 ver::dv::VertexBuffer ver::Material::ExtractVertices(const aiMesh& mesh) const noexcept
 {

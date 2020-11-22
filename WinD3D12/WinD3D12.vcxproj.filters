@@ -35,6 +35,9 @@
     <ClCompile Include="Material.cpp">
       <Filter>Source Code\Engine\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>Source Code\Engine\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -305,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="DynamicConstant.h">
       <Filter>Header Modules\Engine\Dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="Future.h">
+      <Filter>Header Modules\Engine\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

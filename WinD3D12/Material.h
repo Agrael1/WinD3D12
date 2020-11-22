@@ -26,6 +26,7 @@ namespace ver
 		std::string MakeMeshTag(const aiMesh& mesh) const noexcept;
 	private:
 		dv::VertexLayout vtxLayout;
+		std::vector<wgpu::RenderPipeline> pipelines;
 		std::string modelPath;
 		std::string name;
 	};

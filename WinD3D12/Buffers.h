@@ -39,7 +39,7 @@ namespace ver
 			return count;
 		}
 	private:
-		uint32_t count;
+		size_t count;
 		wgpu::IndexFormat format;
 	};
 	class VertexBuffer : public Buffer

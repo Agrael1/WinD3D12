@@ -186,6 +186,7 @@
     </ClInclude>
     <ClInclude Include="Exception.h" />
     <ClInclude Include="FileReadWrite.h" />
+    <ClInclude Include="Future.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="Material.h" />
@@ -231,6 +232,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Surface.cpp" />
     <ClInclude Include="App.h">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsHeaderUnit</CompileAs>
