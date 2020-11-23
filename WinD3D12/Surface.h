@@ -10,12 +10,13 @@ namespace ver
 	public:
 		winrt::Windows::Foundation::IAsyncAction
 			LoadTextureAsync(const ver::Graphics& gfx, std::string_view tex_name, Texture* out);
+		void LoadTexture(const ver::Graphics& gfx, std::string_view tex_name, Texture* out);
 	public:
 		UINT GetWidth()const noexcept;
 		UINT GetHeight()const noexcept;
 		UINT GetStride()const noexcept;
 		bool UsesAlpha()const noexcept;
-		void* GetBufferPtr()const noexcept;
+		uint8_t* GetBufferPtr()const noexcept;
 	private:
 		DirectX::ScratchImage image;
 		static BasicReaderWriter loader;

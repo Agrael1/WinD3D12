@@ -219,6 +219,10 @@
     <Image Include="Assets\Square44x44Logo.scale-200.png" />
     <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Image Include="Assets\StoreLogo.png" />
+    <Image Include="Assets\Textures\GoblinEye.jpg" />
+    <Image Include="Assets\Textures\Mdif.png" />
+    <Image Include="Assets\Textures\MNorm.tif" />
+    <Image Include="Assets\Textures\MSpec.tif" />
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>

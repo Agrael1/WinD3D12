@@ -24,7 +24,7 @@ namespace ver
 	{
 		return !image.IsAlphaAllOpaque();
 	}
-	void* SurfaceLoader::GetBufferPtr()const noexcept
+	uint8_t* SurfaceLoader::GetBufferPtr()const noexcept
 	{
 		return image.GetPixels();
 	}
@@ -51,6 +51,60 @@ namespace ver
 			winrt::check_hresult(hr);//remove
 			image = std::move(converted);
 		}
-		std::construct_at(out, gfx);
+
+		wgpu::TextureDescriptor desc{
+			.nextInChain = nullptr,
+			.label = nullptr,
+			.usage = wgpu::TextureUsage::CopyDst,
+			.dimension = wgpu::TextureDimension::e2D,
+			.size = wgpu::Extent3D{
+				.width = GetWidth(),
+				.height = GetHeight(),
+				.depth = 1
+				},
+			.format = wgpu::TextureFormat::BGRA8Unorm,
+			.mipLevelCount = 1,
+			.sampleCount = 1
+		};
+		std::construct_at(out, gfx, desc, GetBufferPtr(), image.GetPixelsSize());
+	}
+	void SurfaceLoader::LoadTexture(const ver::Graphics& gfx, std::string_view tex_name, Texture* out)
+	{
+		auto textureData = loader.ReadData(winrt::to_hstring(tex_name.data()));
+		HRESULT hr = DirectX::LoadFromWICMemory(textureData.data(), textureData.size(),
+			DirectX::WIC_FLAGS_NONE, nullptr, image);
+
+		winrt::check_hresult(hr);//remove
+
+		if (image.GetImage(0, 0, 0)->format != format)
+		{
+			DirectX::ScratchImage converted;
+			hr = DirectX::Convert(
+				*image.GetImage(0, 0, 0),
+				format,
+				DirectX::TEX_FILTER_DEFAULT,
+				DirectX::TEX_THRESHOLD_DEFAULT,
+				converted
+			);
+
+			winrt::check_hresult(hr);//remove
+			image = std::move(converted);
+		}
+
+		wgpu::TextureDescriptor desc{
+			.nextInChain = nullptr,
+			.label = nullptr,
+			.usage = wgpu::TextureUsage::CopyDst,
+			.dimension = wgpu::TextureDimension::e2D,
+			.size = wgpu::Extent3D{
+				.width = GetWidth(),
+				.height = GetHeight(),
+				.depth = 1
+				},
+			.format = wgpu::TextureFormat::BGRA8Unorm,
+			.mipLevelCount = 1,
+			.sampleCount = 1
+		};
+		std::construct_at(out, gfx, desc, GetBufferPtr(), image.GetPixelsSize());
 	}
 }

@@ -8,7 +8,7 @@ class Future;
 template<typename T>
 struct Promise
 {
-	Promise() : val(-1), done(false) {}
+	Promise() : val(), done(false) {}
 	std::suspend_never initial_suspend() { return {}; }
 	std::suspend_always final_suspend()noexcept {
 		this->done = true;
@@ -19,8 +19,8 @@ struct Promise
 		return Future<T>{ Handle<T>::from_promise(*this) };
 	}
 	void unhandled_exception() { abort(); }
-	void return_value(T val) {
-		this->val = std::move(val);
+	void return_value(T xval) {
+		this->val = std::move(xval);
 	}
 
 	T val;

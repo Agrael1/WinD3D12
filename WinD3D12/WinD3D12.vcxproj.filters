@@ -61,6 +61,18 @@
     <Image Include="Assets\LockScreenLogo.scale-200.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\Textures\GoblinEye.jpg">
+      <Filter>Assets\Textures</Filter>
+    </Image>
+    <Image Include="Assets\Textures\Mdif.png">
+      <Filter>Assets\Textures</Filter>
+    </Image>
+    <Image Include="Assets\Textures\MSpec.tif">
+      <Filter>Assets\Textures</Filter>
+    </Image>
+    <Image Include="Assets\Textures\MNorm.tif">
+      <Filter>Assets\Textures</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -137,6 +149,9 @@
     </Filter>
     <Filter Include="Source Code\Engine\Bindable">
       <UniqueIdentifier>{1b6b603e-e82e-4379-9701-ce12efad89e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Textures">
+      <UniqueIdentifier>{1a5dec13-4efd-4950-8191-a7600a7cf5c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

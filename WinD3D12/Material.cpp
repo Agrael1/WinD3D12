@@ -5,22 +5,25 @@
 
 
 Future<std::vector<ver::Texture>>
-ConstructTextures(const ver::Graphics& gfx, std::span<aiString> textures)noexcept
+ConstructTextures(const ver::Graphics& gfx, std::span<aiString> textures, size_t actual)noexcept
 {
+	if (!actual)
+		co_return{};
+
 	std::vector<winrt::Windows::Foundation::IAsyncAction> tasks;
 	ver::SurfaceLoader surf;
 	std::vector<ver::Texture> ret;
-	ret.resize(textures.size());
-	tasks.resize(textures.size());
+	ret.resize(actual);
+	tasks.reserve(actual);
 
-	for (size_t i = 0; auto& x : ret)
+	for (size_t i = 0; auto & x : ret)
 	{
-		if(textures[i].length)
+		if (textures[i].length)
 			tasks.push_back(surf.LoadTextureAsync(gfx, textures[i].C_Str(), &x));
 		i++;
 	}
 
-	for (auto & x : tasks)
+	for (auto && x : tasks)
 	{
 		co_await x;
 	}
@@ -39,6 +42,7 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 	}
 	std::string shaderCode = "Phong";
 	std::array<aiString, 3> texFileName;
+	size_t inserter = 0;
 
 	dc::Layout pscLayout;
 	bool hasTexture = false;
@@ -49,12 +53,12 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 	// diffuse
 	{
 		bool hasAlpha = false;
-		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName[0]) == aiReturn_SUCCESS)
+		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName[inserter]) == aiReturn_SUCCESS)
 		{
 			hasTexture = true;
 			shaderCode += "Dif";
 			vtxLayout.Add(VType::Texture2D);
-
+			inserter++;
 			//auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str());
 			//if (tex->UsesAlpha())
 			//{
@@ -70,7 +74,7 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 	//step.AddBindable(RasterizerState::Resolve(gfx, hasAlpha));
 	// specular
 	{
-		if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName[1]) == aiReturn_SUCCESS)
+		if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName[inserter]) == aiReturn_SUCCESS)
 		{
 			hasTexture = true;
 			shaderCode += "Spc";
@@ -81,6 +85,7 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 			pscLayout.Add({
 				{"useGlossAlpha", dc::Type::Bool, },
 				{"useSpecularMap", dc::Type::Bool} });
+			inserter++;
 		}
 		pscLayout.Add({
 			{"specularColor", dc::Type::Float3},
@@ -89,7 +94,7 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 	}
 	// normal
 	{
-		if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName[2]) == aiReturn_SUCCESS)
+		if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName[inserter]) == aiReturn_SUCCESS)
 		{
 			hasTexture = true;
 			shaderCode += "Nrm";
@@ -102,8 +107,7 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 				{"normalMapWeight", dc::Type::Float} });
 		}
 	}
-	std::vector<ver::Texture> x = ConstructTextures(gfx, texFileName)();
-
+	std::vector<ver::Texture> x = ConstructTextures(gfx, texFileName, inserter)();
 
 }
 
