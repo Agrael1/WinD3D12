@@ -330,5 +330,8 @@
     <ClInclude Include="RasterizerState.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
+    <ClInclude Include="Sampler.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

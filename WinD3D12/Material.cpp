@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "Material.h"
 #include "Surface.h"
-
+#include "Sampler.h"
+#include "RasterizerState.h"
 
 
 
@@ -45,7 +46,9 @@ void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, cons
 		name = tempName.C_Str();
 	}
 	std::string shaderCode = "Phong";
-	std::array<ver::Texture, 3> textures;
+	std::array<std::optional<ver::Texture>, 3> textures;
+	std::optional<Sampler> sampler;
+
 
 	dc::Layout pscLayout;
 	bool hasTexture = false;
@@ -67,7 +70,6 @@ void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, cons
 			pscLayout.Add(dc::Type::Float3, "materialColor");
 		}
 	}
-	//step.AddBindable(RasterizerState::Resolve(gfx, hasAlpha));
 	// specular
 	{
 		if (material.GetTexture(aiTextureType_SPECULAR, 0, &aitexFileName) == aiReturn_SUCCESS)
@@ -106,11 +108,14 @@ void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, cons
 		}
 	}
 	bool hasAlpha = false;
-	if (textures[0].UsesAlpha())
+	if (textures[0] && textures[0].value().UsesAlpha())
 	{
 		shaderCode += "Nrm";
 		hasAlpha = true;
 	}
+	RasterizerState raster(gfx, hasAlpha);
+	if (hasTexture)
+		sampler.emplace(gfx);
 
 
 }

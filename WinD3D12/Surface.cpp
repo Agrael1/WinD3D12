@@ -66,7 +66,7 @@ namespace ver
 			.mipLevelCount = 1,
 			.sampleCount = 1
 		};
-		std::construct_at(out, gfx, desc, GetBufferPtr(), image.GetPixelsSize(), GetStride());
+		std::construct_at(out, gfx, desc, GetBufferPtr(), image.GetPixelsSize(), GetStride(), UsesAlpha());
 	}
 	void SurfaceLoader::LoadTexture(const ver::Graphics& gfx, std::string_view tex_name, Texture* out)
 	{

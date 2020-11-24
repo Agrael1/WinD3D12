@@ -197,6 +197,7 @@
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RasterizerState.h" />
+    <ClInclude Include="Sampler.h" />
     <ClInclude Include="ShaderPair.h" />
     <ClInclude Include="Shaders.h" />
     <ClInclude Include="SolidColor.h" />
