@@ -1,38 +1,42 @@
 #include "pch.h"
 #include "Material.h"
 #include "Surface.h"
-#include "Future.h"
 
 
-Future<std::vector<ver::Texture>>
-ConstructTextures(const ver::Graphics& gfx, std::span<aiString> textures, size_t actual)noexcept
+
+
+std::vector<ver::Texture>
+ConstructTextures(const ver::Graphics& gfx, std::span<std::string> textures, size_t actual)noexcept
 {
-	if (!actual)
-		co_return{};
+	if (!actual)return{};
 
-	std::vector<winrt::Windows::Foundation::IAsyncAction> tasks;
 	ver::SurfaceLoader surf;
 	std::vector<ver::Texture> ret;
 	ret.resize(actual);
-	tasks.reserve(actual);
 
-	for (size_t i = 0; auto & x : ret)
-	{
-		if (textures[i].length)
-			tasks.push_back(surf.LoadTextureAsync(gfx, textures[i].C_Str(), &x));
+	for (size_t i = 0; auto & x : ret) {
+		if (!textures[i].empty())
+			surf.LoadTexture(gfx, textures[i], &x);
 		i++;
 	}
 
-	for (auto && x : tasks)
-	{
-		co_await x;
-	}
-
-	co_return ret;
+	return std::move(ret);
+}
+ver::Texture ExtractTexture(const ver::Graphics& gfx, std::string_view texture)
+{
+	ver::Texture x;
+	ver::SurfaceLoader surf;
+	surf.LoadTexture(gfx, texture, &x);
+	return std::move(x);
 }
 
 ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path) noexcept
 	:modelPath(path.string()), vtxLayout({VType::Position3D, VType::Normal})
+{
+
+	MakeTextures(gfx, material, path);
+}
+void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path)
 {
 	const auto rootPath = path.parent_path().string() + "\\";
 	{
@@ -41,30 +45,22 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 		name = tempName.C_Str();
 	}
 	std::string shaderCode = "Phong";
-	std::array<aiString, 3> texFileName;
-	size_t inserter = 0;
+	std::array<ver::Texture, 3> textures;
 
 	dc::Layout pscLayout;
 	bool hasTexture = false;
 	bool hasGlossAlpha = false;
 
-	
+	aiString aitexFileName;
 
 	// diffuse
 	{
-		bool hasAlpha = false;
-		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName[inserter]) == aiReturn_SUCCESS)
+		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &aitexFileName) == aiReturn_SUCCESS)
 		{
 			hasTexture = true;
 			shaderCode += "Dif";
 			vtxLayout.Add(VType::Texture2D);
-			inserter++;
-			//auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str());
-			//if (tex->UsesAlpha())
-			//{
-			//	hasAlpha = true;
-			//	shaderCode += "Msk";
-			//}
+			textures[0] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str());
 		}
 		else
 		{
@@ -74,18 +70,19 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 	//step.AddBindable(RasterizerState::Resolve(gfx, hasAlpha));
 	// specular
 	{
-		if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName[inserter]) == aiReturn_SUCCESS)
+		if (material.GetTexture(aiTextureType_SPECULAR, 0, &aitexFileName) == aiReturn_SUCCESS)
 		{
 			hasTexture = true;
 			shaderCode += "Spc";
 			vtxLayout.Add(VType::Texture2D);
+
 			//auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 1);
 			//hasGlossAlpha = tex->UsesAlpha();
 			//step.AddBindable(std::move(tex));
 			pscLayout.Add({
 				{"useGlossAlpha", dc::Type::Bool, },
 				{"useSpecularMap", dc::Type::Bool} });
-			inserter++;
+			textures[1] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str());
 		}
 		pscLayout.Add({
 			{"specularColor", dc::Type::Float3},
@@ -94,7 +91,7 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 	}
 	// normal
 	{
-		if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName[inserter]) == aiReturn_SUCCESS)
+		if (material.GetTexture(aiTextureType_NORMALS, 0, &aitexFileName) == aiReturn_SUCCESS)
 		{
 			hasTexture = true;
 			shaderCode += "Nrm";
@@ -102,16 +99,21 @@ ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::fi
 			vtxLayout.Add(VType::Tangent);
 			vtxLayout.Add(VType::Bitangent);
 
+			textures[2] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str());
 			pscLayout.Add({
 				{"useNormalMap"   , dc::Type::Bool },
 				{"normalMapWeight", dc::Type::Float} });
 		}
 	}
-	std::vector<ver::Texture> x = ConstructTextures(gfx, texFileName, inserter)();
+	bool hasAlpha = false;
+	if (textures[0].UsesAlpha())
+	{
+		shaderCode += "Nrm";
+		hasAlpha = true;
+	}
+
 
 }
-
-
 
 
 ver::dv::VertexBuffer ver::Material::ExtractVertices(const aiMesh& mesh) const noexcept
@@ -159,3 +161,7 @@ std::string ver::Material::MakeMeshTag(const aiMesh& mesh) const noexcept
 {
 	return modelPath + "%" + mesh.mName.C_Str();
 }
+
+
+
+

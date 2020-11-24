@@ -19,7 +19,7 @@ struct Promise
 		return Future<T>{ Handle<T>::from_promise(*this) };
 	}
 	void unhandled_exception() { abort(); }
-	void return_value(T xval) {
+	void return_value(T&& xval) {
 		this->val = std::move(xval);
 	}
 
@@ -45,12 +45,7 @@ public:
 	using promise_type = Promise<T>;
 	T operator()()
 	{
-		if (m_handle && m_handle.promise().done) {
-			return m_handle.promise().val;
-		}
-		else {
-			return {};
-		}
+		return m_handle.promise().val;
 	}
 
 private:

@@ -7,7 +7,7 @@ namespace ver
 	{
 	public:
 		Texture()noexcept = default;
-		Texture(const Graphics& gfx, wgpu::TextureDescriptor& desc, const uint8_t* data, size_t dataSize)
+		Texture(const Graphics& gfx, wgpu::TextureDescriptor& desc, const uint8_t* data, size_t dataSize, uint32_t stride, bool alpha)
 			:
 			texview {
 				.nextInChain = nullptr,
@@ -15,7 +15,7 @@ namespace ver
 				.mipLevel = 0,
 				.origin{0,0,0},
 				.aspect = wgpu::TextureAspect::All
-			}
+			}, dimensions(desc.size), stride(uint32_t(stride)), usesalpha(alpha)
 			
 		{
 			Write(gfx, data, dataSize);
@@ -27,10 +27,24 @@ namespace ver
 		}
 		void Write(const Graphics& gfx, const uint8_t* data, size_t dataSize)
 		{
-			GetQueue(gfx).WriteTexture(&texview, data, dataSize, nullptr, nullptr);
+			wgpu::TextureDataLayout x
+			{
+				.nextInChain = nullptr,
+				.offset = 0,
+				.bytesPerRow = stride,
+				.rowsPerImage = dimensions.height
+			};
+			GetQueue(gfx).WriteTexture(&texview, data, dataSize, &x, &dimensions);
+		}
+		bool UsesAlpha()const noexcept
+		{
+			return usesalpha;
 		}
 	private:
-		const wgpu::TextureCopyView texview;
+		wgpu::TextureCopyView texview;
+		wgpu::Extent3D dimensions;
 		std::string name;
+		uint32_t stride = 0;
+		bool usesalpha = false;
 	};
 }

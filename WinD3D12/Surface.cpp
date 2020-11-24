@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Surface.h"
 
-
+#include <ppl.h>
 
 
 namespace ver
@@ -66,7 +66,7 @@ namespace ver
 			.mipLevelCount = 1,
 			.sampleCount = 1
 		};
-		std::construct_at(out, gfx, desc, GetBufferPtr(), image.GetPixelsSize());
+		std::construct_at(out, gfx, desc, GetBufferPtr(), image.GetPixelsSize(), GetStride());
 	}
 	void SurfaceLoader::LoadTexture(const ver::Graphics& gfx, std::string_view tex_name, Texture* out)
 	{
@@ -105,6 +105,6 @@ namespace ver
 			.mipLevelCount = 1,
 			.sampleCount = 1
 		};
-		std::construct_at(out, gfx, desc, GetBufferPtr(), image.GetPixelsSize());
+		std::construct_at(out, gfx, desc, GetBufferPtr(), image.GetPixelsSize(), GetStride(), UsesAlpha());
 	}
 }

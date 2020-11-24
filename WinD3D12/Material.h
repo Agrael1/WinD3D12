@@ -4,6 +4,7 @@
 #include "Buffers.h"
 #include <vector>
 #include <filesystem>
+#include "Texture.h"
 
 struct aiMaterial;
 struct aiMesh;
@@ -24,6 +25,7 @@ namespace ver
 		IndexBuffer MakeIndexBindable(Graphics& gfx, const aiMesh& mesh) const noexcept;
 	private:
 		std::string MakeMeshTag(const aiMesh& mesh) const noexcept;
+		void MakeTextures(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path);
 	private:
 		dv::VertexLayout vtxLayout;
 		std::vector<wgpu::RenderPipeline> pipelines;
