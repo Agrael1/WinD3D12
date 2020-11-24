@@ -1,5 +1,6 @@
 #pragma once
 #include "ConstantBuffers.h"
+#include "ConstantBinding.h"
 
 namespace ver
 {
@@ -20,6 +21,12 @@ namespace ver
 		}
 	public:
 		void BindResource(const ConstantBinding& resource)
+		{
+			bindings[next] = resource.GetEntryDesc();
+			bindingLayouts[next++] = resource.GetLayout();
+		}
+		template<typename T>
+		void BindResource(const XConstantBinding<T>& resource)
 		{
 			bindings[next] = resource.GetEntryDesc();
 			bindingLayouts[next++] = resource.GetLayout();

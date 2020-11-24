@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "PointLight.h"
 #include "Model.h"
+#include "Panel.h"
 
 namespace ver
 {
@@ -11,8 +12,9 @@ namespace ver
 	{
 	public:
 		VeritasEngine(uint32_t width, uint32_t height, const XWindow& wnd)
-			:gfx(width, height, wnd), light(gfx, 0.5f), tri(gfx), 
-			x(gfx, "Assets\\GoblinX.obj")
+			:gfx(width, height, wnd), light(gfx, 0.5f), tri(gfx),
+			panel(gfx)
+			/*x(gfx, "Assets\\GoblinX.obj")*/
 		{
 			gfx.SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, float(height) / float(width), 0.5f, 100.0f));
 		}
@@ -39,14 +41,15 @@ namespace ver
 			gfx.SetCamera(cam.GetViewMatrix());
 			light.Bind(gfx, cam.GetViewMatrix());
 			float dt = 0.05f;
-			tri.Step(gfx, dt);
-
+			//tri.Step(gfx, dt);
+			panel.Step(gfx, dt);
 
 			gfx.StartFrame();
 			{
 				auto pass = gfx.StartPass();
 				light.Submit(pass);
-				tri.Submit(pass);
+				panel.Submit(pass);
+				//tri.Submit(pass);
 			}
 			gfx.Present();
 		}
@@ -59,7 +62,8 @@ namespace ver
 	private:
 		Graphics gfx;
 		Camera cam;
-		Model x;
+		//Model x;
+		Panel panel;
 
 		bool bWindowClosed = false;
 		bool bVisible = true;

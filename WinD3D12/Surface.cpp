@@ -29,7 +29,7 @@ namespace ver
 		return image.GetPixels();
 	}
 	winrt::Windows::Foundation::IAsyncAction
-		SurfaceLoader::LoadTextureAsync(const ver::Graphics& gfx, std::string_view tex_name, Texture* out)
+		SurfaceLoader::LoadTextureAsync(const ver::Graphics& gfx, std::string_view tex_name, Texture* out, uint32_t slot)
 	{
 		auto textureData = co_await loader.ReadDataAsync(winrt::to_hstring(tex_name.data()));
 		HRESULT hr = DirectX::LoadFromWICMemory(textureData.data(), textureData.Length(), 
@@ -52,23 +52,31 @@ namespace ver
 			image = std::move(converted);
 		}
 
-		wgpu::TextureDescriptor desc{
-			.nextInChain = nullptr,
-			.label = nullptr,
-			.usage = wgpu::TextureUsage::CopyDst,
-			.dimension = wgpu::TextureDimension::e2D,
-			.size = wgpu::Extent3D{
-				.width = GetWidth(),
-				.height = GetHeight(),
-				.depth = 1
-				},
-			.format = wgpu::TextureFormat::BGRA8Unorm,
-			.mipLevelCount = 1,
-			.sampleCount = 1
+		Texture::Descriptor desc
+		{
+			.desc = {
+				.nextInChain = nullptr,
+				.label = nullptr,
+				.usage = wgpu::TextureUsage::CopyDst,
+				.dimension = wgpu::TextureDimension::e2D,
+				.size = wgpu::Extent3D{
+					.width = GetWidth(),
+					.height = GetHeight(),
+					.depth = 1
+					},
+				.format = wgpu::TextureFormat::BGRA8Unorm,
+				.mipLevelCount = 1,
+				.sampleCount = 1
+			},
+			.data = GetBufferPtr(),
+			.dataSize = image.GetPixelsSize(),
+			.stride = GetStride(),
+			.bindingSlot = slot,
+			.alpha = UsesAlpha()
 		};
-		std::construct_at(out, gfx, desc, GetBufferPtr(), image.GetPixelsSize(), GetStride(), UsesAlpha());
+		std::construct_at(out, gfx, desc);
 	}
-	void SurfaceLoader::LoadTexture(const ver::Graphics& gfx, std::string_view tex_name, Texture* out)
+	void SurfaceLoader::LoadTexture(const ver::Graphics& gfx, std::string_view tex_name, Texture* out, uint32_t slot)
 	{
 		auto textureData = loader.ReadData(winrt::to_hstring(tex_name.data()));
 		HRESULT hr = DirectX::LoadFromWICMemory(textureData.data(), textureData.size(),
@@ -91,20 +99,28 @@ namespace ver
 			image = std::move(converted);
 		}
 
-		wgpu::TextureDescriptor desc{
-			.nextInChain = nullptr,
-			.label = nullptr,
-			.usage = wgpu::TextureUsage::CopyDst,
-			.dimension = wgpu::TextureDimension::e2D,
-			.size = wgpu::Extent3D{
-				.width = GetWidth(),
-				.height = GetHeight(),
-				.depth = 1
-				},
-			.format = wgpu::TextureFormat::BGRA8Unorm,
-			.mipLevelCount = 1,
-			.sampleCount = 1
+		Texture::Descriptor desc
+		{
+			.desc = {
+				.nextInChain = nullptr,
+				.label = nullptr,
+				.usage = wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::Sampled,
+				.dimension = wgpu::TextureDimension::e2D,
+				.size = wgpu::Extent3D{
+					.width = GetWidth(),
+					.height = GetHeight(),
+					.depth = 1
+					},
+				.format = wgpu::TextureFormat::BGRA8Unorm,
+				.mipLevelCount = 1,
+				.sampleCount = 1
+			},
+			.data = GetBufferPtr(),
+			.dataSize = image.GetPixelsSize(),
+			.stride = GetStride(),
+			.bindingSlot = slot,
+			.alpha = UsesAlpha()
 		};
-		std::construct_at(out, gfx, desc, GetBufferPtr(), image.GetPixelsSize(), GetStride(), UsesAlpha());
+		std::construct_at(out, gfx, desc);
 	}
 }

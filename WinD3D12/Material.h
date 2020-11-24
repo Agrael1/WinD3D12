@@ -1,7 +1,7 @@
 #pragma once
 #include "DynamicConstant.h"
 #include "DynamicVBuffer.h"
-#include "Buffers.h"
+#include "Pipeline.h"
 #include <vector>
 #include <filesystem>
 #include "Texture.h"
@@ -28,7 +28,8 @@ namespace ver
 		void MakeTextures(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path);
 	private:
 		dv::VertexLayout vtxLayout;
-		std::vector<wgpu::RenderPipeline> pipelines;
+		wgpu::BindGroup m_bindings;
+		wgpu::RenderPipeline m_pipeline;
 		std::string modelPath;
 		std::string name;
 	};

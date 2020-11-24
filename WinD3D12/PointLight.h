@@ -7,7 +7,7 @@ namespace ver
 	{
 	public:
 		PointLight(const Graphics& gfx, float radius = 0.5f)
-			:mesh(gfx, radius), cbuf(gfx)
+			:mesh(gfx, radius), cbuf(gfx, 1)
 		{
 			BindGroup bg{ gfx, bindGroup };
 			bg.BindResource(cbuf);
@@ -31,8 +31,8 @@ namespace ver
 		}
 		void Submit(wgpu::RenderPassEncoder& pass) const noexcept
 		{
+			//mesh.Submit(pass);
 			pass.SetBindGroup(0, bindGroup, 0, 0);
-			mesh.Submit(pass);
 		}
 		void Bind(Graphics& gfx, DirectX::FXMMATRIX view)const noexcept
 		{

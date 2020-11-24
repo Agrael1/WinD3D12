@@ -73,6 +73,12 @@
     <Image Include="Assets\Textures\MNorm.tif">
       <Filter>Assets\Textures</Filter>
     </Image>
+    <Image Include="Assets\Textures\brick_wall_diffuse.jpg">
+      <Filter>Assets\Textures</Filter>
+    </Image>
+    <Image Include="Assets\Textures\brick_wall_normal.jpg">
+      <Filter>Assets\Textures</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -332,6 +338,18 @@
     </ClInclude>
     <ClInclude Include="Sampler.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBinding.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Header Modules\Engine\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="PhongDif.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Phong.h">
+      <Filter>Shaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

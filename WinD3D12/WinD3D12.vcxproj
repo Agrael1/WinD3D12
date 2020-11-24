@@ -173,6 +173,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Codex.h" />
     <ClInclude Include="ColorBlend.h" />
+    <ClInclude Include="ConstantBinding.h" />
     <ClInclude Include="ConstantBuffers.h" />
     <ClInclude Include="DawnAdapter.h" />
     <ClInclude Include="Drawable.h" />
@@ -192,8 +193,11 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelException.h" />
+    <ClInclude Include="Panel.h" />
     <ClInclude Include="pch.h">
     </ClInclude>
+    <ClInclude Include="Phong.h" />
+    <ClInclude Include="PhongDif.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RasterizerState.h" />
@@ -221,6 +225,8 @@
     <Image Include="Assets\Square44x44Logo.scale-200.png" />
     <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Image Include="Assets\StoreLogo.png" />
+    <Image Include="Assets\Textures\brick_wall_diffuse.jpg" />
+    <Image Include="Assets\Textures\brick_wall_normal.jpg" />
     <Image Include="Assets\Textures\GoblinEye.jpg" />
     <Image Include="Assets\Textures\Mdif.png" />
     <Image Include="Assets\Textures\MNorm.tif" />

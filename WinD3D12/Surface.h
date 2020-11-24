@@ -9,8 +9,8 @@ namespace ver
 	{
 	public:
 		winrt::Windows::Foundation::IAsyncAction
-			LoadTextureAsync(const ver::Graphics& gfx, std::string_view tex_name, Texture* out);
-		void LoadTexture(const ver::Graphics& gfx, std::string_view tex_name, Texture* out);
+			LoadTextureAsync(const ver::Graphics& gfx, std::string_view tex_name, Texture* out, uint32_t slot);
+		void LoadTexture(const ver::Graphics& gfx, std::string_view tex_name, Texture* out, uint32_t slot);
 	public:
 		UINT GetWidth()const noexcept;
 		UINT GetHeight()const noexcept;

@@ -1,24 +1,34 @@
 #pragma once
-#include "Bindable.h"
+#include "ConstantBinding.h"
 
 namespace ver
 {
-	class Texture : public Bindable
+	class Texture : public XConstantBinding<Texture>
 	{
 	public:
+		struct Descriptor
+		{
+			wgpu::TextureDescriptor desc;
+			const uint8_t* data;
+			size_t dataSize; 
+			uint32_t stride; 
+			uint32_t bindingSlot;
+			bool alpha;
+		};
+	public:
 		Texture()noexcept = default;
-		Texture(const Graphics& gfx, wgpu::TextureDescriptor& desc, const uint8_t* data, size_t dataSize, uint32_t stride, bool alpha)
+		Texture(const Graphics& gfx, const Descriptor& desc)
 			:
 			texview {
 				.nextInChain = nullptr,
-				.texture = GetDevice(gfx).CreateTexture(&desc),
+				.texture = GetDevice(gfx).CreateTexture(&desc.desc),
 				.mipLevel = 0,
 				.origin{0,0,0},
 				.aspect = wgpu::TextureAspect::All
-			}, dimensions(desc.size), stride(uint32_t(stride)), usesalpha(alpha)
+			}, dimensions(desc.desc.size), stride(desc.stride), usesalpha(desc.alpha)
 			
 		{
-			Write(gfx, data, dataSize);
+			Write(gfx, desc.data, desc.dataSize);
 		}
 	public:
 		std::string_view GetName()const noexcept
@@ -39,6 +49,34 @@ namespace ver
 		bool UsesAlpha()const noexcept
 		{
 			return usesalpha;
+		}
+	public:
+		wgpu::BindGroupLayoutEntry GetLayout()const noexcept
+		{
+			return
+			{
+				.binding = slot,
+				.visibility = wgpu::ShaderStage::Fragment,
+				.type = wgpu::BindingType::SampledTexture,
+				.hasDynamicOffset = false,
+				.minBufferBindingSize = 0,
+				.multisampled = false,
+				.viewDimension = wgpu::TextureViewDimension::e2D,
+				.textureComponentType = wgpu::TextureComponentType::Float,
+				.storageTextureFormat = wgpu::TextureFormat::BGRA8Unorm
+			};
+		}
+		wgpu::BindGroupEntry GetEntryDesc()const noexcept
+		{
+			return
+			{
+				.binding = slot,
+				.buffer = nullptr,
+				.offset = 0,
+				.size = stride*dimensions.height,
+				.sampler = nullptr,
+				.textureView = texview.texture.CreateView(),
+			};
 		}
 	private:
 		wgpu::TextureCopyView texview;
