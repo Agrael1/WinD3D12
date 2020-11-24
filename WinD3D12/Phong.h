@@ -1,6 +1,27 @@
 #pragma once
 #include "ShaderPair.h"
 
+//cbuffer CBuf
+//{
+//	matrix modelView;
+//	matrix modelViewProj;
+//};
+//
+//struct VSOut
+//{
+//	float3 viewPos : Position;
+//	float3 viewNormal : Normal;
+//	float4 pos : SV_Position;
+//};
+//
+//VSOut main(float3 pos : Position, float3 n : Normal)
+//{
+//	VSOut vso;
+//	vso.viewPos = (float3)mul(float4(pos, 1.0f), modelView);
+//	vso.viewNormal = mul(n, (float3x3)modelView);
+//	vso.pos = mul(float4(pos, 1.0f), modelViewProj);
+//	return vso;
+//}
 const uint32_t Phong_VS[] = {
 	0x07230203,0x00010000,0x0008000a,0x0000005b,0x00000000,0x00020011,0x00000001,0x0006000b,
 	0x00000001,0x4c534c47,0x6474732e,0x3035342e,0x00000000,0x0003000e,0x00000000,0x00000001,
@@ -82,6 +103,112 @@ const uint32_t Phong_VS[] = {
 	0x0003003e,0x0000003f,0x0000003d,0x0004003d,0x0000000a,0x00000040,0x00000011,0x000200fe,
 	0x00000040,0x00010038
 };
+
+//	struct LightVectorData
+//	{
+//		float3 vToL;
+//		float3 dirToL;
+//		float distToL;
+//	};
+//	
+//	LightVectorData CalculateLightVectorData(const in float3 lightPos, const in float3 fragPos)
+//	{
+//		LightVectorData lv;
+//		lv.vToL = lightPos - fragPos;
+//		lv.distToL = length(lv.vToL);
+//		lv.dirToL = lv.vToL / lv.distToL;
+//		return lv;
+//	}
+//	
+//	float3 MapNormal(
+//		const in float3 tan,
+//		const in float3 bitan,
+//		const in float3 normal,
+//		const in float2 tc,
+//		uniform Texture2D nmap,
+//		uniform SamplerState splr)
+//	{
+//		// build the tranform (rotation) into same space as tan/bitan/normal (target space)
+//		const float3x3 tanToTarget = float3x3(tan, bitan, normal);
+//		// sample and unpack the normal from texture into target space   
+//		const float3 normalSample = nmap.Sample(splr, tc).xyz;
+//		const float3 tanNormal = normalSample * 2.0f - 1.0f;
+//		// bring normal from tanspace into target space
+//		return normalize(mul(tanNormal, tanToTarget));
+//	}
+//	
+//	float Attenuate(uniform float attConst, uniform float attLin, uniform float attQuad, const in float distFragToL)
+//	{
+//		return 1.0f / (attConst + attLin * distFragToL + attQuad * (distFragToL * distFragToL));
+//	}
+//	
+//	float3 Diffuse(
+//		uniform float3 diffuseColor,
+//		uniform float diffuseIntensity,
+//		const in float att,
+//		const in float3 viewDirFragToL,
+//		const in float3 viewNormal)
+//	{
+//		return diffuseColor * diffuseIntensity * att * max(0.0f, dot(viewDirFragToL, viewNormal));
+//	}
+//	
+//	float3 Speculate(
+//		const in float3 specularColor,
+//		uniform float specularIntensity,
+//		const in float3 viewNormal,
+//		const in float3 viewFragToL,
+//		const in float3 viewPos,
+//		const in float att,
+//		const in float specularPower)
+//	{
+//		// calculate reflected light vector
+//		const float3 w = viewNormal * dot(viewFragToL, viewNormal);
+//		const float3 r = normalize(w * 2.0f - viewFragToL);
+//		// vector from camera to fragment (in view space)
+//		const float3 viewCamToFrag = normalize(viewPos);
+//		// calculate specular component color based on angle between
+//		// viewing vector and reflection vector, narrow with power function
+//		return att * specularColor * specularIntensity * pow(max(0.0f, dot(-r, viewCamToFrag)), specularPower);
+//	}
+//	
+//	
+//	cbuffer PointLightCBuf : register(b1)
+//	{
+//		float3 viewLightPos;
+//		float3 ambient;
+//		float3 diffuseColor;
+//		float diffuseIntensity;
+//		float attConst;
+//		float attLin;
+//		float attQuad;
+//	};
+//	cbuffer ObjectCBuf : register(b2)
+//	{
+//		float3 materialColor;
+//		float3 specularColor;
+//		float specularWeight;
+//		float specularGloss;
+//	};
+//	
+//	
+//	float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal) : SV_Target
+//	{
+//		// normalize the mesh normal
+//		viewNormal = normalize(viewNormal);
+//	// fragment to light vector data
+//	const LightVectorData lv = CalculateLightVectorData(viewLightPos, viewFragPos);
+//	// attenuation
+//	const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
+//	// diffuse
+//	const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, viewNormal);
+//	// specular
+//	const float3 specular = Speculate(
+//		diffuseColor * diffuseIntensity * specularColor, specularWeight, viewNormal,
+//		lv.vToL, viewFragPos, att, specularGloss
+//	);
+//	// final color
+//	return float4(saturate((diffuse + ambient) * materialColor + specular), 1.0f);
+//	}
 const uint32_t Phong_PS[] = {
 	0x07230203,0x00010000,0x0008000a,0x000000e2,0x00000000,0x00020011,0x00000001,0x0006000b,
 	0x00000001,0x4c534c47,0x6474732e,0x3035342e,0x00000000,0x0003000e,0x00000000,0x00000001,

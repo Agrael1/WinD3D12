@@ -31,8 +31,8 @@ namespace ver
 		}
 		void Submit(wgpu::RenderPassEncoder& pass) const noexcept
 		{
-			//mesh.Submit(pass);
 			pass.SetBindGroup(0, bindGroup, 0, 0);
+			//mesh.Submit(pass);
 		}
 		void Bind(Graphics& gfx, DirectX::FXMMATRIX view)const noexcept
 		{
