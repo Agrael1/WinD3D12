@@ -12,7 +12,7 @@ namespace ver
 	{
 	public:
 		VeritasEngine(uint32_t width, uint32_t height, const XWindow& wnd)
-			:gfx(width, height, wnd), light(gfx, 0.5f), tri(gfx),
+			:gfx(width, height, wnd),/* light(gfx, 0.5f), tri(gfx),*/
 			panel(gfx)
 			/*x(gfx, "Assets\\GoblinX.obj")*/
 		{
@@ -38,8 +38,8 @@ namespace ver
 	private:
 		void Render()
 		{
-			gfx.SetCamera(cam.GetViewMatrix());
-			light.Bind(gfx, cam.GetViewMatrix());
+			//gfx.SetCamera(cam.GetViewMatrix());
+			//light.Bind(gfx, cam.GetViewMatrix());
 			float dt = 0.05f;
 			//tri.Step(gfx, dt);
 			panel.Step(gfx, dt);
@@ -47,7 +47,7 @@ namespace ver
 			gfx.StartFrame();
 			{
 				auto pass = gfx.StartPass();
-				light.Submit(pass);
+				//light.Submit(pass);
 				panel.Submit(pass);
 				//tri.Submit(pass);
 			}
@@ -61,13 +61,13 @@ namespace ver
 		}
 	private:
 		Graphics gfx;
-		Camera cam;
+		//Camera cam;
 		//Model x;
 		Panel panel;
 
 		bool bWindowClosed = false;
 		bool bVisible = true;
-		PointLight light;
-		Triangle tri;
+		//PointLight light;
+		//Triangle tri;
 	};
 }
