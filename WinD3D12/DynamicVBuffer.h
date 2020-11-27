@@ -2,7 +2,7 @@
 #include "DynamicVertex.h"
 #include "AlignedAllocator.h"
 #include <vector>
-
+#include <concepts>
 
 namespace ver::dv
 {
@@ -11,6 +11,8 @@ namespace ver::dv
 
 	template<VertexLayout::ElementType type, typename T>
 	concept is_map_type = requires{  std::is_same_v<typename VertexLayout::Map<type>::SysType, T>; };
+
+
 
 	class VertexBuffer;
 

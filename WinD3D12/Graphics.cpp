@@ -2,6 +2,10 @@
 #include "DawnAdapter.h"
 #include "Graphics.h"
 
+void ErrorCallback(WGPUErrorType type, char const* message, void* userdata)
+{
+	if (0);
+}
 
 ver::Graphics::Graphics(uint32_t width, uint32_t height, const XWindow& wnd)
 	:width(width), height(height)
@@ -19,6 +23,7 @@ ver::Graphics::Graphics(uint32_t width, uint32_t height, const XWindow& wnd)
 	colorDesc.clearColor.g = 0.3f;
 	colorDesc.clearColor.b = 0.3f;
 	colorDesc.clearColor.a = 1.0f;
+	device.SetUncapturedErrorCallback(ErrorCallback, nullptr);
 }
 
 void ver::Graphics::Present()

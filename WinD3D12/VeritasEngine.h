@@ -38,7 +38,7 @@ namespace ver
 	private:
 		void Render()
 		{
-			//gfx.SetCamera(cam.GetViewMatrix());
+			gfx.SetCamera(cam.GetViewMatrix());
 			//light.Bind(gfx, cam.GetViewMatrix());
 			float dt = 0.05f;
 			//tri.Step(gfx, dt);
@@ -61,7 +61,7 @@ namespace ver
 		}
 	private:
 		Graphics gfx;
-		//Camera cam;
+		Camera cam;
 		//Model x;
 		Panel panel;
 
