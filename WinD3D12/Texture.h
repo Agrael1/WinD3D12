@@ -26,9 +26,9 @@ namespace ver
 				.origin{0,0,0},
 				.aspect = wgpu::TextureAspect::All
 			}, dimensions(desc.desc.size), stride(desc.stride), usesalpha(desc.alpha)
-			
 		{
 			Write(gfx, desc.data, desc.dataSize);
+			slot = desc.bindingSlot;
 		}
 	public:
 		std::string_view GetName()const noexcept

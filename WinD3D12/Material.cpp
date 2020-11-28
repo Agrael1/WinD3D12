@@ -51,6 +51,7 @@ void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, cons
 	dc::Layout pscLayout;
 	bool hasTexture = false;
 	bool hasGlossAlpha = false;
+	uint8_t texOffset = 3;
 
 	aiString aitexFileName;
 
@@ -61,7 +62,7 @@ void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, cons
 			hasTexture = true;
 			shaderCode += "Dif";
 			vtxLayout.Add(VType::Texture2D);
-			textures[0] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), 0);
+			textures[0] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), texOffset++);
 		}
 		else
 		{
@@ -82,7 +83,7 @@ void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, cons
 			pscLayout.Add({
 				{"useGlossAlpha", dc::Type::Bool, },
 				{"useSpecularMap", dc::Type::Bool} });
-			textures[1] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), 1);
+			textures[1] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), texOffset++);
 		}
 		pscLayout.Add({
 			{"specularColor", dc::Type::Float3},
@@ -99,7 +100,7 @@ void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, cons
 			vtxLayout.Add(VType::Tangent);
 			vtxLayout.Add(VType::Bitangent);
 
-			textures[2] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), 2);
+			textures[2] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), texOffset++);
 			pscLayout.Add({
 				{"useNormalMap"   , dc::Type::Bool },
 				{"normalMapWeight", dc::Type::Float} });
@@ -121,10 +122,11 @@ void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, cons
 		}
 		if (hasTexture)
 		{
-			Sampler sample{ gfx };
+			Sampler sample{ gfx , texOffset };
 			bg.BindResource(sample);
 		}
 
+		
 	//	step.AddBindable(std::make_shared<TransformCbuf>(gfx, 0u));
 	//	auto pvs = VertexShader::Resolve(gfx, shaderCode + "_VS.cso");
 	//	auto pvsbc = pvs->GetBytecode();

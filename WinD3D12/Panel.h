@@ -2,7 +2,7 @@
 #include "Drawable.h"
 #include "Pipeline.h"
 #include "TransformCBuf.h"
-#include "Phong.h"
+#include "PhongDif.h"
 #include "Surface.h"
 #include "Sampler.h"
 #include "PhongLightLayout.h"
@@ -25,10 +25,10 @@ namespace ver
 			x[2].SetAttributeByIndex(1, DirectX::XMFLOAT3{ 0.0f, 0.0f, -1.0f });
 			x[3].SetAttributeByIndex(1, DirectX::XMFLOAT3{ 0.0f, 0.0f, -1.0f });
 
-			//x[0].SetAttributeByIndex(2, DirectX::XMFLOAT2{ 0.0f, 0.0f });
-			//x[1].SetAttributeByIndex(2, DirectX::XMFLOAT2{ 0.0f, 1.0f });
-			//x[2].SetAttributeByIndex(2, DirectX::XMFLOAT2{ 1.0f, 1.0f });
-			//x[3].SetAttributeByIndex(2, DirectX::XMFLOAT2{ 1.0f, 0.0f });
+			x[0].SetAttributeByIndex(2, DirectX::XMFLOAT2{ 0.0f, 0.0f });
+			x[1].SetAttributeByIndex(2, DirectX::XMFLOAT2{ 0.0f, 1.0f });
+			x[2].SetAttributeByIndex(2, DirectX::XMFLOAT2{ 1.0f, 1.0f });
+			x[3].SetAttributeByIndex(2, DirectX::XMFLOAT2{ 1.0f, 0.0f });
 			return x;
 		}
 	public:
@@ -36,13 +36,14 @@ namespace ver
 			:pixelBuf(gfx, colorConst, 2),
 			cbuf(gfx)
 		{
-			std::shared_ptr<Shader> rvs = Shader::Resolve(gfx, Phong, ShaderPair::Type::Vertex);
-			std::shared_ptr<Shader> rps = Shader::Resolve(gfx, Phong, ShaderPair::Type::Pixel);
+			std::shared_ptr<Shader> rvs = Shader::Resolve(gfx, PhongDif, ShaderPair::Type::Vertex);
+			std::shared_ptr<Shader> rps = Shader::Resolve(gfx, PhongDif, ShaderPair::Type::Pixel);
 
 			constexpr dv::VertexLayout vl
 			{ {
 				VType::Position3D,
-				VType::Normal
+				VType::Normal,
+				VType::Texture2D
 			} };
 
 			constexpr uint16_t indxData[] = {
@@ -53,16 +54,17 @@ namespace ver
 			vBuffer.emplace(gfx, a.data());
 			iBuffer.emplace(gfx, indxData);
 
-			//Texture t;
-			//SurfaceLoader sl;
-			//sl.LoadTexture(gfx, "Assets\\Textures\\brick_wall_diffuse.jpg", &t, 0);
-			//Sampler sample(gfx);
-
-			
+			Texture t;
+			SurfaceLoader sl;
+			sl.LoadTexture(gfx, "Assets\\Textures\\brick_wall_diffuse.jpg", &t, 3);
+			Sampler sample(gfx, 4);
+	
 
 			BindGroup xbg1{ gfx, bindGroup };
 			xbg1.BindResource(cbuf);
 			xbg1.BindResource(pixelBuf);
+			xbg1.BindResource(t);
+			xbg1.BindResource(sample);
 
 			Pipeline pipe{ gfx };
 			pipe.BindPixelShader(*rps);

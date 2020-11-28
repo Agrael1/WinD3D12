@@ -6,7 +6,7 @@ namespace ver
 	class Sampler : public XConstantBinding<Sampler>
 	{
 	public:
-		Sampler(const Graphics& gfx, wgpu::FilterMode type = wgpu::FilterMode::Linear, uint32_t xslot = 0)
+		Sampler(const Graphics& gfx, uint32_t xslot = 0, wgpu::FilterMode type = wgpu::FilterMode::Linear)
 		{
 
 			wgpu::SamplerDescriptorDummyAnisotropicFiltering y{};
@@ -36,7 +36,7 @@ namespace ver
 			{
 				.binding = slot,
 				.visibility = wgpu::ShaderStage::Fragment,
-				.type = wgpu::BindingType::Sampler,
+				.type = wgpu::BindingType::ComparisonSampler,
 				.hasDynamicOffset = false,
 				.minBufferBindingSize = 0,
 				.multisampled = false,
