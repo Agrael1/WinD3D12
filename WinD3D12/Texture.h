@@ -1,5 +1,6 @@
 #pragma once
 #include "ConstantBinding.h"
+#include "Surface.h"
 
 namespace ver
 {
@@ -17,34 +18,63 @@ namespace ver
 		};
 	public:
 		Texture()noexcept = default;
-		Texture(const Graphics& gfx, const Descriptor& desc)
-			:
-			texview {
-				.nextInChain = nullptr,
-				.texture = GetDevice(gfx).CreateTexture(&desc.desc),
-				.mipLevel = 0,
-				.origin{0,0,0},
-				.aspect = wgpu::TextureAspect::All
-			}, dimensions(desc.desc.size), stride(desc.stride), usesalpha(desc.alpha)
+		Texture(const Graphics& gfx, std::string_view path, uint32_t bindingslot)
+			:name(path)
 		{
-			Write(gfx, desc.data, desc.dataSize);
-			slot = desc.bindingSlot;
+			SurfaceLoader sl;
+			sl.LoadTexture(gfx, path);
+
+			wgpu::TextureDescriptor tdesc
+			{
+				.nextInChain = nullptr,
+				.label = name.c_str(),
+				.usage = wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::Sampled,
+				.dimension = wgpu::TextureDimension::e2D,
+				.size = {
+						.width = sl.GetWidth(),
+						.height = sl.GetHeight(),
+						.depth = 1
+				},
+				.format = wgpu::TextureFormat::BGRA8Unorm,
+				.mipLevelCount = sl.GetMipCount(),
+				.sampleCount = 1,
+			};
+			texture = GetDevice(gfx).CreateTexture(&tdesc);
+			fullsize = sl.GetFullSize();
+
+			for (uint32_t i = 0; i < tdesc.mipLevelCount; i++)
+			{
+				wgpu::TextureCopyView tcv
+				{
+					.nextInChain = nullptr,
+					.texture = texture,
+					.mipLevel = i,
+					.origin = wgpu::Origin3D{},
+					.aspect = wgpu::TextureAspect::All
+				};
+				auto mip = sl.GetImageDesc(i);
+				wgpu::TextureDataLayout tdl
+				{
+					.nextInChain = nullptr,
+					.offset = 0,
+					.bytesPerRow = uint32_t(mip.rowPitch),
+					.rowsPerImage = mip.height,
+				};
+				wgpu::Extent3D dims
+				{
+					.width = mip.width,
+					.height = mip.height,
+					.depth = 1
+				};
+				GetQueue(gfx).WriteTexture(&tcv, mip.pixels, mip.dataSize, &tdl, &dims);
+			}
+			
+			slot = bindingslot;
 		}
 	public:
 		std::string_view GetName()const noexcept
 		{
 			return name;
-		}
-		void Write(const Graphics& gfx, const uint8_t* data, size_t dataSize)
-		{
-			wgpu::TextureDataLayout x
-			{
-				.nextInChain = nullptr,
-				.offset = 0,
-				.bytesPerRow = stride,
-				.rowsPerImage = dimensions.height
-			};
-			GetQueue(gfx).WriteTexture(&texview, data, dataSize, &x, &dimensions);
 		}
 		bool UsesAlpha()const noexcept
 		{
@@ -73,16 +103,15 @@ namespace ver
 				.binding = slot,
 				.buffer = nullptr,
 				.offset = 0,
-				.size = stride*dimensions.height,
+				.size = fullsize,
 				.sampler = nullptr,
-				.textureView = texview.texture.CreateView(),
+				.textureView = texture.CreateView(),
 			};
 		}
 	private:
-		wgpu::TextureCopyView texview;
-		wgpu::Extent3D dimensions;
+		wgpu::Texture texture;
+		size_t fullsize = 0;
 		std::string name;
-		uint32_t stride = 0;
 		bool usesalpha = false;
 	};
 }

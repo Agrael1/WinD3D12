@@ -17,7 +17,7 @@ ConstructTextures(const ver::Graphics& gfx, std::span<std::string> textures, siz
 
 	for (size_t i = 0; auto & x : ret) {
 		if (!textures[i].empty())
-			surf.LoadTexture(gfx, textures[i], &x, i);
+			//surf.LoadTexture(gfx, textures[i], &x, i);
 		i++;
 	}
 
@@ -27,7 +27,7 @@ ver::Texture ExtractTexture(const ver::Graphics& gfx, std::string_view texture, 
 {
 	ver::Texture x;
 	ver::SurfaceLoader surf;
-	surf.LoadTexture(gfx, texture, &x, slot);
+	//surf.LoadTexture(gfx, texture, &x, slot);
 	return std::move(x);
 }
 

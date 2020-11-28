@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Surface.h"
-
-#include <ppl.h>
+#include <chrono>
 
 
 namespace ver
@@ -20,63 +19,38 @@ namespace ver
 	{
 		return (UINT)image.GetPixelsSize() / GetHeight();
 	}
+	uint32_t SurfaceLoader::GetMipCount() const noexcept
+	{
+		return uint32_t(image.GetImageCount());
+	}
 	bool SurfaceLoader::UsesAlpha()const noexcept
 	{
 		return !image.IsAlphaAllOpaque();
 	}
-	uint8_t* SurfaceLoader::GetBufferPtr()const noexcept
+	size_t SurfaceLoader::GetFullSize() const noexcept
 	{
-		return image.GetPixels();
+		return image.GetPixelsSize();
 	}
-	winrt::Windows::Foundation::IAsyncAction
-		SurfaceLoader::LoadTextureAsync(const ver::Graphics& gfx, std::string_view tex_name, Texture* out, uint32_t slot)
+	uint8_t* SurfaceLoader::GetImage(size_t mip) const noexcept
 	{
-		auto textureData = co_await loader.ReadDataAsync(winrt::to_hstring(tex_name.data()));
-		HRESULT hr = DirectX::LoadFromWICMemory(textureData.data(), textureData.Length(), 
-			DirectX::WIC_FLAGS_NONE, nullptr, image);
+		return image.GetImage(mip, 0, 0)->pixels;
+	}
 
-		winrt::check_hresult(hr);//remove
+	SurfaceLoader::MipDescriptor SurfaceLoader::GetImageDesc(size_t mip) const noexcept
+	{
+		auto x = image.GetImage(mip, 0, 0);
 
-		if (image.GetImage(0, 0, 0)->format != format)
+		return
 		{
-			DirectX::ScratchImage converted;
-			hr = DirectX::Convert(
-				*image.GetImage(0, 0, 0),
-				format,
-				DirectX::TEX_FILTER_DEFAULT,
-				DirectX::TEX_THRESHOLD_DEFAULT,
-				converted
-			);
-			
-			winrt::check_hresult(hr);//remove
-			image = std::move(converted);
-		}
-
-		Texture::Descriptor desc
-		{
-			.desc = {
-				.nextInChain = nullptr,
-				.label = nullptr,
-				.usage = wgpu::TextureUsage::CopyDst,
-				.dimension = wgpu::TextureDimension::e2D,
-				.size = wgpu::Extent3D{
-					.width = GetWidth(),
-					.height = GetHeight(),
-					.depth = 1
-					},
-				.format = wgpu::TextureFormat::BGRA8Unorm,
-				.mipLevelCount = 1,
-				.sampleCount = 1
-			},
-			.data = GetBufferPtr(),
-			.dataSize = image.GetPixelsSize(),
-			.stride = GetStride(),
-			.bindingSlot = slot,
-			.alpha = UsesAlpha()
+			.width = uint32_t(x->width),
+			.height = uint32_t(x->height),
+			.rowPitch = x->rowPitch,
+			.dataSize = x->slicePitch,
+			.pixels = x->pixels
 		};
-		std::construct_at(out, gfx, desc);
 	}
-	void SurfaceLoader::LoadTexture(const ver::Graphics& gfx, std::string_view tex_name, Texture* out, uint32_t slot)
+	
+	void SurfaceLoader::LoadTexture(const ver::Graphics& gfx, std::string_view tex_name)
 	{
 		auto textureData = loader.ReadData(winrt::to_hstring(tex_name.data()));
 		HRESULT hr = DirectX::LoadFromWICMemory(textureData.data(), textureData.size(),
@@ -98,29 +72,9 @@ namespace ver
 			winrt::check_hresult(hr);//remove
 			image = std::move(converted);
 		}
-
-		Texture::Descriptor desc
-		{
-			.desc = {
-				.nextInChain = nullptr,
-				.label = nullptr,
-				.usage = wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::Sampled,
-				.dimension = wgpu::TextureDimension::e2D,
-				.size = wgpu::Extent3D{
-					.width = GetWidth(),
-					.height = GetHeight(),
-					.depth = 1
-					},
-				.format = wgpu::TextureFormat::BGRA8Unorm,
-				.mipLevelCount = 1,
-				.sampleCount = 1
-			},
-			.data = GetBufferPtr(),
-			.dataSize = image.GetPixelsSize(),
-			.stride = GetStride(),
-			.bindingSlot = slot,
-			.alpha = UsesAlpha()
-		};
-		std::construct_at(out, gfx, desc);
+		DirectX::ScratchImage mipped;
+		DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), 
+			image.GetMetadata(), DirectX::TEX_FILTER_DEFAULT, 0, mipped);
+		image = std::move(mipped);
 	}
 }

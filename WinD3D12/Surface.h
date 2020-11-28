@@ -1,22 +1,32 @@
 #pragma once
 #include <DirectXTex.h>
-#include "Texture.h"
 #include "FileReadWrite.h"
 
 namespace ver
 {
+	class Graphics;
+
 	class SurfaceLoader
 	{
+		struct MipDescriptor
+		{
+			uint32_t      width;
+			uint32_t      height;
+			size_t      rowPitch;
+			size_t      dataSize;
+			uint8_t* pixels;
+		};
 	public:
-		winrt::Windows::Foundation::IAsyncAction
-			LoadTextureAsync(const ver::Graphics& gfx, std::string_view tex_name, Texture* out, uint32_t slot);
-		void LoadTexture(const ver::Graphics& gfx, std::string_view tex_name, Texture* out, uint32_t slot);
+		void LoadTexture(const ver::Graphics& gfx, std::string_view tex_name);
 	public:
 		UINT GetWidth()const noexcept;
 		UINT GetHeight()const noexcept;
 		UINT GetStride()const noexcept;
+		uint32_t GetMipCount()const noexcept;
 		bool UsesAlpha()const noexcept;
-		uint8_t* GetBufferPtr()const noexcept;
+		size_t GetFullSize()const noexcept;
+		uint8_t* GetImage(size_t mip)const noexcept;
+		MipDescriptor GetImageDesc(size_t mip)const noexcept;
 	private:
 		DirectX::ScratchImage image;
 		static BasicReaderWriter loader;

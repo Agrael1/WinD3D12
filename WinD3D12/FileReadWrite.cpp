@@ -97,6 +97,8 @@ uint32_t BasicReaderWriter::WriteData(
     _In_ std::span<const uint8_t> fileData
 )
 {
+    auto x = this->m_location.Path() + filename;
+
     CREATEFILE2_EXTENDED_PARAMETERS extendedParams = { 0 };
     extendedParams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
     extendedParams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
@@ -107,7 +109,7 @@ uint32_t BasicReaderWriter::WriteData(
 
     winrt::file_handle file{
         CreateFile2(
-            filename.c_str(),
+            x.c_str(),
             GENERIC_WRITE,
             0,
             CREATE_ALWAYS,

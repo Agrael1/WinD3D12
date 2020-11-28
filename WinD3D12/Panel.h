@@ -3,7 +3,6 @@
 #include "Pipeline.h"
 #include "TransformCBuf.h"
 #include "PhongDif.h"
-#include "Surface.h"
 #include "Sampler.h"
 #include "PhongLightLayout.h"
 
@@ -54,9 +53,7 @@ namespace ver
 			vBuffer.emplace(gfx, a.data());
 			iBuffer.emplace(gfx, indxData);
 
-			Texture t;
-			SurfaceLoader sl;
-			sl.LoadTexture(gfx, "Assets\\Textures\\brick_wall_diffuse.jpg", &t, 3);
+			Texture t(gfx, "Assets\\Textures\\brick_wall_diffuse.jpg", 3);
 			Sampler sample(gfx, 4);
 	
 
