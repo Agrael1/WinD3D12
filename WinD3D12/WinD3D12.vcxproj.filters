@@ -38,6 +38,9 @@
     <ClCompile Include="Surface.cpp">
       <Filter>Source Code\Engine\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="PhongLightLayout.cpp">
+      <Filter>Source Code\Engine\Bindable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -350,6 +353,9 @@
     </ClInclude>
     <ClInclude Include="Phong.h">
       <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="PhongLightLayout.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

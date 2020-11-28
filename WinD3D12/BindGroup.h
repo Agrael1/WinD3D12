@@ -12,6 +12,11 @@ namespace ver
 		{
 
 		}
+		BindGroup(const Graphics& gfx, wgpu::BindGroup& write_to, const wgpu::BindGroupLayout& predefined)noexcept
+			:group(write_to), gfx(gfx), bgl(predefined)
+		{
+
+		}
 		~BindGroup()
 		{
 			if (!group)
@@ -22,20 +27,19 @@ namespace ver
 	public:
 		void BindResource(const ConstantBinding& resource)
 		{
-			bindings[next] = resource.GetEntryDesc();
-			bindingLayouts[next++] = resource.GetLayout();
+			if (!bgl)bindingLayouts[next] = resource.GetLayout();
+			bindings[next++] = resource.GetEntryDesc();
 		}
 		template<typename T>
 		void BindResource(const XConstantBinding<T>& resource)
 		{
-			bindings[next] = resource.GetEntryDesc();
-			bindingLayouts[next++] = resource.GetLayout();
+			if (!bgl) bindingLayouts[next] = resource.GetLayout();
+			bindings[next++] = resource.GetEntryDesc();
 		}
 		wgpu::BindGroup MakeBindGroup()const noexcept
 		{
-			if (!bgl) CookLayout();
 			wgpu::BindGroupDescriptor bgDesc = {};
-			bgDesc.layout = bgl;
+			bgDesc.layout = CookLayout();
 			bgDesc.entryCount = static_cast<uint32_t>(next);
 			bgDesc.entries = bindings.data();
 

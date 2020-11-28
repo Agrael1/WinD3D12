@@ -25,61 +25,21 @@ namespace ver
 		{
 			PSDesc.emplace(ps.GetStageDescriptor());
 		}
-		[[nodiscard]]wgpu::RenderPipeline CookPipeline(const BindGroup& bg)const noexcept
+		void SetBindGroup(const BindGroup& bg)
 		{
-			// pipeline layout (used by the render pipeline, released after its creation)
-			wgpu::PipelineLayoutDescriptor layoutDesc = {};
-			layoutDesc.bindGroupLayoutCount = 1;
-			layoutDesc.bindGroupLayouts = &bg.CookLayout();
-
-			// begin pipeline set-up
-			desc.layout = GetDevice(gfx).CreatePipelineLayout(&layoutDesc);
-
-			if (PSDesc)
-				desc.fragmentStage = &PSDesc.value();
-
-			if (pVL)
-			{
-				wgpu::VertexBufferLayoutDescriptor vertDesc = {};
-				vertDesc.arrayStride = pVL->Size();
-				vertDesc.attributeCount = uint32_t(pVL->GetElementCount());
-				vertDesc.attributes = pVL->GetDescs().data();
-				wgpu::VertexStateDescriptor vertState = {};
-				vertState.vertexBufferCount = 1;
-				vertState.vertexBuffers = &vertDesc;
-				desc.vertexState = &vertState;
-			}
-
-			desc.primitiveTopology = wgpu::PrimitiveTopology::TriangleList;
-
-			desc.sampleCount = 1;
-
-			// describe blend
-			wgpu::BlendDescriptor blendDesc = {};
-			blendDesc.operation = wgpu::BlendOperation::Add;
-			blendDesc.srcFactor = wgpu::BlendFactor::SrcAlpha;
-			blendDesc.dstFactor = wgpu::BlendFactor::OneMinusSrcAlpha;
-			wgpu::ColorStateDescriptor colorDesc = {};
-			colorDesc.format = gfx.GetSwapChainFormat();
-			colorDesc.alphaBlend = blendDesc;
-			colorDesc.colorBlend = blendDesc;
-			colorDesc.writeMask = wgpu::ColorWriteMask::All;
-
-			desc.colorStateCount = 1;
-			desc.colorStates = &colorDesc;
-
-			desc.sampleMask = 0xFFFFFFFF; // <-- Note: this currently causes Emscripten to fail (sampleMask ends up as -1, which trips an assert)
-
-			return GetDevice(gfx).CreateRenderPipeline(&desc);
+			bindGroupLayouts[counter++] = bg.CookLayout();
 		}
-		[[nodiscard]] wgpu::RenderPipeline CookPipeline(const BindGroup& bg1, const BindGroup& bg2)const noexcept
+		void SetRawLayout(const wgpu::BindGroupLayout& in)
+		{
+			bindGroupLayouts[counter++] = in;
+		}
+		[[nodiscard]]wgpu::RenderPipeline CookPipeline()const noexcept
 		{
 			// pipeline layout (used by the render pipeline, released after its creation)
-			wgpu::BindGroupLayout x[2] = {bg1.CookLayout(), bg2.CookLayout()};
 			wgpu::PipelineLayoutDescriptor layoutDesc = {};
-			layoutDesc.bindGroupLayoutCount = 2;
-			layoutDesc.bindGroupLayouts = x;
-			
+			layoutDesc.bindGroupLayoutCount = counter;
+			layoutDesc.bindGroupLayouts = bindGroupLayouts.data();
+
 			// begin pipeline set-up
 			desc.layout = GetDevice(gfx).CreatePipelineLayout(&layoutDesc);
 
@@ -123,7 +83,9 @@ namespace ver
 	private:
 		const ver::dv::VertexLayout* pVL;
 		std::optional<wgpu::ProgrammableStageDescriptor> PSDesc;
+		std::array<wgpu::BindGroupLayout, 4> bindGroupLayouts;
  		mutable wgpu::RenderPipelineDescriptor desc = {};
 		const Graphics& gfx;
+		uint32_t counter = 0;
 	};
 }

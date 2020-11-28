@@ -1,7 +1,7 @@
 #pragma once
 #include "ShaderPair.h"
 
-constexpr uint32_t SolidColorVS[] = {
+const uint32_t Solid_VS[] = {
 	0x07230203,0x00010000,0x0008000a,0x00000029,0x00000000,0x00020011,0x00000001,0x0006000b,
 	0x00000001,0x4c534c47,0x6474732e,0x3035342e,0x00000000,0x0003000e,0x00000000,0x00000001,
 	0x0007000f,0x00000000,0x00000004,0x6e69616d,0x00000000,0x00000022,0x00000025,0x00030003,
@@ -39,7 +39,7 @@ constexpr uint32_t SolidColorVS[] = {
 	0x00000009,0x0000001c,0x00000019,0x0000001a,0x0000001b,0x00000018,0x00050091,0x00000009,
 	0x0000001d,0x00000016,0x0000001c,0x000200fe,0x0000001d,0x00010038
 };
-constexpr uint32_t SolidColorPS[] = {
+const uint32_t Solid_PS[] = {
 	0x07230203,0x00010000,0x0008000a,0x00000018,0x00000000,0x00020011,0x00000001,0x0006000b,
 	0x00000001,0x4c534c47,0x6474732e,0x3035342e,0x00000000,0x0003000e,0x00000000,0x00000001,
 	0x0006000f,0x00000004,0x00000004,0x6e69616d,0x00000000,0x00000016,0x00030010,0x00000004,
@@ -64,10 +64,10 @@ constexpr uint32_t SolidColorPS[] = {
 
 constexpr ShaderPair SolidColor =
 {
-	.VSShaderTag = "SolidColorVS",
-	.PSShaderTag = "SolidColorPS",
+	.VSShaderTag = "Solid_VS",
+	.PSShaderTag = "Solid_PS",
 	.VSShaderEntry = "main",
 	.PSShaderEntry = "main",
-	.VSShaderBytecode = SolidColorVS,
-	.PSShaderBytecode = SolidColorPS
+	.VSShaderBytecode = Solid_VS,
+	.PSShaderBytecode = Solid_PS
 };

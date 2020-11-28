@@ -37,7 +37,8 @@ namespace ver
 			pipe.BindPixelShader(*rps);
 			pipe.BindVertexShader(*rvs);
 			pipe.BindVertexLayout(vl);
-			pipeline = pipe.CookPipeline(bg);
+			pipe.SetBindGroup(bg);
+			pipeline = pipe.CookPipeline();
 		}
 	public:
 		void SetPos(DirectX::XMFLOAT3 xpos)noexcept

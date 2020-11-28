@@ -5,6 +5,7 @@
 #include "Phong.h"
 #include "Surface.h"
 #include "Sampler.h"
+#include "PhongLightLayout.h"
 
 namespace ver
 {
@@ -33,7 +34,7 @@ namespace ver
 	public:
 		Panel(const Graphics& gfx)
 			:pixelBuf(gfx, colorConst, 2),
-			cbuf(gfx), ccbuf(gfx, rce, 1)
+			cbuf(gfx)
 		{
 			std::shared_ptr<Shader> rvs = Shader::Resolve(gfx, Phong, ShaderPair::Type::Vertex);
 			std::shared_ptr<Shader> rps = Shader::Resolve(gfx, Phong, ShaderPair::Type::Pixel);
@@ -59,32 +60,23 @@ namespace ver
 
 			
 
-			BindGroup xbg2{ gfx, bindGroup };
-			xbg2.BindResource(cbuf);
-			xbg2.BindResource(pixelBuf);
-
-			BindGroup xbg1{ gfx, bg2 };
-			xbg1.BindResource(ccbuf);
-
-			//bg.BindResource(cbuf);
-			//bg.BindResource(pixelBuf);
-			//bg.BindResource(t);
-			//bg.BindResource(sample);
-
-
+			BindGroup xbg1{ gfx, bindGroup };
+			xbg1.BindResource(cbuf);
+			xbg1.BindResource(pixelBuf);
 
 			Pipeline pipe{ gfx };
 			pipe.BindPixelShader(*rps);
 			pipe.BindVertexShader(*rvs);
 			pipe.BindVertexLayout(vl);
-			pipeline = pipe.CookPipeline(xbg1, xbg2);
+			pipe.SetBindGroup(xbg1);
+			pipe.SetRawLayout(PhongLightLayout::Get(gfx));
+			pipeline = pipe.CookPipeline();
 		}
 		virtual void Submit(wgpu::RenderPassEncoder& pass)const noexcept override
 		{
 			pass.SetPipeline(pipeline);
+			pass.SetBindGroup(0, bindGroup, 0, 0);
 
-			pass.SetBindGroup(1, bindGroup, 0, 0);
-			pass.SetBindGroup(0, bg2, 0, 0);
 
 			pass.SetVertexBuffer(0, *vBuffer, 0, 0);
 			pass.SetIndexBufferWithFormat(*iBuffer, iBuffer->GetFormat(), 0, 0);
@@ -104,19 +96,7 @@ namespace ver
 			float specularWeight;
 			float specularGloss;
 		}colorConst;
-		struct PointLightCBuf
-		{
-			DirectX::XMFLOAT3A pos{ 0.0f,0.0f,0.5f };
-			DirectX::XMFLOAT3A ambient{ 0.05f,0.05f,0.05f };
-			DirectX::XMFLOAT3 diffuse{1.0f,1.0f,1.0f};
-			float diffuseIntensity{ 1.0f };
-			float attConst{ .5f };
-			float attLin{ 0.045f };
-			float attQuad{ 0.0075f };
-		}rce;
 		PixelConstantBuffer<PSColorConstant> pixelBuf;
-		wgpu::BindGroup bg2;
-		PixelConstantBuffer<PointLightCBuf> ccbuf;
 		TransformCbuf cbuf;
 		float rotDeg = 0.0f;
 	};
