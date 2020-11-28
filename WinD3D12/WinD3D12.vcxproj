@@ -190,6 +190,8 @@
     <ClInclude Include="Future.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="IndexedTriangleList.h" />
+    <ClInclude Include="InputController.h" />
+    <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelException.h" />
@@ -245,6 +247,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="InputController.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="PhongLightLayout.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClInclude Include="App.h">

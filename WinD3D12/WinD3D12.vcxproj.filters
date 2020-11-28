@@ -31,7 +31,6 @@
     <ClCompile Include="Exception.cpp">
       <Filter>Source Code\Engine\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="ModelException.cpp" />
     <ClCompile Include="Material.cpp">
       <Filter>Source Code\Engine\Objects</Filter>
     </ClCompile>
@@ -40,6 +39,15 @@
     </ClCompile>
     <ClCompile Include="PhongLightLayout.cpp">
       <Filter>Source Code\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelException.cpp">
+      <Filter>Source Code\Engine\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="InputController.cpp">
+      <Filter>Source Code\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Source Code\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +169,12 @@
     </Filter>
     <Filter Include="Assets\Textures">
       <UniqueIdentifier>{1a5dec13-4efd-4950-8191-a7600a7cf5c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Input">
+      <UniqueIdentifier>{07c1c73c-3d7f-465a-8066-81771f8b86cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Modules\Input">
+      <UniqueIdentifier>{7b973ead-932a-4c8c-9e48-9a39661d0c57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -356,6 +370,12 @@
     </ClInclude>
     <ClInclude Include="PhongLightLayout.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Header Modules\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="InputController.h">
+      <Filter>Header Modules\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
