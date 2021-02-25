@@ -1,6 +1,5 @@
 #pragma once
 #include <DirectXMath.h>
-#include <Dawn/webgpu_cpp.h>
 #include <DawnAdapter.h>
 
 

@@ -1,5 +1,6 @@
-#include "VeritasEngine.h"
 #include <optional>
+
+import VeritasEngine;
 
 class App : public implements<App, IFrameworkViewSource, IFrameworkView>
 {

@@ -1,10 +1,14 @@
 #pragma once
+#ifndef VMODULE
 #include "DynamicVertex.h"
 #include "AlignedAllocator.h"
 #include <vector>
 #include <concepts>
+#define VEXPORT
+import DirectXMath;
+#endif
 
-namespace ver::dv
+VEXPORT namespace ver::dv
 {
 	template<VertexLayout::ElementType type>
 	concept has_code_map = requires{VertexLayout::Map<type>::code != "!INV!"; };

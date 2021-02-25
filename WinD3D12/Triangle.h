@@ -1,8 +1,6 @@
 #pragma once
-#include "Drawable.h"
-#include "Pipeline.h"
-#include "TransformCBuf.h"
 #include "SolidColor.h"
+import Drawable;
 
 namespace ver
 {

@@ -1,9 +1,13 @@
 #pragma once
-#include <DirectXPackedVector.h>
+#ifndef VMODULE
 #include <assimp/scene.h>
 #include <dawn/webgpu_cpp.h>
 #include <array>
 #include <span>
+#include <cassert>
+#define VEXPORT
+import DirectXMath;
+#endif
 
 #define DVTX_ELEMENT_AI_EXTRACTOR(member) static SysType Extract( const aiMesh& mesh, size_t i ) noexcept {return *reinterpret_cast<const SysType*>(&mesh.member[i]);}
 
@@ -19,7 +23,8 @@
 	X( Float4Color ) \
 	X( RGBAColor ) 
 
-namespace ver::dv
+
+VEXPORT namespace ver::dv
 {
 	constexpr const size_t maxAttributes = 16;
 
@@ -304,7 +309,7 @@ namespace ver::dv
 	};
 }
 
- namespace ver
+VEXPORT namespace ver
 {
 	using VType = ver::dv::VertexLayout::ElementType;
 }

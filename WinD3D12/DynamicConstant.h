@@ -1,11 +1,14 @@
 #pragma once
+#ifndef VMODULE
 #include <cassert>
-#include <DirectXMath.h>
 #include <memory>
 #include <string>
 #include <optional>
 #include <vector>
 #include <span>
+import DirectXMath;
+#define VEXPORT
+#endif
 
 #define LEAF_ELEMENT_TYPES \
 	X(Float)\
@@ -16,7 +19,9 @@
 	X(Bool)\
 	X(Integer)
 
-namespace ver::dc
+
+
+VEXPORT namespace ver::dc
 {
 	namespace dx = DirectX;
 
@@ -234,7 +239,7 @@ namespace ver::dc
 				return &static_cast<T&>(*ref);
 			}
 		private:
-			Ptr(ElementRef* ref) noexcept;
+			Ptr(ElementRef* ref) noexcept :ref(ref) {}
 			ElementRef* ref;
 		};
 	public:

@@ -1,61 +1,23 @@
 #pragma once
 #include "ConstantBuffers.h"
-#include "ConstantBinding.h"
 
 namespace ver
 {
 	class BindGroup : public Bindable
 	{
 	public:
-		BindGroup(const Graphics& gfx, wgpu::BindGroup& write_to)noexcept
-			:group(write_to), gfx(gfx)
-		{
-
-		}
-		BindGroup(const Graphics& gfx, wgpu::BindGroup& write_to, const wgpu::BindGroupLayout& predefined)noexcept
-			:group(write_to), gfx(gfx), bgl(predefined)
-		{
-
-		}
-		~BindGroup()
-		{
-			if (!group)
-			{
-				group = MakeBindGroup();
-			}
-		}
+		BindGroup(const Graphics& gfx, wgpu::BindGroup& write_to)noexcept;
+		BindGroup(const Graphics& gfx, wgpu::BindGroup& write_to, const wgpu::BindGroupLayout& predefined)noexcept;
+		~BindGroup();
 	public:
-		void BindResource(const ConstantBinding& resource)
-		{
-			if (!bgl)bindingLayouts[next] = resource.GetLayout();
-			bindings[next++] = resource.GetEntryDesc();
-		}
-		template<typename T>
-		void BindResource(const XConstantBinding<T>& resource)
+		template<typename T, typename R>
+		void BindResource(const ConstantBinding<T, R>& resource)
 		{
 			if (!bgl) bindingLayouts[next] = resource.GetLayout();
 			bindings[next++] = resource.GetEntryDesc();
 		}
-		wgpu::BindGroup MakeBindGroup()const noexcept
-		{
-			wgpu::BindGroupDescriptor bgDesc = {};
-			bgDesc.layout = CookLayout();
-			bgDesc.entryCount = static_cast<uint32_t>(next);
-			bgDesc.entries = bindings.data();
-
-			return GetDevice(gfx).CreateBindGroup(&bgDesc);
-		}
-		wgpu::BindGroupLayout& CookLayout()const noexcept
-		{
-			if (!bgl)
-			{
-				wgpu::BindGroupLayoutDescriptor bglDesc = {};
-				bglDesc.entryCount = static_cast<uint32_t>(next);
-				bglDesc.entries = bindingLayouts.data();
-				return bgl = GetDevice(gfx).CreateBindGroupLayout(&bglDesc);
-			}
-			return bgl;
-		}
+		wgpu::BindGroup MakeBindGroup()const noexcept;
+		wgpu::BindGroupLayout& CookLayout()const noexcept;
 	private:
 		const Graphics& gfx;
 		wgpu::BindGroup& group;

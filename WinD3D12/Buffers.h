@@ -1,6 +1,7 @@
 #pragma once
-#include "Bindable.h"
-#include "DynamicVBuffer.h"
+import Dynamic;
+import Bindable;
+import std.core;
 
 namespace ver
 {

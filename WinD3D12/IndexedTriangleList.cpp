@@ -1,4 +1,16 @@
-#include "IndexedTriangleList.h"
+module;
+#include <vector>
+#include <cassert>
+module IndexedTriangleList;
+
+IndexedTriangleList::IndexedTriangleList(ver::dv::VertexBuffer verts, std::vector<unsigned short> inds)
+	:
+	vertices(std::move(verts)),
+	indices(std::move(inds))
+{
+	assert(vertices.Size() > 2);
+	assert(indices.size() % 3 == 0);
+}
 
 void IndexedTriangleList::Deform(DirectX::FXMMATRIX matrix) noexcept
 {

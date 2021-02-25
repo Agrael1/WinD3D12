@@ -12,23 +12,8 @@ namespace ver
 			DirectX::XMMATRIX modelViewProj;
 		}tr;
 	public:
-		TransformCbuf(const Graphics& gfx, uint32_t slot = 0u)
-			:ConstantBuffer(gfx, { wgpu::ShaderStage::Vertex, &tr, sizeof(tr), slot })
-		{
-
-		}
+		TransformCbuf(const Graphics& gfx, uint32_t slot = 0u);
 	public:
-		void Update(const Graphics& gfx, DirectX::XMMATRIX transform) noexcept
-		{
-			const auto modelView = transform * gfx.GetCamera();
-			tr = {
-				DirectX::XMMatrixTranspose(modelView),
-				DirectX::XMMatrixTranspose(
-					modelView *
-					gfx.GetProjection()
-				)
-			};
-			ConstantBuffer::Update(gfx, &tr, sizeof(tr));
-		}
+		void Update(const Graphics& gfx, DirectX::XMMATRIX transform) noexcept;
 	};
 }

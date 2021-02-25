@@ -1,7 +1,8 @@
 #pragma once
-#include "IndexedTriangleList.h"
 #include <optional>
+#include <cassert>
 
+import IndexedTriangleList;
 
 class Sphere
 {

@@ -1,7 +1,8 @@
 #pragma once
 #include "Codex.h"
-#include "ShaderPair.h"
 #include <fmt/printf.h>
+
+import ShaderPair;
 
 namespace ver
 {

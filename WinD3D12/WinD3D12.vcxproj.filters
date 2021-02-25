@@ -19,12 +19,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Code\Engine\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="FileReadWrite.cpp">
-      <Filter>Source Code\Engine\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="IndexedTriangleList.cpp">
-      <Filter>Source Code\Engine\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Buffers.cpp">
       <Filter>Source Code\Engine\Bindable</Filter>
     </ClCompile>
@@ -32,9 +26,6 @@
       <Filter>Source Code\Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>Source Code\Engine\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Surface.cpp">
       <Filter>Source Code\Engine\Objects</Filter>
     </ClCompile>
     <ClCompile Include="PhongLightLayout.cpp">
@@ -48,6 +39,114 @@
     </ClCompile>
     <ClCompile Include="Keyboard.cpp">
       <Filter>Source Code\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.h">
+      <Filter>Header Modules\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.ixx">
+      <Filter>Header Modules\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="BindGroup.cpp">
+      <Filter>Source Code\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderPair.ixx">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Codex.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipeline.cpp">
+      <Filter>Source Code\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="RasterizerState.cpp">
+      <Filter>Source Code\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampler.cpp">
+      <Filter>Source Code\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Code\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformCBuf.cpp">
+      <Filter>Source Code\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>Source Code\Engine\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXMath.ixx">
+      <Filter>Header Modules\Engine\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="Dynamic.ixx">
+      <Filter>Header Modules\Engine\Dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSphere.cpp">
+      <Filter>Source Code\Engine\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindables.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBinding.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="BindGroup.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffers.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipeline.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformCBuf.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampler.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="RasterizerState.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="PhongLightLayout.ixx">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable.ixx">
+      <Filter>Header Modules\Engine\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexedTriangleList.ixx">
+      <Filter>Header Modules\Engine\Meshes\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.ixx">
+      <Filter>Header Modules\Engine\Meshes\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Code\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexedTriangleList.cpp">
+      <Filter>Source Code\Engine\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="VeritasEngine.cpp">
+      <Filter>Source Code\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="VeritasEngine.ixx">
+      <Filter>Header Modules\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Source Code\Engine\Meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +275,9 @@
     <Filter Include="Header Modules\Input">
       <UniqueIdentifier>{7b973ead-932a-4c8c-9e48-9a39661d0c57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Code\Engine\Drawable">
+      <UniqueIdentifier>{7568cc47-0106-4394-a2fd-a78eeea1556f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props">
@@ -254,14 +356,8 @@
     <ClInclude Include="..\Shared\WinSetup.h">
       <Filter>Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics.h">
-      <Filter>Header Modules\Engine\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="VeritasEngine.h">
       <Filter>Header Modules\Engine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Bindable.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="Buffers.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
@@ -311,9 +407,6 @@
     <ClInclude Include="ColorBlend.h">
       <Filter>Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="FileReadWrite.h">
-      <Filter>Header Modules\Engine\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderPair.h">
       <Filter>Shaders</Filter>
     </ClInclude>
@@ -337,9 +430,6 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
-    </ClInclude>
-    <ClInclude Include="Surface.h">
-      <Filter>Header Modules\Engine\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Modules\Engine\Objects</Filter>

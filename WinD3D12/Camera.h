@@ -1,5 +1,5 @@
 #pragma once
-#include <DirectXMath.h>
+import DirectXMath;
 
 class Camera
 {

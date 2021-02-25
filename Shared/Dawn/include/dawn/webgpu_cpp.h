@@ -6,7 +6,9 @@
 
 namespace wgpu {
 
+#ifndef VMODULE
     static constexpr uint64_t kWholeSize = WGPU_WHOLE_SIZE;
+#endif
 
     enum class AdapterType : uint32_t {
         DiscreteGPU = 0x00000000,

@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
-#include <DirectXMath.h>
-#include "DynamicVBuffer.h"
+#include <cassert>
+
+import Dynamic;
 
 //only for 3d
 class IndexedTriangleList

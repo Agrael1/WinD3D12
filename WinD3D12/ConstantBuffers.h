@@ -1,20 +1,10 @@
 #pragma once
-#include "Buffers.h"
+import Buffers;
+import ConstantBinding;
 
 namespace ver
 {
-	class ConstantBinding : public Buffer
-	{
-	public:
-		using Buffer::Buffer;
-		using Buffer::operator const wgpu::Buffer&;
-		using Buffer::operator wgpu::Buffer&;
-	public:
-		virtual wgpu::BindGroupLayoutEntry GetLayout()const noexcept = 0;
-		virtual wgpu::BindGroupEntry GetEntryDesc()const noexcept = 0;
-	};
-
-	class ConstantBuffer : public ConstantBinding
+	class ConstantBuffer : public ConstantBinding<ConstantBuffer, Buffer>
 	{
 	public:
 		struct Desc
@@ -32,7 +22,7 @@ namespace ver
 
 		}
 	public:
-		wgpu::BindGroupLayoutEntry GetLayout()const noexcept override
+		wgpu::BindGroupLayoutEntry GetLayout()const noexcept
 		{
 			return
 			{
@@ -41,7 +31,7 @@ namespace ver
 				.type = wgpu::BindingType::UniformBuffer
 			};
 		}
-		wgpu::BindGroupEntry GetEntryDesc()const noexcept override
+		wgpu::BindGroupEntry GetEntryDesc()const noexcept
 		{
 			return
 			{
@@ -59,7 +49,7 @@ namespace ver
 
 
 	template<typename T>
-	class PixelConstantBuffer : public ConstantBinding
+	class PixelConstantBuffer : public ConstantBinding<ConstantBuffer, Buffer>
 	{
 	public:
 		PixelConstantBuffer(const Graphics& gfx, const T& constants, uint32_t slot = 0)
@@ -75,7 +65,7 @@ namespace ver
 
 		}
 	public:
-		wgpu::BindGroupLayoutEntry GetLayout()const noexcept override
+		wgpu::BindGroupLayoutEntry GetLayout()const noexcept
 		{
 			return
 			{
@@ -84,7 +74,7 @@ namespace ver
 				.type = wgpu::BindingType::UniformBuffer
 			};
 		}
-		wgpu::BindGroupEntry GetEntryDesc()const noexcept override
+		wgpu::BindGroupEntry GetEntryDesc()const noexcept
 		{
 			return
 			{

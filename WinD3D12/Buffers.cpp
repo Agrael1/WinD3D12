@@ -1,4 +1,7 @@
-#include "Buffers.h"
+module;
+#include "DawnAdapter.h"
+#include <span>
+module Buffers;
 
 ver::Buffer::Buffer(const Graphics& gfx, const void* data, size_t size, wgpu::BufferUsage usage)
 {

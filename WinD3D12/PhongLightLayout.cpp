@@ -1,4 +1,6 @@
-#include "PhongLightLayout.h"
+module;
+#include "DawnAdapter.h"
+module PhongLightLayout;
 
 ver::PhongLightLayout ver::PhongLightLayout::lbg;
 

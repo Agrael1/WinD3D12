@@ -1,6 +1,5 @@
 #pragma once
 #include <DirectXTex.h>
-#include "FileReadWrite.h"
 
 namespace ver
 {
@@ -29,7 +28,7 @@ namespace ver
 		MipDescriptor GetImageDesc(size_t mip)const noexcept;
 	private:
 		DirectX::ScratchImage image;
-		static BasicReaderWriter loader;
+		static class BasicReaderWriter loader;
 		static constexpr DXGI_FORMAT format = DXGI_FORMAT::DXGI_FORMAT_B8G8R8A8_UNORM;
 	};
 }

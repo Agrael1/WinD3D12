@@ -1,5 +1,5 @@
 #pragma once
-#include "ShaderPair.h"
+import ShaderPair;
 
 const uint32_t Solid_VS[] = {
 	0x07230203,0x00010000,0x0008000a,0x00000029,0x00000000,0x00020011,0x00000001,0x0006000b,

@@ -1,6 +1,7 @@
-#include "pch.h"
-#include "DawnAdapter.h"
-#include "Graphics.h"
+module;
+#include <DawnAdapter.h>
+module Graphics;
+import DirectXMath;
 
 void ErrorCallback(WGPUErrorType type, char const* message, void* userdata)
 {
@@ -10,9 +11,9 @@ void ErrorCallback(WGPUErrorType type, char const* message, void* userdata)
 ver::Graphics::Graphics(uint32_t width, uint32_t height, const XWindow& wnd)
 	:width(width), height(height)
 {
-	winrt::check_hresult(VFactory::CreateDevice(&device));
+	VFactory::CreateDevice(&device);
 	renderQueue = device.GetDefaultQueue();
-	winrt::check_hresult(VFactory::CreateSwapChain(&swap, device, wnd));
+	VFactory::CreateSwapChain(&swap, device, wnd);
 	swap.Configure(VFactory::GetSwapChainFormat(), wgpu::TextureUsage::OutputAttachment,
 		width, height);
 

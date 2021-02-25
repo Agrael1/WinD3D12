@@ -84,7 +84,7 @@ void App::OnResuming(const IInspectable&, const IInspectable&)
 
 void App::OnWindowActivationChanged(const CoreWindow&, const WindowActivatedEventArgs& args)
 {
-    engine->WindowActivationChanged(args.WindowActivationState());
+    engine->WindowActivationChanged(int(args.WindowActivationState()));
 }
 void App::OnWindowSizeChanged(const CoreWindow&, const WindowSizeChangedEventArgs&)
 {

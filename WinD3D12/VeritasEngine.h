@@ -1,7 +1,7 @@
 #pragma once
 #include "Camera.h"
 #include "PointLight.h"
-#include "Model.h"
+//#include "Model.h"
 #include "Panel.h"
 
 namespace ver
@@ -29,7 +29,7 @@ namespace ver
 		{
 			bVisible = Visible;
 		}
-		void WindowActivationChanged(CoreWindowActivationState)
+		void WindowActivationChanged(int)
 		{
 
 		}

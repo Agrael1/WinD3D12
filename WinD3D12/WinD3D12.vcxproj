@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210211.2\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210211.2\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -106,15 +106,18 @@
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</ConformanceMode>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ConformanceMode>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ConformanceMode>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;$(SolutionDir)WebGPUWinRT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;$(SolutionDir)WebGPUWinRT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;$(SolutionDir)WebGPUWinRT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;$(SolutionDir)WebGPUWinRT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">EditAndContinue</DebugInformationFormat>
       <EnableModules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableModules>
+      <EnableModules Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</EnableModules>
+      <EnableModules Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</EnableModules>
+      <EnableModules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</EnableModules>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalDependencies);User32.lib;dxguid.lib;$(outDir)*.lib;$(OutDir)..\WebGPUWinRT\WebGPUWinRT.lib</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalDependencies);User32.lib;dxguid.lib;$(OutDir)..\WebGPUWinRT\WebGPUWinRT.lib;$(outDir)*.lib</AdditionalDependencies>
     </Link>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">WindowsApp.lib;%(AdditionalDependencies);$(OutDir)WebGPUWinRT.lib</AdditionalDependencies>
@@ -137,10 +140,14 @@
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">true</ConformanceMode>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ConformanceMode>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;$(SolutionDir)WebGPUWinRT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;$(SolutionDir)WebGPUWinRT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;$(SolutionDir)WebGPUWinRT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Shared\Dawn\include;$(SolutionDir)Shared;$(SolutionDir)WebGPUWinRT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableModules Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</EnableModules>
+      <EnableModules Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">true</EnableModules>
+      <EnableModules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EnableModules>
+      <EnableModules Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EnableModules>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -152,6 +159,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bindables.ixx" />
+    <ClCompile Include="BindGroup.ixx" />
+    <ClCompile Include="Buffers.ixx" />
+    <ClCompile Include="Codex.ixx" />
+    <ClCompile Include="ConstantBinding.ixx" />
+    <ClCompile Include="ConstantBuffers.ixx" />
+    <ClCompile Include="DirectXMath.ixx" />
+    <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="Drawable.ixx" />
+    <ClCompile Include="Dynamic.ixx" />
+    <ClCompile Include="IndexedTriangleList.ixx" />
+    <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="PhongLightLayout.ixx" />
+    <ClCompile Include="Pipeline.cpp" />
+    <ClCompile Include="Pipeline.ixx" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="RasterizerState.cpp" />
+    <ClCompile Include="RasterizerState.ixx" />
+    <ClCompile Include="Sampler.cpp" />
+    <ClCompile Include="Sampler.ixx" />
+    <ClCompile Include="ShaderPair.ixx" />
+    <ClCompile Include="Shaders.ixx" />
+    <ClCompile Include="SolidSphere.cpp" />
+    <ClCompile Include="Sphere.ixx" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Texture.ixx" />
+    <ClCompile Include="TransformCBuf.ixx" />
+    <ClCompile Include="TransformCBuf.cpp" />
+    <ClCompile Include="VeritasEngine.cpp" />
+    <ClCompile Include="VeritasEngine.ixx" />
     <ClInclude Include="..\Shared\Dawn\include\dawn\dawn_proc.h" />
     <ClInclude Include="..\Shared\Dawn\include\dawn\dawn_proc_table.h" />
     <ClInclude Include="..\Shared\Dawn\include\dawn\dawn_wsi.h" />
@@ -167,7 +204,17 @@
     <ClInclude Include="..\Shared\Dawn\include\dawn_native\VulkanBackend.h" />
     <ClInclude Include="..\Shared\WinSetup.h" />
     <ClInclude Include="AlignedAllocator.h" />
-    <ClInclude Include="Bindable.h" />
+    <ClCompile Include="Bindable.h">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsHeaderUnit</CompileAs>
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClInclude Include="BindGroup.h" />
     <ClInclude Include="Buffers.h" />
     <ClInclude Include="Camera.h" />
@@ -186,9 +233,19 @@
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ConformanceMode>
     </ClInclude>
     <ClInclude Include="Exception.h" />
-    <ClInclude Include="FileReadWrite.h" />
     <ClInclude Include="Future.h" />
-    <ClInclude Include="Graphics.h" />
+    <ClCompile Include="Bindable.ixx" />
+    <ClCompile Include="BindGroup.cpp" />
+    <ClCompile Include="Graphics.h">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsHeaderUnit</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsHeaderUnit</CompileAs>
+    </ClCompile>
     <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="InputController.h" />
     <ClInclude Include="Keyboard.h" />
@@ -210,7 +267,6 @@
     <ClInclude Include="SolidColor.h" />
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />
-    <ClInclude Include="Surface.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformCBuf.h" />
     <ClInclude Include="Triangle.h" />
@@ -247,10 +303,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Graphics.ixx" />
     <ClCompile Include="InputController.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="PhongLightLayout.cpp" />
-    <ClCompile Include="Surface.cpp" />
     <ClInclude Include="App.h">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsHeaderUnit</CompileAs>
@@ -286,9 +342,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Exception.cpp" />
-    <ClCompile Include="FileReadWrite.cpp" />
     <ClCompile Include="Graphics.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="IndexedTriangleList.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -334,19 +389,19 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\directxmath.2020.8.3.1\build\native\directxmath.targets" Condition="Exists('..\packages\directxmath.2020.8.3.1\build\native\directxmath.targets')" />
     <Import Project="..\packages\fmt.7.0.1\build\fmt.targets" Condition="Exists('..\packages\fmt.7.0.1\build\fmt.targets')" />
-    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
-    <Import Project="..\packages\directxtex_uwp.2020.11.12.1\build\native\directxtex_uwp.targets" Condition="Exists('..\packages\directxtex_uwp.2020.11.12.1\build\native\directxtex_uwp.targets')" />
+    <Import Project="..\packages\directxmath.2021.1.11.2\build\native\directxmath.targets" Condition="Exists('..\packages\directxmath.2021.1.11.2\build\native\directxmath.targets')" />
+    <Import Project="..\packages\directxtex_uwp.2021.1.10.2\build\native\directxtex_uwp.targets" Condition="Exists('..\packages\directxtex_uwp.2021.1.10.2\build\native\directxtex_uwp.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210211.2\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210211.2\build\native\Microsoft.Windows.CppWinRT.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\directxmath.2020.8.3.1\build\native\directxmath.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxmath.2020.8.3.1\build\native\directxmath.targets'))" />
     <Error Condition="!Exists('..\packages\fmt.7.0.1\build\fmt.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\fmt.7.0.1\build\fmt.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.targets'))" />
-    <Error Condition="!Exists('..\packages\directxtex_uwp.2020.11.12.1\build\native\directxtex_uwp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtex_uwp.2020.11.12.1\build\native\directxtex_uwp.targets'))" />
+    <Error Condition="!Exists('..\packages\directxmath.2021.1.11.2\build\native\directxmath.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxmath.2021.1.11.2\build\native\directxmath.targets'))" />
+    <Error Condition="!Exists('..\packages\directxtex_uwp.2021.1.10.2\build\native\directxtex_uwp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtex_uwp.2021.1.10.2\build\native\directxtex_uwp.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210211.2\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.210211.2\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210211.2\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.210211.2\build\native\Microsoft.Windows.CppWinRT.targets'))" />
   </Target>
 </Project>

@@ -1,28 +1,14 @@
 #pragma once
-#include "Bindable.h"
+import Bindable;
 
 namespace ver
 {
 	class RasterizerState : public Bindable
 	{
 	public:
-		RasterizerState(const Graphics& gfx, bool twosided)
-			:raster{
-				.nextInChain = nullptr,
-				.frontFace = wgpu::FrontFace::CCW,
-				.cullMode = twosided ? wgpu::CullMode::None: wgpu::CullMode::Back,
-				.depthBias = 0,
-				.depthBiasSlopeScale = 0.0f,
-				.depthBiasClamp = 0.0f
-			}
-		{
-
-		}
+		RasterizerState(const Graphics& gfx, bool twosided);
 	public:
-		const wgpu::RasterizationStateDescriptor& Get()const noexcept
-		{
-			return raster;
-		}
+		const wgpu::RasterizationStateDescriptor& Get()const noexcept;
 	private:
 		wgpu::RasterizationStateDescriptor raster;
 	};

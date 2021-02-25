@@ -22,6 +22,12 @@
     <ClCompile Include="WebGPUWinRT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileReadWrite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SurfaceLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Shared\WinSetup.h">
@@ -31,6 +37,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="WebGPUWinRT.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FileReadWrite.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SurfaceLoader.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
