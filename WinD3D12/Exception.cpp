@@ -1,5 +1,5 @@
 #include "Exception.h"
-#include <fmt/printf.h>
+#include <format>
 
 Exception::Exception(unsigned int line, const char* file) noexcept
 	:line(line), file(file)
@@ -19,13 +19,13 @@ const std::string& Exception::GetFile() const noexcept
 }
 std::string Exception::GetOriginString() const noexcept
 {
-	return fmt::sprintf("[File]: %s\n[Line]: %s");
+	return std::format("[File]: {}\n[Line]: {}", file, line);
 }
 const char* Exception::what() const noexcept
 {
 	if (whatBuffer.empty())
 	{
-		whatBuffer = fmt::sprintf("%s\n%s", GetType(), GetOriginString());
+		whatBuffer = std::format("{}\n{}", GetType(), GetOriginString());
 	}
 	return whatBuffer.c_str();
 }

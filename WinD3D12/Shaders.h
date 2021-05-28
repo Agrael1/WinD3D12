@@ -1,7 +1,7 @@
 #pragma once
 #include "Codex.h"
 #include "ShaderPair.h"
-#include <fmt/printf.h>
+#include <format>
 
 namespace ver
 {
@@ -47,12 +47,12 @@ namespace ver
 		static std::string GenerateUID(ShaderPair pair, ShaderPair::Type t)noexcept
 		{
 			std::string_view tag = pair.GetTag(t), entry = pair.GetEntry(t);
-			return fmt::sprintf("%s-%s", tag, entry);
+			return std::format("{}-{}", tag, entry);
 		}
 		static std::string GenerateUID(std::span<const uint32_t> xshader, std::string_view tag, std::string_view entry = "main")noexcept
 		{
 			(void)xshader;
-			return fmt::sprintf("%s-%s", tag, entry);
+			return std::format("{}-{}", tag, entry);
 		}
 		[[nodiscard]] static auto Resolve(const Graphics& gfx, ShaderPair pair, ShaderPair::Type t)noexcept
 		{

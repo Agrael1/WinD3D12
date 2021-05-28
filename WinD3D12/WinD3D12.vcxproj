@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210505.3\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210505.3\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -114,7 +114,7 @@
       <EnableModules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableModules>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalDependencies);User32.lib;dxguid.lib;$(outDir)*.lib;$(OutDir)..\WebGPUWinRT\WebGPUWinRT.lib</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalDependencies);User32.lib;dxguid.lib;$(SolutionDir)lib\*.lib;$(OutDir)..\WebGPUWinRT\WebGPUWinRT.lib</AdditionalDependencies>
     </Link>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">WindowsApp.lib;%(AdditionalDependencies);$(OutDir)WebGPUWinRT.lib</AdditionalDependencies>
@@ -331,18 +331,16 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\directxmath.2020.8.3.1\build\native\directxmath.targets" Condition="Exists('..\packages\directxmath.2020.8.3.1\build\native\directxmath.targets')" />
-    <Import Project="..\packages\fmt.7.0.1\build\fmt.targets" Condition="Exists('..\packages\fmt.7.0.1\build\fmt.targets')" />
-    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.targets')" />
     <Import Project="..\packages\directxtex_uwp.2020.11.12.1\build\native\directxtex_uwp.targets" Condition="Exists('..\packages\directxtex_uwp.2020.11.12.1\build\native\directxtex_uwp.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210505.3\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210505.3\build\native\Microsoft.Windows.CppWinRT.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\directxmath.2020.8.3.1\build\native\directxmath.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxmath.2020.8.3.1\build\native\directxmath.targets'))" />
-    <Error Condition="!Exists('..\packages\fmt.7.0.1\build\fmt.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\fmt.7.0.1\build\fmt.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.201113.7\build\native\Microsoft.Windows.CppWinRT.targets'))" />
     <Error Condition="!Exists('..\packages\directxtex_uwp.2020.11.12.1\build\native\directxtex_uwp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtex_uwp.2020.11.12.1\build\native\directxtex_uwp.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210505.3\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.210505.3\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210505.3\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.210505.3\build\native\Microsoft.Windows.CppWinRT.targets'))" />
   </Target>
 </Project>

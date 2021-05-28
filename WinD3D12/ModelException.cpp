@@ -1,5 +1,5 @@
 #include "ModelException.h"
-#include <fmt/printf.h>
+#include <format>
 
 ModelException::ModelException(int line, const char* file, std::string note) noexcept
 	:
@@ -10,7 +10,7 @@ ModelException::ModelException(int line, const char* file, std::string note) noe
 const char* ModelException::what() const noexcept
 {
 	if(whatBuffer.empty())
-		whatBuffer = fmt::sprintf("%s\n[Note]: %s", Exception::what(), GetNote());
+		whatBuffer = std::format("{}\n[Note]: {}", Exception::what(), GetNote());
 	return whatBuffer.c_str();
 }
 const char* ModelException::GetType() const noexcept
