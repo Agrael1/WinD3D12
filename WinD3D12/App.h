@@ -1,8 +1,16 @@
 #include "VeritasEngine.h"
+#include "InputController.h"
 #include <optional>
 
 class App : public implements<App, IFrameworkViewSource, IFrameworkView>
 {
+    struct Internal
+    {
+        Internal(uint32_t Width, uint32_t Height, const CoreWindow& window)
+            :engine(Width, Height, window)
+        {}
+        ver::VeritasEngine engine;
+    };
 public:
     void Initialize(const CoreApplicationView& appView);
     void SetWindow(const CoreWindow& window);
@@ -26,6 +34,6 @@ public: //events
     void OnStereoEnabledChanged(const DisplayInformation& sender, const IInspectable& args);
     void OnDisplayContentsInvalidated(const DisplayInformation& sender, const IInspectable& args);
 private:
-    std::optional<ver::VeritasEngine> engine;
+    std::optional<Internal> i;
     winrt::agile_ref<CoreWindow> rWindow;
 };

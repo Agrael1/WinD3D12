@@ -25,7 +25,7 @@ void App::SetWindow(const CoreWindow& window)
     visualizationSettings.IsBarrelButtonFeedbackEnabled(false);
     
     auto rect = window.Bounds();
-    engine.emplace(uint32_t(rect.Width), uint32_t(rect.Height), window); //workflow independent values
+    i.emplace(uint32_t(rect.Width), uint32_t(rect.Height), window); //workflow independent values
 
     window.Activated({ this, &App::OnWindowActivationChanged });
     window.SizeChanged({ this, &App::OnWindowSizeChanged });
@@ -53,7 +53,7 @@ void App::Run()
     while (1)
     {
         dispatcher.ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
-        engine->Run();
+        i->engine.Run();
     }
 }
 
@@ -73,7 +73,7 @@ winrt::fire_and_forget App::OnSuspending(const IInspectable&, const SuspendingEv
     SuspendingDeferral deferral = args.SuspendingOperation().GetDeferral();
 
     co_await winrt::resume_background();
-    engine->Suspend();
+    i->engine.Suspend();
 
     deferral.Complete();
 }
@@ -84,18 +84,18 @@ void App::OnResuming(const IInspectable&, const IInspectable&)
 
 void App::OnWindowActivationChanged(const CoreWindow&, const WindowActivatedEventArgs& args)
 {
-    engine->WindowActivationChanged(args.WindowActivationState());
+    i->engine.WindowActivationChanged(args.WindowActivationState());
 }
 void App::OnWindowSizeChanged(const CoreWindow&, const WindowSizeChangedEventArgs&)
 {
 }
 void App::OnWindowClosed(const CoreWindow&, const CoreWindowEventArgs&)
 {
-    engine->Close(); //does not work :(
+    i->engine.Close(); //does not work :(
 }
 void App::OnVisibilityChanged(const CoreWindow&, const VisibilityChangedEventArgs& args)
 {
-    engine->Visibility(args.Visible());
+    i->engine.Visibility(args.Visible());
 }
 
 //Maybe in future :D
