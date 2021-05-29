@@ -59,6 +59,9 @@ void InputController::Init(const CoreWindow& window)
 {
     window.KeyDown({ this, &InputController::OnKeyDown });
     window.KeyUp({ this, &InputController::OnKeyUp });
+
+    auto m = Windows::Devices::Input::MouseDevice::GetForCurrentView();
+    m.MouseMoved({ this, &InputController::OnMouseMoved });
 }
 
 void InputController::OnKeyDown(winrt::Windows::UI::Core::CoreWindow const& sender, 
@@ -70,5 +73,10 @@ void InputController::OnKeyUp(winrt::Windows::UI::Core::CoreWindow const& sender
     winrt::Windows::UI::Core::KeyEventArgs const& args)
 {
     kbd.OnKeyReleased(uint8_t(args.VirtualKey()));
+}
+
+void InputController::OnMouseMoved(const Windows::Devices::Input::MouseDevice& mouseDevice, const Windows::Devices::Input::MouseEventArgs& args)
+{
+
 }
 

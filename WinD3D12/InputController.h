@@ -30,6 +30,10 @@ private:
 		winrt::Windows::UI::Core::CoreWindow const& sender,
 		winrt::Windows::UI::Core::KeyEventArgs const& args
 	);
+	void OnMouseMoved(
+		const Windows::Devices::Input::MouseDevice& mouseDevice,
+		const Windows::Devices::Input::MouseEventArgs& args
+	);
 private:
 	winrt::Windows::UI::Core::CoreDispatcher  m_dispatcher;
 	bool cursor = true;
