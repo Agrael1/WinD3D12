@@ -20,7 +20,7 @@ namespace ver
 	public:
 		void Close()
 		{
-			bWindowClosed = true;
+			
 		}
 		void Suspend()
 		{
@@ -54,25 +54,25 @@ namespace ver
 				case VK_INSERT:
 					if (input.CursorEnabled())
 					{
-						//bFlightMode = true;
+						bFreeCam = true;
 						input.HideCursor();
-						//wnd.mouse.EnableRaw();
+						input.mouse.EnableRaw();
 					}
 					else
 					{
-						//bFlightMode = false;
+						bFreeCam = false;
 						input.ShowCursor();
-						//wnd.mouse.DisableRaw();
+						input.mouse.DisableRaw();
 					}
 					break;
 				case VK_ESCAPE:
-					//if (bFlightMode)
-					//{
-					//	bFlightMode = false;
-					//	wnd.EnableCursor();
-					//	wnd.mouse.DisableRaw();
-					//	break;
-					//}
+					if (bFreeCam)
+					{
+						bFreeCam = false;
+						input.ShowCursor();
+						input.mouse.DisableRaw();
+						break;
+					}
 					input.CommandClose();
 					return;
 				}
@@ -109,15 +109,15 @@ namespace ver
 					cam.Translate({ 0.0f,-dt,0.0f });
 				}
 			}
-			/*
-			while (const auto delta = wnd.mouse.ReadRawDelta())
+			
+			while (const auto delta = input.mouse.ReadRawDelta())
 			{
-				if (!wnd.CursorEnabled())
+				if (!input.CursorEnabled())
 				{
 					cam.Rotate((float)delta->x, (float)delta->y);
 				}
 			}
-
+			/*
 			if (wnd.LoadCalled())
 			{
 				switch (state)
@@ -140,24 +140,6 @@ namespace ver
 				}
 				default:break;
 				}
-			}
-
-			if (wnd.ResizeCalled())
-			{
-				grid.UnlinkTechniques();
-				light.UnlinkTechniques();
-				if (model) model->UnlinkTechniques();
-				rg.reset();
-				wnd.Gfx().OnResize(wnd.GetWidth(), wnd.GetHeight());
-				CreateRenderGraph();
-				wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, float(wnd.GetHeight()) / float(wnd.GetWidth()), 0.5f, 100.0f));
-				wnd.ResizeComplete();
-			}
-
-			if (wnd.RestyleCalled())
-			{
-				imgui.SetStyle((ImGUIManager::Style(wnd.GetStyle())));
-				wnd.RestyleComplete();
 			}*/
 		}
 		void Render()
@@ -190,7 +172,7 @@ namespace ver
 		//Model x;
 		Panel panel;
 
-		bool bWindowClosed = false;
+		bool bFreeCam = false;
 		bool bVisible = true;
 		PointLight light;
 		//Triangle tri;

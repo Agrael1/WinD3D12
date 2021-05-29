@@ -47,6 +47,9 @@
     <ClCompile Include="Keyboard.cpp">
       <Filter>Header Modules\Input</Filter>
     </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Header Modules\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -362,6 +365,12 @@
     </ClInclude>
     <ClInclude Include="Keyboard.h">
       <Filter>Header Modules\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Header Modules\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -77,6 +77,10 @@ void InputController::OnKeyUp(winrt::Windows::UI::Core::CoreWindow const& sender
 
 void InputController::OnMouseMoved(const Windows::Devices::Input::MouseDevice& mouseDevice, const Windows::Devices::Input::MouseEventArgs& args)
 {
-
+    if (mouse.RawEnabled())
+    {
+        auto x = args.MouseDelta();
+        mouse.OnRawDelta(x.X, x.Y);
+    }
 }
 

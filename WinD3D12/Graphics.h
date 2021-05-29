@@ -35,7 +35,7 @@ namespace ver
 			wgpu::RenderPassDescriptor renderPass = {};
 			renderPass.colorAttachmentCount = 1;
 			renderPass.colorAttachments = &colorDesc;
-
+			renderPass.depthStencilAttachment = &depthDesc;
 
 			return encoder.BeginRenderPass(&renderPass);
 		}
@@ -56,7 +56,9 @@ namespace ver
 		wgpu::CommandEncoder encoder;
 		wgpu::CommandBuffer commands;
 	private:
-		wgpu::RenderPassColorAttachmentDescriptor colorDesc = {};//unites rtv with data, maybe will be in its onw bindable
+		wgpu::Texture dstex;
+		wgpu::RenderPassDepthStencilAttachmentDescriptor depthDesc{};
+		wgpu::RenderPassColorAttachmentDescriptor colorDesc{};//unites rtv with data, maybe will be in its onw bindable
 		uint32_t width;
 		uint32_t height;
 	};

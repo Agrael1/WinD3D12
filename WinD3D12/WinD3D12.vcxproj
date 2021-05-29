@@ -194,6 +194,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelException.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="pch.h">
     </ClInclude>
     <ClInclude Include="Phong.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="SolidColor.h" />
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformCBuf.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="VeritasEngine.h" />
@@ -245,6 +247,7 @@
     </ClCompile>
     <ClCompile Include="InputController.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="PhongLightLayout.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClInclude Include="App.h">

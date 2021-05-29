@@ -1,5 +1,6 @@
 #pragma once
 #include "Keyboard.h"
+#include "Mouse.h"
 
 class InputController
 {
@@ -39,4 +40,5 @@ private:
 	bool cursor = true;
 public:
 	Keyboard kbd;
+	Mouse mouse;
 };

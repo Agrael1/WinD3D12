@@ -9,9 +9,18 @@ namespace ver
 	{
 	public:
 		Pipeline(const Graphics& gfx)
-			:gfx(gfx)
-		{
-		}
+			:gfx(gfx), dssd(
+				{
+				.nextInChain = nullptr,
+				.format = wgpu::TextureFormat::Depth24PlusStencil8,
+				.depthWriteEnabled = true,
+				.depthCompare = wgpu::CompareFunction::Less,
+					
+				.stencilReadMask = 0xFFFFFFFF,
+				.stencilWriteMask = 0xFFFFFFFF
+				}
+			)
+		{}
 	public:
 		void BindVertexLayout(const ver::dv::VertexLayout& vb)
 		{
@@ -76,6 +85,8 @@ namespace ver
 			desc.colorStateCount = 1;
 			desc.colorStates = &colorDesc;
 
+			desc.depthStencilState = &dssd;
+
 			desc.sampleMask = 0xFFFFFFFF; // <-- Note: this currently causes Emscripten to fail (sampleMask ends up as -1, which trips an assert)
 
 			return GetDevice(gfx).CreateRenderPipeline(&desc);
@@ -85,6 +96,7 @@ namespace ver
 		std::optional<wgpu::ProgrammableStageDescriptor> PSDesc;
 		std::array<wgpu::BindGroupLayout, 4> bindGroupLayouts;
  		mutable wgpu::RenderPipelineDescriptor desc = {};
+		wgpu::DepthStencilStateDescriptor dssd;
 		const Graphics& gfx;
 		uint32_t counter = 0;
 	};
