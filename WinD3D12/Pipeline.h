@@ -9,8 +9,8 @@ namespace ver
 	class Pipeline : public Bindable
 	{
 	public:
-		Pipeline(const Graphics& gfx)
-			:gfx(gfx), dssd(
+		Pipeline()
+			:dssd(
 				{
 				.nextInChain = nullptr,
 				.format = wgpu::TextureFormat::Depth24PlusStencil8,
@@ -39,15 +39,16 @@ namespace ver
 		{
 			PSDesc.emplace(ps.GetStageDescriptor());
 		}
-		void SetBindGroup(const BindGroup& bg)
+		void SetBindGroup(const wgpu::BindGroupLayout& bg)
 		{
-			bindGroupLayouts[counter++] = bg.CookLayout();
+			bindGroupLayouts[counter++] = bg;
 		}
 		void SetRawLayout(const wgpu::BindGroupLayout& in)
 		{
 			bindGroupLayouts[counter++] = in;
 		}
-		[[nodiscard]]wgpu::RenderPipeline CookPipeline()const noexcept
+		[[nodiscard]]
+		wgpu::RenderPipeline CookPipeline(const Graphics& gfx)const noexcept
 		{
 			// pipeline layout (used by the render pipeline, released after its creation)
 			wgpu::PipelineLayoutDescriptor layoutDesc = {};
@@ -103,7 +104,6 @@ namespace ver
 		std::array<wgpu::BindGroupLayout, 4> bindGroupLayouts;
  		mutable wgpu::RenderPipelineDescriptor desc = {};
 		wgpu::DepthStencilStateDescriptor dssd;
-		const Graphics& gfx;
 		uint32_t counter = 0;
 	};
 }

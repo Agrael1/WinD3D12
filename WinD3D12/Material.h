@@ -30,8 +30,8 @@ namespace ver
 		void MakeTextures(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path);
 	private:
 		dv::VertexLayout vtxLayout;
-		wgpu::BindGroup m_bindings;
-		wgpu::RenderPipeline m_pipeline;
+		BindGroup bindings;
+		Pipeline pipeline;
 		std::string modelPath;
 		std::string name;
 	};

@@ -3,6 +3,7 @@
 #include "Sampler.h"
 #include "RasterizerState.h"
 #include "Texture.h"
+#include "Shaders.h"
 
 using namespace ver;
 
@@ -118,9 +119,6 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 		for (auto&& x : texes)
 			co_await(x);
 
-		BindGroup bg(gfx, m_bindings);
-		Pipeline p(gfx);
-
 		if (bHasDiffuse)
 		{
 			bool hasAlpha = false;
@@ -129,7 +127,7 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 				hasAlpha = true;
 				shaderCode.insert(8, "Msk");
 			}
-			p.BindRasterLayout(RasterizerState(gfx, hasAlpha));
+			pipeline.BindRasterLayout(RasterizerState(gfx, hasAlpha));
 		}
 		if (bHasSpecular)
 		{
@@ -137,23 +135,24 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 		}
 
 		for (auto& x : texes)
-			bg.BindResource(*x.get());
+			bindings.BindResource(*x.get());
 
 		// common (post)
 		{
-			step.AddBindable(std::make_shared<TransformCbuf>(gfx, 0u));
-			auto pvs = VertexShader::Resolve(gfx, shaderCode + "_VS.cso");
-			auto pvsbc = pvs->GetBytecode();
-			step.AddBindable(std::move(pvs));
-			step.AddBindable(PixelShader::Resolve(gfx, shaderCode + "_PS.cso"));
-			step.AddBindable(InputLayout::Resolve(gfx, vtxLayout, pvsbc));
-			if (hasTexture)
-			{
-				step.AddBindable(Sampler::Resolve(gfx));
-			}
+			//step.AddBindable(std::make_shared<TransformCbuf>(gfx, 0u));
+			auto pvs = Shader::ResolveAsync(gfx, shaderCode + "_VS.vsh", "main");
+			auto pps = Shader::ResolveAsync(gfx, shaderCode + "_PS.vsh", "main");
+
+			co_await winrt::when_all(pvs, pps);
+
+			pipeline.BindVertexLayout(vtxLayout);
+			pipeline.BindVertexShader(*pvs.get());
+			pipeline.BindPixelShader(*pps.get());
+			if (hasTexture) bindings.BindResource(Sampler{ gfx, texOffset++ });
+
 			// PS material params (cbuf)
-			DC::Buffer buf{ std::move(pscLayout) };
-			if (auto r = buf["materialColor"]; r.Exists())
+			dc::Buffer buf{ std::move(pscLayout) };
+			if (auto r = buf["materialColor"]; r)
 			{
 				aiColor3D color = { 0.45f,0.45f,0.85f };
 				material.Get(AI_MATKEY_COLOR_DIFFUSE, color);
@@ -161,14 +160,14 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 			}
 			buf["useGlossAlpha"].SetIfExists(hasGlossAlpha);
 			buf["useSpecularMap"].SetIfExists(true);
-			if (auto r = buf["specularColor"]; r.Exists())
+			if (auto r = buf["specularColor"]; r)
 			{
 				aiColor3D color = { 0.18f,0.18f,0.18f };
 				material.Get(AI_MATKEY_COLOR_SPECULAR, color);
 				r = reinterpret_cast<DirectX::XMFLOAT3&>(color);
 			}
 			buf["specularWeight"].SetIfExists(1.0f);
-			if (auto r = buf["specularGloss"]; r.Exists())
+			if (auto r = buf["specularGloss"]; r)
 			{
 				float gloss = 8.0f;
 				material.Get(AI_MATKEY_SHININESS, gloss);
@@ -176,7 +175,7 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 			}
 			buf["useNormalMap"].SetIfExists(true);
 			buf["normalMapWeight"].SetIfExists(1.0f);
-			step.AddBindable(std::make_unique<CachingPixelConstantBufferEx>(gfx, std::move(buf), 1u));
+			bindings.BindResource(std::make_unique<ConstantBuffer>(gfx, std::move(buf), 2u));
 		}
 		phong.AddStep(std::move(step));
 		techniques.push_back(std::move(phong));

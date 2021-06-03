@@ -255,6 +255,7 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="PhongLightLayout.cpp" />
     <ClCompile Include="FileReadWrite.cpp" />
+    <ClCompile Include="Shaders.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClInclude Include="App.h">

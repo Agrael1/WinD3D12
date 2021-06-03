@@ -56,6 +56,9 @@
     <ClCompile Include="Material.cpp">
       <Filter>Header Modules\Engine\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Shaders.cpp">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

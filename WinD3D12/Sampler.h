@@ -7,6 +7,7 @@ namespace ver
 	{
 	public:
 		Sampler(const Graphics& gfx, uint32_t xslot = 0, wgpu::FilterMode type = wgpu::FilterMode::Linear)
+			:slot(xslot)
 		{
 
 			wgpu::SamplerDescriptorDummyAnisotropicFiltering y{};
@@ -27,7 +28,6 @@ namespace ver
 				.compare = wgpu::CompareFunction::Never,
 			};
 			sampler = GetDevice(gfx).CreateSampler(&x);
-			slot = xslot;
 		}
 	public:
 		wgpu::BindGroupLayoutEntry GetLayout()const noexcept
