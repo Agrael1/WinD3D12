@@ -25,13 +25,8 @@ namespace ver
 			}
 		}
 	public:
-		void BindResource(const ConstantBinding& resource)
-		{
-			if (!bgl)bindingLayouts[next] = resource.GetLayout();
-			bindings[next++] = resource.GetEntryDesc();
-		}
 		template<typename T>
-		void BindResource(const XConstantBinding<T>& resource)
+		void BindResource(const ConstantBinding<T>& resource)
 		{
 			if (!bgl) bindingLayouts[next] = resource.GetLayout();
 			bindings[next++] = resource.GetEntryDesc();

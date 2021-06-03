@@ -1,20 +1,10 @@
 #pragma once
 #include "Buffers.h"
+#include "ConstantBinding.h"
 
 namespace ver
 {
-	class ConstantBinding : public Buffer
-	{
-	public:
-		using Buffer::Buffer;
-		using Buffer::operator const wgpu::Buffer&;
-		using Buffer::operator wgpu::Buffer&;
-	public:
-		virtual wgpu::BindGroupLayoutEntry GetLayout()const noexcept = 0;
-		virtual wgpu::BindGroupEntry GetEntryDesc()const noexcept = 0;
-	};
-
-	class ConstantBuffer : public ConstantBinding
+	class ConstantBuffer : public ConstantBinding<ConstantBuffer, Buffer>
 	{
 	public:
 		struct Desc
@@ -32,7 +22,7 @@ namespace ver
 
 		}
 	public:
-		wgpu::BindGroupLayoutEntry GetLayout()const noexcept override
+		wgpu::BindGroupLayoutEntry GetLayout()const noexcept
 		{
 			return
 			{
@@ -41,7 +31,7 @@ namespace ver
 				.type = wgpu::BindingType::UniformBuffer
 			};
 		}
-		wgpu::BindGroupEntry GetEntryDesc()const noexcept override
+		wgpu::BindGroupEntry GetEntryDesc()const noexcept
 		{
 			return
 			{
@@ -59,7 +49,7 @@ namespace ver
 
 
 	template<typename T>
-	class PixelConstantBuffer : public ConstantBinding
+	class PixelConstantBuffer : public ConstantBinding<PixelConstantBuffer<T>, Buffer>
 	{
 	public:
 		PixelConstantBuffer(const Graphics& gfx, const T& constants, uint32_t slot = 0)
@@ -96,7 +86,51 @@ namespace ver
 		}
 		void Update(const Graphics& gfx, const T& data)
 		{
-			GetQueue(gfx).WriteBuffer(*this, 0, &data, sizeof(T));
+			Bindable::GetQueue(gfx).WriteBuffer(*this, 0, &data, sizeof(T));
+		}
+	private:
+		uint32_t slot;
+	};
+
+	template<typename T>
+	class VertexConstantBuffer : public ConstantBinding<VertexConstantBuffer<T>, Buffer>
+	{
+	public:
+		VertexConstantBuffer(const Graphics& gfx, const T& constants, uint32_t slot = 0)
+			:ConstantBinding(gfx, &constants, sizeof(T), wgpu::BufferUsage::Uniform),
+			slot(slot)
+		{
+
+		}
+		VertexConstantBuffer(const Graphics& gfx, uint32_t slot = 0)
+			:ConstantBinding(gfx, sizeof(T), wgpu::BufferUsage::Uniform),
+			slot(slot)
+		{
+
+		}
+	public:
+		wgpu::BindGroupLayoutEntry GetLayout()const noexcept override
+		{
+			return
+			{
+				.binding = slot,
+				.visibility = wgpu::ShaderStage::Vertex,
+				.type = wgpu::BindingType::UniformBuffer
+			};
+		}
+		wgpu::BindGroupEntry GetEntryDesc()const noexcept override
+		{
+			return
+			{
+				.binding = slot,
+				.buffer = *this,
+				.offset = 0,
+				.size = sizeof(T)
+			};
+		}
+		void Update(const Graphics& gfx, const T& data)
+		{
+			Bindable::GetQueue(gfx).WriteBuffer(*this, 0, &data, sizeof(T));
 		}
 	private:
 		uint32_t slot;

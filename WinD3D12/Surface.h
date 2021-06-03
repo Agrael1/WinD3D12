@@ -18,6 +18,8 @@ namespace ver
 		};
 	public:
 		void LoadTexture(const ver::Graphics& gfx, std::string_view tex_name);
+		Windows::Foundation::IAsyncAction 
+			LoadTextureAsync(const ver::Graphics& gfx, std::string_view tex_name);
 	public:
 		UINT GetWidth()const noexcept;
 		UINT GetHeight()const noexcept;

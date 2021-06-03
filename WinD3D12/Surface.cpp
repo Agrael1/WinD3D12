@@ -77,4 +77,31 @@ namespace ver
 			image.GetMetadata(), DirectX::TEX_FILTER_DEFAULT, 0, mipped);
 		image = std::move(mipped);
 	}
+	Windows::Foundation::IAsyncAction SurfaceLoader::LoadTextureAsync(const ver::Graphics& gfx, std::string_view tex_name)
+	{
+		auto textureData = co_await loader.ReadDataAsync(winrt::to_hstring(tex_name.data()));
+		HRESULT hr = DirectX::LoadFromWICMemory(textureData.data(), textureData.Length(),
+			DirectX::WIC_FLAGS_NONE, nullptr, image);
+
+		winrt::check_hresult(hr);//remove
+
+		if (image.GetImage(0, 0, 0)->format != format)
+		{
+			DirectX::ScratchImage converted;
+			hr = DirectX::Convert(
+				*image.GetImage(0, 0, 0),
+				format,
+				DirectX::TEX_FILTER_DEFAULT,
+				DirectX::TEX_THRESHOLD_DEFAULT,
+				converted
+			);
+
+			winrt::check_hresult(hr);//remove
+			image = std::move(converted);
+		}
+		DirectX::ScratchImage mipped;
+		DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(),
+			image.GetMetadata(), DirectX::TEX_FILTER_DEFAULT, 0, mipped);
+		image = std::move(mipped);
+	}
 }

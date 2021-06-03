@@ -1,6 +1,7 @@
 #pragma once
 #include "BindGroup.h"
 #include "Shaders.h"
+#include "RasterizerState.h"
 #include <optional>
 
 namespace ver
@@ -25,6 +26,10 @@ namespace ver
 		void BindVertexLayout(const ver::dv::VertexLayout& vb)
 		{
 			pVL = &vb;
+		}		
+		void BindRasterLayout(const RasterizerState& r)
+		{
+			raster.emplace(r.Get());
 		}
 		void BindVertexShader(const Shader& vs)
 		{
@@ -52,8 +57,8 @@ namespace ver
 			// begin pipeline set-up
 			desc.layout = GetDevice(gfx).CreatePipelineLayout(&layoutDesc);
 
-			if (PSDesc)
-				desc.fragmentStage = &PSDesc.value();
+			if (PSDesc)desc.fragmentStage = &PSDesc.value();
+			if (raster)desc.rasterizationState = &raster.value();
 
 			if (pVL)
 			{
@@ -94,6 +99,7 @@ namespace ver
 	private:
 		const ver::dv::VertexLayout* pVL;
 		std::optional<wgpu::ProgrammableStageDescriptor> PSDesc;
+		std::optional<wgpu::RasterizationStateDescriptor> raster;
 		std::array<wgpu::BindGroupLayout, 4> bindGroupLayouts;
  		mutable wgpu::RenderPipelineDescriptor desc = {};
 		wgpu::DepthStencilStateDescriptor dssd;

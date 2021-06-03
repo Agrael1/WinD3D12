@@ -5,6 +5,7 @@
 #include "PhongDif.h"
 #include "Sampler.h"
 #include "PhongLightLayout.h"
+#include "Texture.h"
 
 namespace ver
 {

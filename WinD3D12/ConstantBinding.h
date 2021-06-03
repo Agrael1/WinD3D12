@@ -3,10 +3,12 @@
 
 namespace ver
 {
-
-	template<typename T>
-	class XConstantBinding : public Bindable
+	template<typename T, typename From = Bindable> requires is_bindable<From>
+	class ConstantBinding : public From
 	{
+	public:
+		template<typename ...Args>
+		ConstantBinding(Args&&... args) :From(std::forward<Args>(args)...) {}
 	public:
 		wgpu::BindGroupLayoutEntry GetLayout()const noexcept
 		{
@@ -16,7 +18,5 @@ namespace ver
 		{
 			return static_cast<const T*>(this)->GetEntryDesc();
 		}
-	protected:
-		uint32_t slot;
 	};
 }

@@ -19,9 +19,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Code\Engine\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="FileReadWrite.cpp">
-      <Filter>Source Code\Engine\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="IndexedTriangleList.cpp">
       <Filter>Source Code\Engine\Graphics</Filter>
     </ClCompile>
@@ -32,9 +29,6 @@
       <Filter>Source Code\Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="ModelException.cpp" />
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Code\Engine\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Surface.cpp">
       <Filter>Source Code\Engine\Objects</Filter>
     </ClCompile>
@@ -49,6 +43,18 @@
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
       <Filter>Header Modules\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="FileReadWrite.cpp">
+      <Filter>Header Modules\Engine\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Header Modules\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Header Modules\Engine\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -371,6 +377,15 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Modules\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Modules\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Modules\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Header Modules\Engine\Meshes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

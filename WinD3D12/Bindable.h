@@ -15,4 +15,7 @@ namespace ver
 			return gfx.renderQueue;
 		}
 	};
+
+	template<typename T>
+	concept is_bindable = requires {std::derived_from<T, Bindable>; };
 }

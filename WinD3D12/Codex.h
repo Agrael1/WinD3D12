@@ -7,9 +7,6 @@
 
 namespace ver
 {
-	template<typename T>
-	concept is_bindable = requires{std::is_base_of_v<Bindable, T> /*&& T::GenerateUID*/; };
-
 	//Codex is a container for super heavy items, like shaders (compiled esp), textures and other
 	class Codex
 	{
