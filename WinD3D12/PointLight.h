@@ -11,9 +11,10 @@ namespace ver
 		PointLight(const Graphics& gfx, float radius = 0.5f)
 			:mesh(gfx, radius), cbuf(gfx, 1)
 		{
-			BindGroup bg{ gfx, bindGroup, PhongLightLayout::Get(gfx)};
+			BindGroup bg{PhongLightLayout::Get(gfx)};
 			bg.BindResource(cbuf);
 			Reset();
+			bindGroup = bg.MakeBindGroup(gfx);
 		}
 		void SpawnControlWindow()noexcept
 		{

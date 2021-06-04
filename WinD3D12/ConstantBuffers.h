@@ -59,13 +59,13 @@ namespace ver
 
 		}
 		PixelConstantBuffer(const Graphics& gfx, uint32_t slot = 0)
-			:ConstantBinding(gfx, sizeof(T), wgpu::BufferUsage::Uniform),
+			:ConstantBinding<PixelConstantBuffer<T>, Buffer>(gfx, nullptr, sizeof(T), wgpu::BufferUsage::Uniform),
 			slot(slot)
 		{
 
 		}
 	public:
-		wgpu::BindGroupLayoutEntry GetLayout()const noexcept override
+		wgpu::BindGroupLayoutEntry GetLayout()const noexcept
 		{
 			return
 			{
@@ -74,7 +74,7 @@ namespace ver
 				.type = wgpu::BindingType::UniformBuffer
 			};
 		}
-		wgpu::BindGroupEntry GetEntryDesc()const noexcept override
+		wgpu::BindGroupEntry GetEntryDesc()const noexcept
 		{
 			return
 			{
@@ -109,7 +109,7 @@ namespace ver
 
 		}
 	public:
-		wgpu::BindGroupLayoutEntry GetLayout()const noexcept override
+		wgpu::BindGroupLayoutEntry GetLayout()const noexcept
 		{
 			return
 			{
@@ -118,7 +118,7 @@ namespace ver
 				.type = wgpu::BindingType::UniformBuffer
 			};
 		}
-		wgpu::BindGroupEntry GetEntryDesc()const noexcept override
+		wgpu::BindGroupEntry GetEntryDesc()const noexcept
 		{
 			return
 			{

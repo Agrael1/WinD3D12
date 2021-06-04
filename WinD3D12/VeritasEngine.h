@@ -2,8 +2,8 @@
 #include "Camera.h"
 #include "PointLight.h"
 #include "Model.h"
-#include "Panel.h"
 #include "InputController.h"
+
 
 namespace ver
 {
@@ -11,9 +11,9 @@ namespace ver
 	{
 	public:
 		VeritasEngine(uint32_t width, uint32_t height, const XWindow& wnd)
-			:gfx(width, height, wnd), light(gfx, 0.5f),/* tri(gfx),*/
-			panel(gfx), input(wnd)
-			/*x(gfx, "Assets\\GoblinX.obj")*/
+			:gfx(width, height, wnd), light(gfx, 0.5f),/* tri(gfx),
+			panel(gfx),*/ input(wnd)
+			//x(gfx, "Assets\\GoblinX.obj")
 		{
 			gfx.SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, float(height) / float(width), 0.5f, 100.0f));
 		}
@@ -64,6 +64,9 @@ namespace ver
 						input.ShowCursor();
 						input.mouse.DisableRaw();
 					}
+					break;
+				case 'L':
+					bL = true;
 					break;
 				case VK_ESCAPE:
 					if (bFreeCam)
@@ -117,8 +120,8 @@ namespace ver
 					cam.Rotate((float)delta->x, (float)delta->y);
 				}
 			}
-			/*
-			if (wnd.LoadCalled())
+			
+			if (bL)
 			{
 				switch (state)
 				{
@@ -129,18 +132,14 @@ namespace ver
 					break;
 				case Finish:
 				{
-					model.reset(swap.release());
-					Codex::Trim();
-					if (model)
-						model->LinkTechniques(*rg);
-					modelProbe.Reset();
+					x.reset(swap.release());
 					state = Unloaded;
-					wnd.LoadingComplete();
+					bL = false;
 					break;
 				}
 				default:break;
 				}
-			}*/
+			}
 		}
 		void Render()
 		{
@@ -149,15 +148,28 @@ namespace ver
 
 			gfx.SetCamera(cam.GetViewMatrix());
 			light.Bind(gfx, cam.GetViewMatrix());
-			panel.Step(gfx, dt);
+			//panel.Step(gfx, dt);
 
 			gfx.StartFrame();
 			{
 				auto pass = gfx.StartPass();
 				light.Submit(pass);
-				panel.Submit(pass);
+				//panel.Submit(pass);
 			}
 			gfx.Present();
+		}
+		winrt::fire_and_forget ReloadModelAsync()
+		{
+			co_await winrt::resume_background();
+			//auto wfilename = L"Assets\\GoblinX.obj";
+			//if (!wfilename.empty())
+			{
+				co_await Model::MakeAsync(swap, gfx, "Assets\\GoblinX.obj");
+
+				//if (!swap) MessageBox(nullptr, "Model file was corrupted or empty",
+					//"Model Exception", MB_OK | MB_ICONEXCLAMATION);
+			}
+			state = ModelLoadState::Finish;
 		}
 	public:
 		void Run()
@@ -169,12 +181,21 @@ namespace ver
 		InputController input;
 		Graphics gfx;
 		Camera cam;
-		//Model x;
-		Panel panel;
+		std::unique_ptr<Model> x, swap;
+		//Panel panel;
 
 		bool bFreeCam = false;
 		bool bVisible = true;
 		PointLight light;
 		//Triangle tri;
+
+		enum class ModelLoadState : uint8_t
+		{
+			Unloaded,
+			InProgress,
+			Finish
+		};
+		std::atomic<ModelLoadState> state = ModelLoadState::Unloaded;
+		bool bL = false;
 	};
 }

@@ -29,16 +29,17 @@ namespace ver
 			vBuffer.emplace(gfx, a.vertices.data());
 			iBuffer.emplace(gfx, a.indices);
 
-			BindGroup bg{ gfx, bindGroup };
+			BindGroup bg;
 			bg.BindResource(color);
 			bg.BindResource(transforms);
 
-			Pipeline pipe{ gfx };
+			Pipeline pipe;
 			pipe.BindPixelShader(*rps);
 			pipe.BindVertexShader(*rvs);
 			pipe.BindVertexLayout(vl);
-			pipe.SetBindGroup(bg);
-			pipeline = pipe.CookPipeline();
+			pipe.SetBindGroup(bg.CookLayout(gfx));
+			bindGroup = bg.MakeBindGroup(gfx);
+			pipeline = pipe.CookPipeline(gfx);
 		}
 	public:
 		void SetPos(DirectX::XMFLOAT3 xpos)noexcept

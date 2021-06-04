@@ -214,6 +214,7 @@
     <ClInclude Include="SolidColor.h" />
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Surface.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TransformCBuf.h" />
     <ClInclude Include="Triangle.h" />
@@ -324,6 +325,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\GoblinX.mtl">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Assets\Shaders\Phong_PS.vcsh">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Assets\Shaders\Phong_VS.vcsh">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="assimp-vc142-mtd.dll">

@@ -1,69 +1,71 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="EntryMain.cpp">
-      <Filter>Source Code</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Source Code</Filter>
-    </ClCompile>
-    <ClCompile Include="App.cpp">
-      <Filter>Source Code</Filter>
-    </ClCompile>
-    <ClCompile Include="DawnAdapter.cpp">
-      <Filter>Source Code\Engine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics.cpp">
-      <Filter>Source Code\Engine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Code\Engine\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="IndexedTriangleList.cpp">
-      <Filter>Source Code\Engine\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Buffers.cpp">
-      <Filter>Source Code\Engine\Bindable</Filter>
-    </ClCompile>
-    <ClCompile Include="Exception.cpp">
-      <Filter>Source Code\Engine\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelException.cpp" />
-    <ClCompile Include="Surface.cpp">
-      <Filter>Source Code\Engine\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="PhongLightLayout.cpp">
-      <Filter>Source Code\Engine\Bindable</Filter>
-    </ClCompile>
     <ClCompile Include="InputController.cpp">
-      <Filter>Header Modules\Input</Filter>
+      <Filter>Sources\Input</Filter>
     </ClCompile>
     <ClCompile Include="Keyboard.cpp">
-      <Filter>Header Modules\Input</Filter>
+      <Filter>Sources\Input</Filter>
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
-      <Filter>Header Modules\Input</Filter>
+      <Filter>Sources\Input</Filter>
     </ClCompile>
     <ClCompile Include="FileReadWrite.cpp">
-      <Filter>Header Modules\Engine\Utils</Filter>
+      <Filter>Sources\Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Header Modules\Engine\Objects</Filter>
+      <Filter>Sources\Engine\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>Header Modules\Engine\Objects</Filter>
+      <Filter>Sources\Engine\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Shaders.cpp">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Header Modules\Engine\Objects</Filter>
+      <Filter>Sources\Engine\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
-      <Filter>Header Modules\Engine\Objects</Filter>
+      <Filter>Sources\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Sources\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>Sources\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Exception.cpp">
+      <Filter>Sources\Engine\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffers.cpp">
+      <Filter>Sources\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="PhongLightLayout.cpp">
+      <Filter>Sources\Engine\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="DawnAdapter.cpp">
+      <Filter>Sources\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Sources\Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexedTriangleList.cpp">
+      <Filter>Sources\Engine\Meshes\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="EntryMain.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelException.cpp">
+      <Filter>Sources\Engine\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -111,20 +113,8 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{db9086fe-bacc-4437-8272-1aa6642082db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code">
-      <UniqueIdentifier>{bd64b7b5-6d5d-4176-9829-4ba5e436320b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Modules">
-      <UniqueIdentifier>{6425f748-c4ee-41ff-978c-42e42364425a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{88b025ef-aaa6-4ea1-970e-ca31652c4292}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Engine">
-      <UniqueIdentifier>{e93e48f1-42cb-4600-b3b8-d2403da266c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Modules\Engine">
-      <UniqueIdentifier>{2f856941-65cd-4bad-bc20-b8ceb263a89d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shared">
       <UniqueIdentifier>{8abe55ab-aeaa-4248-85bb-6b44aad8a4dc}</UniqueIdentifier>
@@ -135,62 +125,50 @@
     <Filter Include="Shared\Dawn_native">
       <UniqueIdentifier>{499eaa26-c723-49d6-96d2-dedeffa877d0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Engine\Graphics">
-      <UniqueIdentifier>{015de57a-3908-4962-bee0-17b7ef16c405}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Modules\Engine\Graphics">
-      <UniqueIdentifier>{eda634b4-dac6-4fc0-8610-5db609a07abb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Modules\Engine\Bindable">
-      <UniqueIdentifier>{3ba6a69b-3f73-49e3-8bf1-07e26fe45919}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Modules\Engine\Dynamics">
-      <UniqueIdentifier>{440de72b-fbba-42d4-811f-66d992aff036}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Engine\Dynamics">
-      <UniqueIdentifier>{952a4d5c-479f-48b7-b031-7285c0361599}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Modules\Engine\Meshes">
-      <UniqueIdentifier>{113b474c-62f2-4cfb-8bfc-0fbf798e1a67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Modules\Engine\Drawable">
-      <UniqueIdentifier>{9b413c4d-b77c-4133-a77f-b546c925e9b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Modules\Engine\Objects">
-      <UniqueIdentifier>{3bc8ab5c-7f3d-4330-97d1-9a38caade307}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Engine\Objects">
-      <UniqueIdentifier>{54874a94-de32-459a-8b2a-53570cf6cccf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Modules\Engine\Meshes\Primitives">
-      <UniqueIdentifier>{5137f5e7-55b7-4bed-b450-3ab65ce3cfab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{b3c2ae4a-a948-4278-bfc2-7930716151d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Modules\Engine\Utils">
-      <UniqueIdentifier>{a10a31d8-c459-43d4-ae36-da5f575bc910}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Engine\Utils">
-      <UniqueIdentifier>{3267bc65-fde7-46c3-8acb-e8f90c1db4bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Code\Engine\Meshes">
-      <UniqueIdentifier>{8d3c449c-f14e-4636-8f75-096b8d426f34}</UniqueIdentifier>
     </Filter>
     <Filter Include="Libraries">
       <UniqueIdentifier>{e9fc6653-381a-45ad-a8ed-931fe6ce09d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Engine\Bindable">
-      <UniqueIdentifier>{1b6b603e-e82e-4379-9701-ce12efad89e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Assets\Textures">
       <UniqueIdentifier>{1a5dec13-4efd-4950-8191-a7600a7cf5c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Modules\Input">
+    <Filter Include="Sources">
+      <UniqueIdentifier>{6425f748-c4ee-41ff-978c-42e42364425a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Engine">
+      <UniqueIdentifier>{2f856941-65cd-4bad-bc20-b8ceb263a89d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Engine\Graphics">
+      <UniqueIdentifier>{eda634b4-dac6-4fc0-8610-5db609a07abb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Engine\Bindable">
+      <UniqueIdentifier>{3ba6a69b-3f73-49e3-8bf1-07e26fe45919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Engine\Dynamics">
+      <UniqueIdentifier>{440de72b-fbba-42d4-811f-66d992aff036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Engine\Meshes">
+      <UniqueIdentifier>{113b474c-62f2-4cfb-8bfc-0fbf798e1a67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Engine\Meshes\Primitives">
+      <UniqueIdentifier>{5137f5e7-55b7-4bed-b450-3ab65ce3cfab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Engine\Drawable">
+      <UniqueIdentifier>{9b413c4d-b77c-4133-a77f-b546c925e9b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Engine\Objects">
+      <UniqueIdentifier>{3bc8ab5c-7f3d-4330-97d1-9a38caade307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Engine\Utils">
+      <UniqueIdentifier>{a10a31d8-c459-43d4-ae36-da5f575bc910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Input">
       <UniqueIdentifier>{ad79ae5a-8581-432e-bcf6-2b44fe9edc70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Code\Input">
-      <UniqueIdentifier>{e5d5fb44-b498-436f-b7f8-edd5dfc27bf5}</UniqueIdentifier>
+    <Filter Include="Assets\Shaders">
+      <UniqueIdentifier>{3b245974-287b-4183-ba96-38f3e31f2fc3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +185,12 @@
     <None Include="assimp-vc142-mtd.dll">
       <Filter>Libraries</Filter>
     </None>
+    <None Include="Assets\Shaders\Phong_VS.vcsh">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Phong_PS.vcsh">
+      <Filter>Assets\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -220,10 +204,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
-      <Filter>Header Modules</Filter>
+      <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="App.h">
-      <Filter>Header Modules</Filter>
+      <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\Dawn\include\dawn_native\D3D12Backend.h">
       <Filter>Shared\Dawn_native</Filter>
@@ -265,64 +249,64 @@
       <Filter>Shared\Dawn</Filter>
     </ClInclude>
     <ClInclude Include="DawnAdapter.h">
-      <Filter>Header Modules\Engine\Graphics</Filter>
+      <Filter>Sources\Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\WinSetup.h">
       <Filter>Shared</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
-      <Filter>Header Modules\Engine\Graphics</Filter>
+      <Filter>Sources\Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="VeritasEngine.h">
-      <Filter>Header Modules\Engine\Graphics</Filter>
+      <Filter>Sources\Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Bindable.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="Buffers.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="Pipeline.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="Shaders.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="AlignedAllocator.h">
-      <Filter>Header Modules\Engine\Dynamics</Filter>
+      <Filter>Sources\Engine\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="Triangle.h">
-      <Filter>Header Modules\Engine\Meshes</Filter>
+      <Filter>Sources\Engine\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="DynamicVBuffer.h">
-      <Filter>Header Modules\Engine\Dynamics</Filter>
+      <Filter>Sources\Engine\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="DynamicVertex.h">
-      <Filter>Header Modules\Engine\Dynamics</Filter>
+      <Filter>Sources\Engine\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="Drawable.h">
-      <Filter>Header Modules\Engine\Drawable</Filter>
+      <Filter>Sources\Engine\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffers.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Header Modules\Engine\Objects</Filter>
+      <Filter>Sources\Engine\Objects</Filter>
     </ClInclude>
     <ClInclude Include="PointLight.h">
-      <Filter>Header Modules\Engine\Objects</Filter>
+      <Filter>Sources\Engine\Objects</Filter>
     </ClInclude>
     <ClInclude Include="SolidSphere.h">
-      <Filter>Header Modules\Engine\Meshes</Filter>
+      <Filter>Sources\Engine\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">
-      <Filter>Header Modules\Engine\Meshes\Primitives</Filter>
+      <Filter>Sources\Engine\Meshes\Primitives</Filter>
     </ClInclude>
     <ClInclude Include="BindGroup.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="Codex.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="ColorBlend.h">
       <Filter>Shaders</Filter>
@@ -331,40 +315,40 @@
       <Filter>Shaders</Filter>
     </ClInclude>
     <ClInclude Include="IndexedTriangleList.h">
-      <Filter>Header Modules\Engine\Meshes\Primitives</Filter>
+      <Filter>Sources\Engine\Meshes\Primitives</Filter>
     </ClInclude>
     <ClInclude Include="SolidColor.h">
       <Filter>Shaders</Filter>
     </ClInclude>
     <ClInclude Include="TransformCBuf.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>Header Modules\Engine\Objects</Filter>
+      <Filter>Sources\Engine\Objects</Filter>
     </ClInclude>
     <ClInclude Include="ModelException.h">
-      <Filter>Header Modules\Engine\Utils</Filter>
+      <Filter>Sources\Engine\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Exception.h">
-      <Filter>Header Modules\Engine\Utils</Filter>
+      <Filter>Sources\Engine\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>Header Modules\Engine\Objects</Filter>
+      <Filter>Sources\Engine\Objects</Filter>
     </ClInclude>
     <ClInclude Include="DynamicConstant.h">
-      <Filter>Header Modules\Engine\Dynamics</Filter>
+      <Filter>Sources\Engine\Dynamics</Filter>
     </ClInclude>
     <ClInclude Include="Future.h">
-      <Filter>Header Modules\Engine\Utils</Filter>
+      <Filter>Sources\Engine\Utils</Filter>
     </ClInclude>
     <ClInclude Include="RasterizerState.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="Sampler.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBinding.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="PhongDif.h">
       <Filter>Shaders</Filter>
@@ -373,31 +357,34 @@
       <Filter>Shaders</Filter>
     </ClInclude>
     <ClInclude Include="PhongLightLayout.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="InputController.h">
-      <Filter>Header Modules\Input</Filter>
+      <Filter>Sources\Input</Filter>
     </ClInclude>
     <ClInclude Include="Keyboard.h">
-      <Filter>Header Modules\Input</Filter>
+      <Filter>Sources\Input</Filter>
     </ClInclude>
     <ClInclude Include="Mouse.h">
-      <Filter>Header Modules\Input</Filter>
+      <Filter>Sources\Input</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Header Modules\Engine\Objects</Filter>
+      <Filter>Sources\Engine\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
-      <Filter>Header Modules\Engine\Objects</Filter>
+      <Filter>Sources\Engine\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Panel.h">
-      <Filter>Header Modules\Engine\Meshes</Filter>
+      <Filter>Sources\Engine\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBufferEx.h">
-      <Filter>Header Modules\Engine\Bindable</Filter>
+      <Filter>Sources\Engine\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>Sources\Engine\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

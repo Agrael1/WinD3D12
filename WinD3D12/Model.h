@@ -1,4 +1,5 @@
 #pragma once
+#include <Node.h>
 #include <Mesh.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -9,7 +10,6 @@
 namespace ver
 {
 	class Material;
-	class Node;
 	class Model
 	{
 	public:

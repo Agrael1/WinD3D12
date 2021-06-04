@@ -115,8 +115,8 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 		// common (post)
 		{
 			//step.AddBindable(std::make_shared<TransformCbuf>(gfx, 0u));
-			auto pvs = Shader::ResolveAsync(gfx, shaderCode + "_VS.vsh", "main");
-			auto pps = Shader::ResolveAsync(gfx, shaderCode + "_PS.vsh", "main");
+			auto pvs = Shader::ResolveAsync(gfx, shaderCode + "_VS", "main");
+			auto pps = Shader::ResolveAsync(gfx, shaderCode + "_PS", "main");
 
 			co_await winrt::when_all(pvs, pps);
 

@@ -4,6 +4,7 @@
 #include <memory>
 #include "Bindable.h"
 #include <pplawait.h>
+#include <filesystem>
 
 
 namespace ver
@@ -65,5 +66,8 @@ namespace ver
 		}
 	private:
 		std::unordered_map<std::string, std::shared_ptr<Bindable>> binds;
+	public:
+		static constexpr std::string_view shader_folder{ "Assets\\Shaders\\" };
+		static constexpr std::string_view shader_extension{ ".vcsh" };
 	};
 }
