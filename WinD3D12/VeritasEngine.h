@@ -143,6 +143,7 @@ namespace ver
 		}
 		void Render()
 		{
+			if (state == ModelLoadState::InProgress)return;
 			float dt = 0.05f;
 			ProcessInput(dt);
 

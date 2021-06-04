@@ -53,17 +53,15 @@ ver::Texture::Texture(const Graphics& gfx, std::string_view path, uint32_t bindi
 		};
 		GetQueue(gfx).WriteTexture(&tcv, mip.pixels, mip.dataSize, &tdl, &dims);
 	}
-
 	slot = bindingslot;
 }
 
-concurrency::task<std::shared_ptr<Texture>> 
-ver::Texture::MakeAsync(const Graphics& gfx, std::string_view path, uint32_t bindingslot)
+Foundation::IAsyncAction 
+ver::Texture::MakeAsync(Texture& tex, const Graphics& gfx, std::string_view path, uint32_t bindingslot)
 {
-	std::shared_ptr<Texture> in = std::make_shared<Texture>();
-	in->name = path;
+	tex.name = path;
 	SurfaceLoader sl;
-	co_await sl.LoadTextureAsync(gfx, path);
+	co_await sl.LoadTextureAsync(gfx, tex.name);
 
 	wgpu::TextureDescriptor tdesc
 	{
@@ -80,20 +78,21 @@ ver::Texture::MakeAsync(const Graphics& gfx, std::string_view path, uint32_t bin
 		.mipLevelCount = sl.GetMipCount(),
 		.sampleCount = 1,
 	};
-	in->texture = GetDevice(gfx).CreateTexture(&tdesc);
-	in->fullsize = sl.GetFullSize();
+	tex.texture = GetDevice(gfx).CreateTexture(&tdesc);
+	tex.fullsize = sl.GetFullSize();
 
-	for (uint32_t i = 0; i < tdesc.mipLevelCount; i++)
+	wgpu::TextureCopyView tcv
 	{
-		wgpu::TextureCopyView tcv
-		{
-			.nextInChain = nullptr,
-			.texture = in->texture,
-			.mipLevel = i,
-			.origin = wgpu::Origin3D{},
-			.aspect = wgpu::TextureAspect::All
-		};
-		auto mip = sl.GetImageDesc(i);
+		.nextInChain = nullptr,
+		.texture = tex.texture,
+		.mipLevel = 0,
+		.origin = wgpu::Origin3D{},
+		.aspect = wgpu::TextureAspect::All
+	};
+
+	for (; tcv.mipLevel < tdesc.mipLevelCount; tcv.mipLevel++)
+	{
+		auto mip = sl.GetImageDesc(tcv.mipLevel);
 		wgpu::TextureDataLayout tdl
 		{
 			.nextInChain = nullptr,
@@ -110,6 +109,5 @@ ver::Texture::MakeAsync(const Graphics& gfx, std::string_view path, uint32_t bin
 		GetQueue(gfx).WriteTexture(&tcv, mip.pixels, mip.dataSize, &tdl, &dims);
 	}
 
-	in->slot = bindingslot;
-	co_return std::move(in);
+	tex.slot = bindingslot;
 }

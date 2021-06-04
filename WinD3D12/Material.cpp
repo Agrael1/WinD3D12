@@ -25,8 +25,10 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 		name = tempName.C_Str();
 	}
 
-	std::vector<concurrency::task<std::shared_ptr<Texture>>> texes;
+	std::vector<Foundation::IAsyncAction> tasks;
+	std::vector<Texture> texes;
 	texes.reserve(3);
+	tasks.reserve(3);
 	// phong technique
 	{
 		std::string shaderCode = "Phong";
@@ -51,7 +53,7 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 				hasTexture = true;
 				shaderCode += "Dif";
 				vtxLayout.Add(VType::Texture2D);
-				texes.emplace_back(Texture::MakeAsync(gfx, rootPath + texFileName.C_Str(), texOffset++));
+				tasks.emplace_back(Texture::MakeAsync(texes.emplace_back(), gfx, rootPath + texFileName.C_Str(), texOffset++));
 			}
 			else
 			{
@@ -65,7 +67,7 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 				hasTexture = true;
 				shaderCode += "Spc";
 				vtxLayout.Add(VType::Texture2D);
-				texes.emplace_back(Texture::MakeAsync(gfx, rootPath + texFileName.C_Str(), texOffset++));
+				tasks.emplace_back(Texture::MakeAsync(texes.emplace_back(), gfx, rootPath + texFileName.C_Str(), texOffset++));
 				pscLayout.Add({
 					{"useGlossAlpha", dc::Type::Bool, },
 					{"useSpecularMap", dc::Type::Bool} });
@@ -84,20 +86,20 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 				vtxLayout.Add(VType::Texture2D);
 				vtxLayout.Add(VType::Tangent);
 				vtxLayout.Add(VType::Bitangent);
-				texes.emplace_back(Texture::MakeAsync(gfx, rootPath + texFileName.C_Str(), texOffset++));
+				tasks.emplace_back(Texture::MakeAsync(texes.emplace_back(), gfx, rootPath + texFileName.C_Str(), texOffset++));
 				pscLayout.Add({
 					{"useNormalMap"   , dc::Type::Bool },
 					{"normalMapWeight", dc::Type::Float} });
 			}
 		}
 
-		for (auto&& x : texes)
+		for (auto& x : tasks)
 			co_await(x);
 
 		if (bHasDiffuse)
 		{
 			bool hasAlpha = false;
-			if (texes[0].get()->UsesAlpha())
+			if (texes[0].UsesAlpha())
 			{
 				hasAlpha = true;
 				shaderCode.insert(8, "Msk");
@@ -106,11 +108,11 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 		}
 		if (bHasSpecular)
 		{
-			hasGlossAlpha = texes[1].get()->UsesAlpha();
+			hasGlossAlpha = texes[1].UsesAlpha();
 		}
 
 		for (auto& x : texes)
-			bindings.BindResource(*x.get());
+			bindings.BindResource(x);
 
 		// common (post)
 		{

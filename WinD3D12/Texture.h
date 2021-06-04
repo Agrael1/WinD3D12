@@ -20,8 +20,8 @@ namespace ver
 	public:
 		Texture()noexcept = default;
 		Texture(const Graphics& gfx, std::string_view path, uint32_t bindingslot);
-		static concurrency::task<std::shared_ptr<Texture>>
-			MakeAsync(const Graphics& gfx, std::string_view path, uint32_t bindingslot);
+		static Foundation::IAsyncAction
+			MakeAsync(Texture& tex, const Graphics& gfx, std::string_view path, uint32_t bindingslot);
 	public:
 		std::string_view GetName()const noexcept
 		{
@@ -63,7 +63,7 @@ namespace ver
 		wgpu::Texture texture;
 		size_t fullsize = 0;
 		std::string name;
-		uint32_t slot;
+		uint32_t slot = 0;
 		bool usesalpha = false;
 	};
 }

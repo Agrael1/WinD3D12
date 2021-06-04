@@ -191,6 +191,12 @@
     <None Include="Assets\Shaders\Phong_PS.vcsh">
       <Filter>Assets\Shaders</Filter>
     </None>
+    <None Include="Assets\Shaders\PhongDif_PS.vcsh">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\PhongDif_VS.vcsh">
+      <Filter>Assets\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

@@ -327,6 +327,12 @@
     <None Include="Assets\GoblinX.mtl">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="Assets\Shaders\PhongDif_PS.vcsh">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Assets\Shaders\PhongDif_VS.vcsh">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="Assets\Shaders\Phong_PS.vcsh">
       <DeploymentContent>true</DeploymentContent>
     </None>
