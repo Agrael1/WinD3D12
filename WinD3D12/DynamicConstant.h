@@ -271,8 +271,11 @@ namespace ver::dc
 		void operator=(const T& rhs) const noexcept
 		{
 			static_assert(ReverseMap<std::remove_const_t<T>>::valid, "Unsupported SysType used in assignment");
-			if(type && ReverseMap<std::remove_const_t<T>>::type == type) 
+			if (type && ReverseMap<std::remove_const_t<T>>::type == type)
+			{
 				static_cast<T&>(*this) = rhs;
+				return;
+			}
 			assert(false && "Attemt to set non existent element");
 		}
 	private:
@@ -289,10 +292,11 @@ namespace ver::dc
 	class Buffer
 	{
 	public:
-		Buffer(const Layout&& lay) noexcept
-			:lay(lay)
+		Buffer() = default;
+		Buffer(Layout&& xlay) noexcept
+			:lay(xlay)
 		{
-
+			bytes.resize(lay.GetSizeInBytes());
 		}
 	public:
 		ElementRef operator[](std::string_view key) noexcept
@@ -300,7 +304,16 @@ namespace ver::dc
 			auto x = lay.GetOffsetAndType(key);
 			return { bytes.data() + x.first, x.second };
 		}
+		explicit operator bool()const
+		{
+			return !bytes.empty();
+		}
 	public:
+		void Replace(Layout&& xlay)
+		{
+			lay = std::move(xlay);
+			bytes.resize(lay.GetSizeInBytes());
+		}
 		constexpr std::span<const std::byte> GetData() const noexcept
 		{
 			return bytes;
@@ -310,10 +323,9 @@ namespace ver::dc
 			return lay.GetSizeInBytes();
 		}
 	private:
-		const Layout lay;
+		Layout lay;
 		std::vector<std::byte> bytes;
 	};
-
 }
 
 
