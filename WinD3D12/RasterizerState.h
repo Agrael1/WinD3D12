@@ -6,7 +6,7 @@ namespace ver
 	class RasterizerState : public Bindable
 	{
 	public:
-		RasterizerState(const Graphics& gfx, bool twosided)
+		RasterizerState(const Graphics&, bool twosided)
 			:raster{
 				.nextInChain = nullptr,
 				.frontFace = wgpu::FrontFace::CCW,

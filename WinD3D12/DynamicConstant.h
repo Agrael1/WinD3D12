@@ -136,6 +136,10 @@ namespace ver::dc
 		{
 			return Exists();
 		}
+		operator Type()const noexcept
+		{
+			return type;
+		}
 	public:
 		constexpr size_t GetSizeInBytes() const noexcept
 		{
@@ -152,8 +156,6 @@ namespace ver::dc
 	private:
 		Type type = Type::Empty;
 	};
-
-
 
 	class Layout
 	{

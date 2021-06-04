@@ -41,7 +41,7 @@ namespace ver
 				.size = size
 			};
 		}
-	private:
+	protected:
 		uint32_t size;
 		uint32_t slot;
 		wgpu::ShaderStage type;

@@ -12,8 +12,8 @@ namespace ver
 			:bgl(predefined)
 		{}
 	public:
-		template<typename T>
-		void BindResource(const ConstantBinding<T>& resource)
+		template<typename T, typename R>
+		void BindResource(const ConstantBinding<T,R>& resource)
 		{
 			if (!bgl) bindingLayouts[next] = resource.GetLayout();
 			bindings[next++] = resource.GetEntryDesc();

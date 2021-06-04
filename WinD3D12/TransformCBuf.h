@@ -8,9 +8,9 @@ namespace ver
 	protected:
 		struct Transforms
 		{
-			DirectX::XMMATRIX modelView;
-			DirectX::XMMATRIX modelViewProj;
-		}tr;
+			DirectX::XMMATRIX modelView = DirectX::XMMatrixIdentity();
+			DirectX::XMMATRIX modelViewProj = DirectX::XMMatrixIdentity();
+		}tr{};
 	public:
 		TransformCbuf(const Graphics& gfx, uint32_t slot = 0u)
 			:ConstantBuffer(gfx, { wgpu::ShaderStage::Vertex, &tr, sizeof(tr), slot })

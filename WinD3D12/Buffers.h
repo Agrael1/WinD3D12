@@ -8,7 +8,6 @@ namespace ver
 	{
 	public:
 		Buffer(const Graphics& gfx, const void* data, size_t size, wgpu::BufferUsage usage);
-		Buffer(const Graphics& gfx, size_t size, wgpu::BufferUsage usage);
 	public:
 		operator wgpu::Buffer&()
 		{

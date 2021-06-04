@@ -1,5 +1,5 @@
 #pragma once
-#include "DynamicConstant.h"
+#include "ConstantBufferEx.h"
 #include "DynamicVBuffer.h"
 #include "Pipeline.h"
 #include <vector>
@@ -25,6 +25,9 @@ namespace ver
 		std::vector<uint32_t> ExtractIndices(const aiMesh& mesh) const noexcept;
 		VertexBuffer MakeVertexBindable(Graphics& gfx, const aiMesh& mesh, float scale = 1.0f) const noexcept;
 		IndexBuffer MakeIndexBindable(Graphics& gfx, const aiMesh& mesh) const noexcept;
+		PixelConstantBufferEx MakePixelBuffer(const Graphics& gfx)const noexcept;
+		const BindGroup& GetBinds()const noexcept { return bindings; }
+		const Pipeline& GetPipeline()const noexcept { return pipeline; }
 	private:
 		std::string MakeMeshTag(const aiMesh& mesh) const noexcept;
 		void MakeTextures(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path);
@@ -32,6 +35,7 @@ namespace ver
 		dv::VertexLayout vtxLayout;
 		BindGroup bindings;
 		Pipeline pipeline;
+		std::optional<PixelConstantBufferEx> pixcb;
 		std::string modelPath;
 		std::string name;
 	};

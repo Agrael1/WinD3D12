@@ -4,33 +4,9 @@
 #include "RasterizerState.h"
 #include "Texture.h"
 #include "Shaders.h"
+#include "PhongLightLayout.h"
 
 using namespace ver;
-
-std::vector<ver::Texture>
-ConstructTextures(const ver::Graphics& gfx, std::span<std::string> textures, size_t actual)noexcept
-{
-	if (!actual)return{};
-
-	ver::SurfaceLoader surf;
-	std::vector<ver::Texture> ret;
-	ret.resize(actual);
-
-	for (size_t i = 0; auto & x : ret) {
-		if (!textures[i].empty())
-			//surf.LoadTexture(gfx, textures[i], &x, i);
-		i++;
-	}
-
-	return std::move(ret);
-}
-ver::Texture ExtractTexture(const ver::Graphics& gfx, std::string_view texture, uint32_t slot)
-{
-	ver::Texture x;
-	ver::SurfaceLoader surf;
-	//surf.LoadTexture(gfx, texture, &x, slot);
-	return std::move(x);
-}
 
 ver::Material::Material(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path) noexcept
 	:modelPath(path.string()), vtxLayout({VType::Position3D, VType::Normal})
@@ -53,7 +29,6 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 	texes.reserve(3);
 	// phong technique
 	{
-
 		std::string shaderCode = "Phong";
 		aiString texFileName;
 
@@ -148,6 +123,7 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 			pipeline.BindVertexLayout(vtxLayout);
 			pipeline.BindVertexShader(*pvs.get());
 			pipeline.BindPixelShader(*pps.get());
+			pipeline.SetRawLayout(PhongLightLayout::Get(gfx));
 			if (hasTexture) bindings.BindResource(Sampler{ gfx, texOffset++ });
 
 			// PS material params (cbuf)
@@ -175,101 +151,99 @@ Material::MakeAsync(Graphics& gfx, const aiMaterial& material, const std::filesy
 			}
 			buf["useNormalMap"].SetIfExists(true);
 			buf["normalMapWeight"].SetIfExists(1.0f);
-			bindings.BindResource(std::make_unique<ConstantBuffer>(gfx, std::move(buf), 2u));
+			pixcb.emplace(gfx, std::move(buf), 2u);
 		}
-		phong.AddStep(std::move(step));
-		techniques.push_back(std::move(phong));
 	}
 }
 void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path)
 {
-	const auto rootPath = path.parent_path().string() + "\\";
-	{
-		aiString tempName;
-		material.Get(AI_MATKEY_NAME, tempName);
-		name = tempName.C_Str();
-	}
-	std::string shaderCode = "Phong";
-	std::array<std::optional<ver::Texture>, 3> textures;
+	//const auto rootPath = path.parent_path().string() + "\\";
+	//{
+	//	aiString tempName;
+	//	material.Get(AI_MATKEY_NAME, tempName);
+	//	name = tempName.C_Str();
+	//}
+	//std::string shaderCode = "Phong";
+	//std::array<std::optional<ver::Texture>, 3> textures;
 
 
-	dc::Layout pscLayout;
-	bool hasTexture = false;
-	bool hasGlossAlpha = false;
-	uint8_t texOffset = 3;
+	//dc::Layout pscLayout;
+	//bool hasTexture = false;
+	//bool hasGlossAlpha = false;
+	//uint8_t texOffset = 3;
 
-	aiString aitexFileName;
+	//aiString aitexFileName;
 
-	// diffuse
-	{
-		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &aitexFileName) == aiReturn_SUCCESS)
-		{
-			hasTexture = true;
-			shaderCode += "Dif";
-			vtxLayout.Add(VType::Texture2D);
-			textures[0] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), texOffset++);
-		}
-		else
-		{
-			pscLayout.Add(dc::Type::Float3, "materialColor");
-		}
-	}
-	// specular
-	{
-		if (material.GetTexture(aiTextureType_SPECULAR, 0, &aitexFileName) == aiReturn_SUCCESS)
-		{
-			hasTexture = true;
-			shaderCode += "Spc";
-			vtxLayout.Add(VType::Texture2D);
+	//// diffuse
+	//{
+	//	if (material.GetTexture(aiTextureType_DIFFUSE, 0, &aitexFileName) == aiReturn_SUCCESS)
+	//	{
+	//		hasTexture = true;
+	//		shaderCode += "Dif";
+	//		vtxLayout.Add(VType::Texture2D);
+	//		textures[0] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), texOffset++);
+	//	}
+	//	else
+	//	{
+	//		pscLayout.Add(dc::Type::Float3, "materialColor");
+	//	}
+	//}
+	//// specular
+	//{
+	//	if (material.GetTexture(aiTextureType_SPECULAR, 0, &aitexFileName) == aiReturn_SUCCESS)
+	//	{
+	//		hasTexture = true;
+	//		shaderCode += "Spc";
+	//		vtxLayout.Add(VType::Texture2D);
 
-			//auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 1);
-			//hasGlossAlpha = tex->UsesAlpha();
-			//step.AddBindable(std::move(tex));
-			pscLayout.Add({
-				{"useGlossAlpha", dc::Type::Bool, },
-				{"useSpecularMap", dc::Type::Bool} });
-			textures[1] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), texOffset++);
-		}
-		pscLayout.Add({
-			{"specularColor", dc::Type::Float3},
-			{"specularWeight", dc::Type::Float },
-			{"specularGloss", dc::Type::Float } });
-	}
-	// normal
-	{
-		if (material.GetTexture(aiTextureType_NORMALS, 0, &aitexFileName) == aiReturn_SUCCESS)
-		{
-			hasTexture = true;
-			shaderCode += "Nrm";
-			vtxLayout.Add(VType::Texture2D);
-			vtxLayout.Add(VType::Tangent);
-			vtxLayout.Add(VType::Bitangent);
+	//		//auto tex = Texture::Resolve(gfx, rootPath + texFileName.C_Str(), 1);
+	//		//hasGlossAlpha = tex->UsesAlpha();
+	//		//step.AddBindable(std::move(tex));
+	//		pscLayout.Add({
+	//			{"useGlossAlpha", dc::Type::Bool, },
+	//			{"useSpecularMap", dc::Type::Bool} });
+	//		textures[1] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), texOffset++);
+	//	}
+	//	pscLayout.Add({
+	//		{"specularColor", dc::Type::Float3},
+	//		{"specularWeight", dc::Type::Float },
+	//		{"specularGloss", dc::Type::Float } });
+	//}
+	//// normal
+	//{
+	//	if (material.GetTexture(aiTextureType_NORMALS, 0, &aitexFileName) == aiReturn_SUCCESS)
+	//	{
+	//		hasTexture = true;
+	//		shaderCode += "Nrm";
+	//		vtxLayout.Add(VType::Texture2D);
+	//		vtxLayout.Add(VType::Tangent);
+	//		vtxLayout.Add(VType::Bitangent);
 
-			textures[2] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), texOffset++);
-			pscLayout.Add({
-				{"useNormalMap"   , dc::Type::Bool },
-				{"normalMapWeight", dc::Type::Float} });
-		}
-	}
-	bool hasAlpha = false;
-	if (textures[0] && textures[0].value().UsesAlpha())
-	{
-		shaderCode += "Msk";
-		hasAlpha = true;
-	}
-	RasterizerState raster(gfx, hasAlpha);
+	//		textures[2] = ExtractTexture(gfx, rootPath + aitexFileName.C_Str(), texOffset++);
+	//		pscLayout.Add({
+	//			{"useNormalMap"   , dc::Type::Bool },
+	//			{"normalMapWeight", dc::Type::Float} });
+	//	}
+	//}
+	//bool hasAlpha = false;
+	//if (textures[0] && textures[0].value().UsesAlpha())
+	//{
+	//	shaderCode += "Msk";
+	//	hasAlpha = true;
+	//}
+	//RasterizerState raster(gfx, hasAlpha);
 
-	//set bindings
-	{
-		BindGroup bg(gfx, m_bindings);
-		for (auto& x : textures){
-			if (x) bg.BindResource(x.value());
-		}
-		if (hasTexture)
-		{
-			Sampler sample{ gfx , texOffset };
-			bg.BindResource(sample);
-		}
+	////set bindings
+	//{
+	//	BindGroup bg(gfx, m_bindings);
+	//	for (auto& x : textures){
+	//		if (x) bg.BindResource(x.value());
+	//	}
+	//	if (hasTexture)
+	//	{
+	//		Sampler sample{ gfx , texOffset };
+	//		bg.BindResource(sample);
+	//	}
 
 		
 	//	step.AddBindable(std::make_shared<TransformCbuf>(gfx, 0u));
@@ -312,7 +286,7 @@ void ver::Material::MakeTextures(Graphics& gfx, const aiMaterial& material, cons
 	//phong.AddStep(std::move(step));
 	//techniques.push_back(std::move(phong));
 
-	}
+	//}
 }
 
 
@@ -355,6 +329,11 @@ ver::VertexBuffer ver::Material::MakeVertexBindable(Graphics& gfx, const aiMesh&
 ver::IndexBuffer ver::Material::MakeIndexBindable(Graphics& gfx, const aiMesh& mesh) const noexcept
 {
 	return IndexBuffer(gfx, ExtractIndices(mesh));
+}
+
+PixelConstantBufferEx ver::Material::MakePixelBuffer(const Graphics& gfx) const noexcept
+{
+	return pixcb->Clone(gfx);
 }
 
 std::string ver::Material::MakeMeshTag(const aiMesh& mesh) const noexcept

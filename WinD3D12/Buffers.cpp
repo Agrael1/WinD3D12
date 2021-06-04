@@ -7,15 +7,7 @@ ver::Buffer::Buffer(const Graphics& gfx, const void* data, size_t size, wgpu::Bu
 	descriptor.usage = usage | wgpu::BufferUsage::CopyDst;
 	buffer = GetDevice(gfx).CreateBuffer(&descriptor);
 
-	Update(gfx, data, size);
-}
-
-ver::Buffer::Buffer(const Graphics& gfx, size_t size, wgpu::BufferUsage usage)
-{
-	wgpu::BufferDescriptor descriptor;
-	descriptor.size = size;
-	descriptor.usage = usage | wgpu::BufferUsage::CopyDst;
-	buffer = GetDevice(gfx).CreateBuffer(&descriptor);
+	if(data)Update(gfx, data, size);
 }
 
 void ver::Buffer::Update(const Graphics& gfx, const void* data, size_t size)

@@ -59,6 +59,12 @@
     <ClCompile Include="Shaders.cpp">
       <Filter>Header Modules\Engine\Bindable</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Header Modules\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Header Modules\Engine\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -389,6 +395,9 @@
     </ClInclude>
     <ClInclude Include="Panel.h">
       <Filter>Header Modules\Engine\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBufferEx.h">
+      <Filter>Header Modules\Engine\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
