@@ -15,8 +15,43 @@ DirectX::XMMATRIX ScaleTranslation(DirectX::XMMATRIX matrix, float scale)
 	return matrix;
 }
 
-winrt::Windows::Foundation::IAsyncAction 
-ver::Model::MakeAsync(std::unique_ptr<Model>& to, Graphics& gfx, std::string_view pathString, float scale)
+ver::Model::Model(const Graphics& gfx, std::string_view pathString, float scale)
+{
+	Assimp::Importer imp;
+	const auto pScene = imp.ReadFile(pathString.data(),
+		aiProcess_Triangulate |
+		aiProcess_JoinIdenticalVertices |
+		aiProcess_ConvertToLeftHanded |
+		aiProcess_GenNormals |
+		aiProcess_CalcTangentSpace
+	);
+
+	if (!pScene->mNumMeshes || pScene == nullptr)
+		return;
+
+
+	meshPtrs.reserve(pScene->mNumMeshes);
+
+	//std::vector<Material> materials;
+	x_materials.reserve(pScene->mNumMaterials);
+	for (size_t i = 0;i<pScene->mNumMaterials ;i++)
+		x_materials.emplace_back(gfx, *pScene->mMaterials[i], pathString);
+
+	std::vector<std::shared_ptr<Mesh>> meshes;
+	meshes.reserve(pScene->mNumMeshes);
+	//parse materials
+	for (size_t i = 0; i < pScene->mNumMeshes; i++)
+	{
+		const auto& mesh = *pScene->mMeshes[i];
+		meshPtrs.push_back(std::make_shared<Mesh>(gfx, x_materials[mesh.mMaterialIndex], mesh, scale));
+	}
+
+	int nextId = 0;
+	pRoot = ParseNode(nextId, *pScene->mRootNode, scale);
+}
+
+winrt::Windows::Foundation::IAsyncAction
+ver::Model::MakeAsync(std::unique_ptr<Model>& to, const Graphics& gfx, std::string_view pathString, float scale)
 {
 	std::unique_ptr<Model> out(new Model());
 
@@ -58,8 +93,19 @@ ver::Model::MakeAsync(std::unique_ptr<Model>& to, Graphics& gfx, std::string_vie
 	to.reset(out.release());
 }
 
+void ver::Model::Step(const Graphics& gfx, float dt)
+{
+	pRoot->Step(gfx, dt, DirectX::XMMatrixIdentity());
+}
+
+void ver::Model::Submit(wgpu::RenderPassEncoder& pass) const noexcept
+{
+	for (const auto& x : meshPtrs)
+		x->Submit(pass);
+}
+
 winrt::Windows::Foundation::IAsyncAction 
-ver::Model::MakeMaterialsAsync(Graphics& gfx, std::vector<Material>& materials, const aiScene* pScene, std::string_view pathString)
+ver::Model::MakeMaterialsAsync(const Graphics& gfx, std::vector<Material>& materials, const aiScene* pScene, std::string_view pathString)
 {
 	std::vector<winrt::Windows::Foundation::IAsyncAction> tasks;
 	tasks.reserve(pScene->mNumMaterials);

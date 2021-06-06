@@ -21,7 +21,7 @@ namespace ver
 		Texture()noexcept = default;
 		Texture(const Graphics& gfx, std::string_view path, uint32_t bindingslot);
 		static Foundation::IAsyncAction
-			MakeAsync(Texture& tex, const Graphics& gfx, std::string_view path, uint32_t bindingslot);
+			MakeAsync(Texture& tex, const Graphics& gfx, std::string path, uint32_t bindingslot);
 	public:
 		std::string_view GetName()const noexcept
 		{

@@ -22,15 +22,15 @@ namespace ver
 		}
 		void Reset()noexcept
 		{
-			cbData = {
-				{ 0.0f,0.0f,0.5f },
-				{ 0.05f,0.05f,0.05f },
-				{ 1.0f,1.0f,1.0f },
-				1.0f,
-				1.0f,
-				0.045f,
-				0.0075f,
-			};
+			//cbData = {
+			//	{ 0.0f,0.0f,0.5f },
+			//	{ 0.05f,0.05f,0.05f },
+			//	{ 1.0f,1.0f,1.0f },
+			//	0.1f,
+			//	1.0f,
+			//	0.045f,
+			//	0.0075f,
+			//};
 		}
 		void Submit(wgpu::RenderPassEncoder& pass) const noexcept
 		{
@@ -53,7 +53,7 @@ namespace ver
 			DirectX::XMFLOAT3A pos{ 0.0f,0.0f,0.5f };
 			DirectX::XMFLOAT3A ambient{ 0.05f,0.05f,0.05f };
 			DirectX::XMFLOAT3 diffuse{ 1.0f,1.0f,1.0f };
-			float diffuseIntensity{ 1.0f };
+			float diffuseIntensity{ 0.3f };
 			float attConst{ .5f };
 			float attLin{ 0.045f };
 			float attQuad{ 0.0075f };

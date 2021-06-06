@@ -57,7 +57,7 @@ ver::Texture::Texture(const Graphics& gfx, std::string_view path, uint32_t bindi
 }
 
 Foundation::IAsyncAction 
-ver::Texture::MakeAsync(Texture& tex, const Graphics& gfx, std::string_view path, uint32_t bindingslot)
+ver::Texture::MakeAsync(Texture& tex, const Graphics& gfx, std::string path, uint32_t bindingslot)
 {
 	tex.name = path;
 	SurfaceLoader sl;

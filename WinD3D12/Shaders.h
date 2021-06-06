@@ -13,6 +13,7 @@ namespace ver
 		{
 			Create(gfx, xshader, tag, entry);
 		}
+		Shader(const Graphics& gfx, std::string shader, std::string_view entry);
 		Shader(const Graphics& gfx, ShaderPair pair, ShaderPair::Type ty)
 		{
 			std::span<const uint32_t> xshader = pair.Get(ty);
@@ -73,6 +74,11 @@ namespace ver
 			ResolveAsync(const Graphics& gfx, std::string shader, std::string_view entry)noexcept
 		{
 			return Codex::ResolveAsync<Shader>(gfx, shader, entry);
+		}
+		[[nodiscard]] static std::shared_ptr<Shader>
+			Resolve(const Graphics& gfx, std::string shader, std::string_view entry)noexcept
+		{
+			return Codex::Resolve<Shader>(gfx, shader, entry);
 		}
 	private:
 		wgpu::ProgrammableStageDescriptor desc{};

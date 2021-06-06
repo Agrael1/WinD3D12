@@ -4,7 +4,16 @@
 
 using namespace ver;
 
-concurrency::task<std::shared_ptr<Shader>> 
+ver::Shader::Shader(const Graphics& gfx, std::string shader, std::string_view entry)
+{
+	std::filesystem::path path{ Codex::shader_folder };
+	path /= shader + Codex::shader_extension.data();
+	BasicReaderWriter read;
+	auto data = read.ReadData(winrt::to_hstring(path.string().c_str()));
+	Create(gfx, std::span<const uint32_t>{ (const uint32_t*)data.data(), data.size() / 4 }, path.string(), entry);
+}
+
+concurrency::task<std::shared_ptr<Shader>>
 ver::Shader::MakeAsync(const Graphics& gfx, std::string shader, std::string_view entry)
 {
 	std::filesystem::path path{ Codex::shader_folder };

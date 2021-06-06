@@ -53,7 +53,7 @@ namespace ver
 	{
 	public:
 		PixelConstantBuffer(const Graphics& gfx, const T& constants, uint32_t slot = 0)
-			:ConstantBinding(gfx, &constants, sizeof(T), wgpu::BufferUsage::Uniform),
+			:ConstantBinding<PixelConstantBuffer<T>, Buffer>(gfx, &constants, sizeof(T), wgpu::BufferUsage::Uniform),
 			slot(slot)
 		{
 

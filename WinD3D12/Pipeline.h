@@ -39,13 +39,14 @@ namespace ver
 		{
 			PSDesc.emplace(ps.GetStageDescriptor());
 		}
-		void SetBindGroup(const wgpu::BindGroupLayout& bg)
+		void SetBindGroup(const wgpu::BindGroupLayout& bg, uint32_t at)
+		{
+			bindGroupLayouts[at] = bg;
+			counter = std::max(counter, at + 1);
+		}		
+		void AppendBindGroup(const wgpu::BindGroupLayout& bg)
 		{
 			bindGroupLayouts[counter++] = bg;
-		}
-		void SetRawLayout(const wgpu::BindGroupLayout& in)
-		{
-			bindGroupLayouts[counter++] = in;
 		}
 		[[nodiscard]]
 		wgpu::RenderPipeline CookPipeline(const Graphics& gfx)const noexcept

@@ -37,7 +37,7 @@ namespace ver
 			pipe.BindPixelShader(*rps);
 			pipe.BindVertexShader(*rvs);
 			pipe.BindVertexLayout(vl);
-			pipe.SetBindGroup(bg.CookLayout(gfx));
+			pipe.AppendBindGroup(bg.CookLayout(gfx));
 			bindGroup = bg.MakeBindGroup(gfx);
 			pipeline = pipe.CookPipeline(gfx);
 		}

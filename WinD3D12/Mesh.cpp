@@ -4,7 +4,7 @@
 
 using namespace ver;
 
-ver::Mesh::Mesh(Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale)
+ver::Mesh::Mesh(const Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale)
 	:cbuf(gfx), pixbuf(mat.MakePixelBuffer(gfx))
 {
 	vBuffer.emplace(mat.MakeVertexBindable(gfx, mesh, scale));
@@ -14,18 +14,15 @@ ver::Mesh::Mesh(Graphics& gfx, const Material& mat, const aiMesh& mesh, float sc
 	auto p = mat.GetPipeline();
 	b.BindResource(cbuf);
 	b.BindResource(pixbuf);
-	p.SetBindGroup(b.CookLayout(gfx));
+	p.SetBindGroup(b.CookLayout(gfx), 0);
 	bindGroup = b.MakeBindGroup(gfx);
 	pipeline = p.CookPipeline(gfx);
 }
 
 concurrency::task<std::shared_ptr<Mesh>> 
-ver::Mesh::MakeAsync(Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale)
+ver::Mesh::MakeAsync(const Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale)
 {
-	return concurrency::create_task(
-		[&gfx, mat, mesh]() {
-			return std::make_shared<Mesh>(gfx, mat, mesh);
-		});
+	co_return std::make_shared<Mesh>(gfx, mat, mesh);
 }
 
 DirectX::XMMATRIX ver::Mesh::GetTransformXM() const noexcept

@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "PointLight.h"
 #include "Model.h"
+#include "Panel.h"
 #include "InputController.h"
 
 
@@ -11,16 +12,15 @@ namespace ver
 	{
 	public:
 		VeritasEngine(uint32_t width, uint32_t height, const XWindow& wnd)
-			:gfx(width, height, wnd), light(gfx, 0.5f),/* tri(gfx),
-			panel(gfx),*/ input(wnd)
-			//x(gfx, "Assets\\GoblinX.obj")
+			:gfx(width, height, wnd), light(gfx, 0.1f),/* tri(gfx),*/
+			panel(gfx), input(wnd)
 		{
 			gfx.SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, float(height) / float(width), 0.5f, 100.0f));
 		}
 	public:
 		void Close()
 		{
-			
+
 		}
 		void Suspend()
 		{
@@ -87,6 +87,10 @@ namespace ver
 				{
 					dt *= 2;
 				}
+				if (input.kbd.KeyIsPressed(VK_CONTROL))
+				{
+					dt /= 2;
+				}
 				if (input.kbd.KeyIsPressed('W'))
 				{
 					cam.Translate({ 0.0f,0.0f,dt });
@@ -112,7 +116,7 @@ namespace ver
 					cam.Translate({ 0.0f,-dt,0.0f });
 				}
 			}
-			
+
 			while (const auto delta = input.mouse.ReadRawDelta())
 			{
 				if (!input.CursorEnabled())
@@ -120,7 +124,7 @@ namespace ver
 					cam.Rotate((float)delta->x, (float)delta->y);
 				}
 			}
-			
+
 			if (bL)
 			{
 				switch (state)
@@ -149,13 +153,15 @@ namespace ver
 
 			gfx.SetCamera(cam.GetViewMatrix());
 			light.Bind(gfx, cam.GetViewMatrix());
-			//panel.Step(gfx, dt);
+			if (x)x->Step(gfx, dt);
+			panel.Step(gfx, dt);
 
 			gfx.StartFrame();
 			{
 				auto pass = gfx.StartPass();
 				light.Submit(pass);
-				//panel.Submit(pass);
+				if (x)x->Submit(pass);
+				panel.Submit(pass);
 			}
 			gfx.Present();
 		}
@@ -165,7 +171,7 @@ namespace ver
 			//auto wfilename = L"Assets\\GoblinX.obj";
 			//if (!wfilename.empty())
 			{
-				co_await Model::MakeAsync(swap, gfx, "Assets\\GoblinX.obj");
+				co_await Model::MakeAsync(swap, gfx, "Assets\\brick_wall.obj");
 
 				//if (!swap) MessageBox(nullptr, "Model file was corrupted or empty",
 					//"Model Exception", MB_OK | MB_ICONEXCLAMATION);
@@ -183,7 +189,7 @@ namespace ver
 		Graphics gfx;
 		Camera cam;
 		std::unique_ptr<Model> x, swap;
-		//Panel panel;
+		Panel panel;
 
 		bool bFreeCam = false;
 		bool bVisible = true;

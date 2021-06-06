@@ -185,16 +185,31 @@
     <None Include="assimp-vc142-mtd.dll">
       <Filter>Libraries</Filter>
     </None>
-    <None Include="Assets\Shaders\Phong_VS.vcsh">
+    <None Include="Assets\Shaders\Phong.ps.vcsh">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="Assets\Shaders\Phong_PS.vcsh">
+    <None Include="Assets\Shaders\Phong.vs.vcsh">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="Assets\Shaders\PhongDif_PS.vcsh">
+    <None Include="Assets\Shaders\PhongDif.ps.vcsh">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="Assets\Shaders\PhongDif_VS.vcsh">
+    <None Include="Assets\Shaders\PhongDif.vs.vcsh">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\PhongDifNrm.vs.vcsh">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\PhongDifSpcNrm.ps.vcsh">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\brick_wall.mtl">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="Assets\brick_wall.obj">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="Assets\Shaders\PhongDifNrm.ps.vcsh">
       <Filter>Assets\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -9,10 +9,11 @@ namespace ver
 	class Material;
 	class Mesh : public Drawable
 	{
+		friend class Panel;
 	public:
-		Mesh(Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale = 1.0f);
+		Mesh(const Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale = 1.0f);
 		static concurrency::task<std::shared_ptr<Mesh>>
-			MakeAsync(Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale = 1.0f);
+			MakeAsync(const Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale = 1.0f);
 	public:
 		DirectX::XMMATRIX GetTransformXM() const noexcept;
 		void Step(const Graphics& gfx, float dt, DirectX::FXMMATRIX accumulatedTranform);
