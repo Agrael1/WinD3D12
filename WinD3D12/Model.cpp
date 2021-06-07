@@ -58,17 +58,15 @@ ver::Model::MakeAsync(std::unique_ptr<Model>& to, const Graphics& gfx, std::stri
 	const auto pScene = imp.ReadFile(pathString.data(),
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices |
-		aiProcess_ConvertToLeftHanded |
+		//aiProcess_ConvertToLeftHanded |
 		aiProcess_GenNormals |
 		aiProcess_CalcTangentSpace
 	);
-
 	if (!pScene->mNumMeshes || pScene == nullptr)
 	{
 		to.reset();
 		co_return;
 	}
-
 
 	out->meshPtrs.reserve(pScene->mNumMeshes);
 

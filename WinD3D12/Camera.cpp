@@ -36,7 +36,7 @@ DirectX::XMMATRIX Camera::GetViewMatrix() const noexcept
 }
 void Camera::Reset() noexcept
 {
-	pos = { 0, 0, -5.0f };
+	pos = { -4.5f, 6.2f, -4.7f };
 	rot = orbit = { 0, 0 };
 }
 void Camera::Orbit(float dphi, float dtheta) noexcept

@@ -64,7 +64,14 @@ namespace ver::dv
 			static constexpr wgpu::VertexFormat dxgiFormat = wgpu::VertexFormat::Float3;
 			static constexpr const char* semantic = "Normal";
 			static constexpr const char* code = "N";
-			DVTX_ELEMENT_AI_EXTRACTOR(mNormals)
+			//DVTX_ELEMENT_AI_EXTRACTOR(mNormals)
+			static SysType Extract(const aiMesh& mesh, size_t i) noexcept {
+				using namespace DirectX;
+				SysType a;
+				DirectX::XMStoreFloat3(&a, DirectX::XMVectorZero() - 
+					DirectX::XMLoadFloat3(reinterpret_cast<const SysType*>(&mesh.mNormals[i])));
+				return a; 
+			}
 		};
 		template<> struct Map<ElementType::Tangent>
 		{
