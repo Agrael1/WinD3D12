@@ -67,6 +67,9 @@
     <ClCompile Include="ModelException.cpp">
       <Filter>Sources\Engine\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="VeritasEngine.cpp">
+      <Filter>Sources\Engine\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

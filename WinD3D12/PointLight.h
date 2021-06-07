@@ -11,26 +11,28 @@ namespace ver
 		PointLight(const Graphics& gfx, float radius = 0.5f)
 			:mesh(gfx, radius), cbuf(gfx, 1)
 		{
-			BindGroup bg{PhongLightLayout::Get(gfx)};
+			BindGroup bg{ PhongLightLayout::Get(gfx) };
 			bg.BindResource(cbuf);
 			Reset();
 			bindGroup = bg.MakeBindGroup(gfx);
 		}
-		void SpawnControlWindow()noexcept
+		void Translate(DirectX::XMFLOAT3A trans)noexcept
 		{
-
+			DirectX::XMStoreFloat3A(&cbData.pos, DirectX::XMVectorAdd(
+				DirectX::XMLoadFloat3A(&trans),
+				DirectX::XMLoadFloat3A(&cbData.pos)));
 		}
 		void Reset()noexcept
 		{
-			//cbData = {
-			//	{ 0.0f,0.0f,0.5f },
-			//	{ 0.05f,0.05f,0.05f },
-			//	{ 1.0f,1.0f,1.0f },
-			//	0.1f,
-			//	1.0f,
-			//	0.045f,
-			//	0.0075f,
-			//};
+			cbData = {
+				{ 0.0f,0.0f,0.5f },
+				{ 0.05f,0.05f,0.05f },
+				{ 1.0f,1.0f,1.0f },
+				0.2f,
+				1.0f,
+				0.045f,
+				0.0075f,
+			};
 		}
 		void Submit(wgpu::RenderPassEncoder& pass) const noexcept
 		{
@@ -50,14 +52,14 @@ namespace ver
 	private:
 		struct PointLightCBuf
 		{
-			DirectX::XMFLOAT3A pos{ 0.0f,0.0f,0.5f };
-			DirectX::XMFLOAT3A ambient{ 0.05f,0.05f,0.05f };
-			DirectX::XMFLOAT3 diffuse{ 1.0f,1.0f,1.0f };
-			float diffuseIntensity{ 0.3f };
-			float attConst{ .5f };
-			float attLin{ 0.045f };
-			float attQuad{ 0.0075f };
-		}cbData;
+			DirectX::XMFLOAT3A pos;
+			DirectX::XMFLOAT3A ambient;
+			DirectX::XMFLOAT3 diffuse;
+			float diffuseIntensity;
+			float attConst;
+			float attLin;
+			float attQuad;
+		}cbData{};
 	private:
 		mutable SolidSphere mesh;
 		mutable PixelConstantBuffer<PointLightCBuf> cbuf;

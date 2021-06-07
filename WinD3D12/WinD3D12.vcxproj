@@ -262,6 +262,7 @@
     <ClCompile Include="Shaders.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="VeritasEngine.cpp" />
     <ClInclude Include="App.h">
       <FileType>Document</FileType>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsHeaderUnit</CompileAs>

@@ -1,7 +1,6 @@
 #include "pch.h"
 #include <Model.h>
 #include <Material.h>
-#include "FileReadWrite.h"
 
 
 using namespace ver;
@@ -100,6 +99,7 @@ void ver::Model::Step(const Graphics& gfx, float dt)
 
 void ver::Model::Submit(wgpu::RenderPassEncoder& pass) const noexcept
 {
+	//auto& x = meshPtrs[1];
 	for (const auto& x : meshPtrs)
 		x->Submit(pass);
 }

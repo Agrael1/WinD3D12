@@ -34,6 +34,15 @@ private:
 	void OnMouseMoved(
 		const Windows::Devices::Input::MouseDevice& mouseDevice,
 		const Windows::Devices::Input::MouseEventArgs& args
+	);	
+
+	void OnMousePressed(
+		const winrt::Windows::UI::Core::CoreWindow& sender,
+		const winrt::Windows::UI::Core::PointerEventArgs& args
+	);	
+	void OnMouseReleased(
+		const winrt::Windows::UI::Core::CoreWindow& mouseDevice,
+		const winrt::Windows::UI::Core::PointerEventArgs& args
 	);
 private:
 	winrt::Windows::UI::Core::CoreDispatcher  m_dispatcher;
